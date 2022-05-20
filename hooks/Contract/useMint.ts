@@ -31,6 +31,7 @@ export const useMint = () => {
       ?.inputResult.toString();
     console.log(amount, data);
     amount = amount || "0";
+    amount = ((10 * Number(amount)) % 100).toString();
 
     if (account) {
       return mint({ receiver: account, amount: amount });

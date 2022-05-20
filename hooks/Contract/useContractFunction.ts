@@ -31,9 +31,9 @@ export const useContractFunction = (contract: "exchange" | "usdc") => {
   }: MethodProps) => {
     const options: Moralis.ExecuteFunctionOptions = {
       ...CONFIG,
-      functionName,
-      msgValue,
-      params,
+      functionName, // "mint"
+      msgValue, // "0"
+      params, //"{account: "0xkjnsj, amount: "10000"}
     };
 
     console.log(`Options - `, options);
