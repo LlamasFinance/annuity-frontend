@@ -1,9 +1,14 @@
+import React from "react";
 import { ethers } from "ethers";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useMoralis } from "react-moralis";
 import { useContract } from "../hooks/Contract/logic";
+import { usePropose } from "../hooks/Contract/usePropose";
+import ProposeModal from "../components/Contract/ProposeModal";
+import { FormDataReturned } from "web3uikit/dist/components/Form/types";
+import { useApp } from "../hooks/App/index";
 
 const App: NextPage = () => {
   const { isInitialized, account } = useMoralis();
@@ -40,13 +45,23 @@ const App: NextPage = () => {
     closeError,
     agreementData,
   } = useContract();
+  const { handlePropose } = usePropose();
+  const { newAlert } = useApp();
+
+  const [isProposeModalVisible, setProposeModalVisibility] =
+    React.useState(false);
 
   const usdcAmount = "100";
   const handleMint = async () => {
     await mint({ receiver: account!, amount: usdcAmount });
   };
-  const handlePropose = async () => {
-    await propose({ amount: usdcAmount, duration: "1", rate: "5.55" });
+  const handleProposeSubmit = async (data: FormDataReturned) => {
+    try {
+      await handlePropose(data);
+      setProposeModalVisibility(false);
+    } catch (error) {
+      newAlert({ type: "error", message: "Something went wrong" });
+    }
   };
   const handleFetchAgreementData = async () => {
     await fetchAgrementData({ id: "1" });
@@ -59,7 +74,10 @@ const App: NextPage = () => {
         <button className="btn btn-primary" onClick={handleMint}>
           Mint 100 USDC
         </button>
-        <button className="btn btn-primary" onClick={handlePropose}>
+        <button
+          className="btn btn-primary"
+          onClick={() => setProposeModalVisibility(true)}
+        >
           Propose Agreement
         </button>
         <button className="btn btn-primary" onClick={handleFetchAgreementData}>
@@ -69,9 +87,11 @@ const App: NextPage = () => {
           Agreement Data:
           {JSON.stringify(agreementData)}
         </div>
-        {/* <Link href="/propose">
-          <a className="btn btn-secondary">New Proposal</a>
-        </Link> */}
+        <ProposeModal
+          isVisible={isProposeModalVisible}
+          onClose={() => setProposeModalVisibility(false)}
+          onSubmit={handleProposeSubmit}
+        />
       </div>
     );
   }
