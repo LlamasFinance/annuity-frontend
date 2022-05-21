@@ -10,12 +10,10 @@ import {
   USDC_DECIMALS,
 } from "../../constants";
 import { useAlert } from "../App/useAlert";
-import { useDatabase } from "../";
 
 export const useContract = () => {
   const { newAlert } = useAlert();
-  const { saveAgreement } = useDatabase();
-  const { enableWeb3, isWeb3Enabled } = useMoralis();
+  const { enableWeb3, isWeb3Enabled, account } = useMoralis();
   const {
     data: mintTx,
     fetch: fetchMint,
@@ -93,19 +91,6 @@ export const useContract = () => {
   const [agreementData, setAgreementData] =
     useState<Contract.AgreementDetails>();
 
-  useEffect(() => {
-    if (agreementID) {
-      const tx = agreementID as TransactionResponse;
-      const receipt = tx.wait(1).then((receipt) => {
-        console.log(`receipt ${JSON.stringify(receipt)}`);
-      });
-
-      // console.log(JSON.stringify(agreementID));
-      //   const id = (agreementID as BigNumber).toString();
-      //   fetchAgrementData({ id: id });
-    }
-  }, [agreementID]);
-
   /**
    * mint Tokens
    */
@@ -170,6 +155,7 @@ export const useContract = () => {
         newAlert({ type: "error", message: e.message });
       },
     });
+    console.log("agreementId = ", agreementID);
   };
 
   /**
@@ -295,7 +281,7 @@ export const useContract = () => {
   /**
    * get Agreement Data
    */
-  const fetchAgrementData = async ({ id }: Contract.GetAgreementDataProps) => {
+  const getAgreementData = async ({ id }: Contract.GetAgreementDataProps) => {
     setFetchingAgreement(true);
     setUpdatedAgreement(false);
     if (!isWeb3Enabled) {
@@ -341,8 +327,12 @@ export const useContract = () => {
       },
     });
     setFetchingAgreement(false);
-    updateAgreementAfterFetch({ id: id });
-    saveAgreement({ id: id });
+    console.log(
+      agreementStruct,
+      isLiquidationRequired,
+      minReqCollateral,
+      "recently fetched"
+    );
   };
 
   /**
@@ -388,6 +378,19 @@ export const useContract = () => {
     });
   };
 
+  /**
+   * tests
+   */
+  const testContract = async () => {
+    const usdcAmount = "100";
+    const duration = "1";
+    const rate = "5.5";
+    if (account) {
+      mint({ receiver: account, amount: usdcAmount });
+      propose({ amount: usdcAmount, duration: duration, rate: rate });
+    }
+  };
+
   return {
     mint,
     propose,
@@ -396,7 +399,8 @@ export const useContract = () => {
     withdrawCollateral,
     repay,
     close,
-    fetchAgrementData,
+    getAgreementData,
+    testContract,
     isMinting,
     mintTx,
     mintingError,

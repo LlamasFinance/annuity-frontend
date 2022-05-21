@@ -2,7 +2,7 @@ import { BigNumber } from "ethers";
 import Moralis from "moralis";
 import { useState } from "react";
 import { useTokenPrice } from "react-moralis";
-import { useAlert } from "../App/useAlert";
+import { useAlert } from "./useAlert";
 
 export const useWeb3 = () => {
   const { newAlert } = useAlert();
