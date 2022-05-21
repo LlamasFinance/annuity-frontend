@@ -1,18 +1,16 @@
 import React from "react";
 import { ethers } from "ethers";
+import { Moralis } from "moralis";
 import { NextPage } from "next";
 import Link from "next/link";
-import { useEffect } from "react";
-import { useMoralis } from "react-moralis";
-import { useContract } from "../hooks/Contract/logic";
-import { usePropose } from "../hooks/Contract/usePropose";
-import ProposeModal from "../components/Contract/ProposeModal";
-import { FormDataReturned } from "web3uikit/dist/components/Form/types";
-import { useApp } from "../hooks/App/index";
+import { useEffect, useState } from "react";
+import { useMoralis, useTokenPrice } from "react-moralis";
+import { useContract } from "../hooks/NewHooks/useContract";
+import { useWeb3 } from "../hooks/NewHooks/useWeb3";
 
 const App: NextPage = () => {
   const { isInitialized, account } = useMoralis();
-
+  const { getUsdFromETH, usdValue } = useWeb3();
   const {
     mint,
     propose,
@@ -23,25 +21,28 @@ const App: NextPage = () => {
     close,
     fetchAgrementData,
     isMinting,
-    mintingSuccess,
+    mintTx,
     mintingError,
+    isApproving,
+    approveTx,
+    approveError,
     isProposing,
-    proposeSuccess,
+    agreementID,
     proposeError,
     isActivating,
-    activateSuccess,
+    activateTx,
     activateError,
     isAddingCollateral,
-    addingCollateralSuccess,
+    addCollateralTx,
     addingCollateralError,
     isWithdrawingCollateral,
-    withdrawingCollateralSuccess,
+    withdrawCollateralTx,
     withdrawingCollateralError,
     isRepaying,
-    repaySuccess,
+    repayTx,
     repayError,
     isClosing,
-    closeSuccess,
+    closeTx,
     closeError,
     agreementData,
   } = useContract();
@@ -67,6 +68,15 @@ const App: NextPage = () => {
     await fetchAgrementData({ id: "1" });
   };
 
+  const handleActivate = async () => {
+    let minReqCollateral = agreementData?.minReqCollateral;
+    if (minReqCollateral) {
+      minReqCollateral = Moralis.Units.FromWei(minReqCollateral);
+      const amount = (Number(minReqCollateral) + 0.001).toString();
+      await activate({ id: "1", amount: amount });
+    }
+  };
+
   if (isInitialized) {
     return (
       <div>
@@ -83,9 +93,25 @@ const App: NextPage = () => {
         <button className="btn btn-primary" onClick={handleFetchAgreementData}>
           Fetch agreement data
         </button>
+        <button
+          className="btn btn-primary"
+          onClick={() =>
+            getUsdFromETH({
+              amount: Moralis.Units.FromWei(
+                agreementData?.minReqCollateral || "0"
+              ),
+            })
+          }
+        >
+          Convert min req collateral to usd
+        </button>
+        <button className="btn btn-primary" onClick={handleActivate}>
+          Activate Agreement
+        </button>
         <div>
           Agreement Data:
           {JSON.stringify(agreementData)}
+          {usdValue}
         </div>
         <ProposeModal
           isVisible={isProposeModalVisible}

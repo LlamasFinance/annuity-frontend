@@ -1,5 +1,5 @@
 import { TransactionResponse } from "@ethersproject/abstract-provider";
-import { Contract } from "ethers";
+import { BigNumber, Contract } from "ethers";
 import { Moralis } from "moralis";
 import { useEffect, useState } from "react";
 import {
@@ -15,54 +15,106 @@ import {
   USDC_DECIMALS,
 } from "../../constants";
 import { useAlert } from "../App/useAlert";
+import { useDatabase } from "./useDatabase";
 
 export const useContract = () => {
   const { newAlert } = useAlert();
+  const { saveAgreement } = useDatabase();
   const { enableWeb3, isWeb3Enabled } = useMoralis();
-  const { fetch: fetchMint } = useWeb3ExecuteFunction();
-  const { fetch: fetchApprove } = useWeb3ExecuteFunction();
-  const { data: agreementID, fetch: fetchPropose } = useWeb3ExecuteFunction();
-  const { fetch: fetchActivate } = useWeb3ExecuteFunction();
-  const { fetch: fetchAddCollateral } = useWeb3ExecuteFunction();
-  const { fetch: fetchWithdrawCollateral } = useWeb3ExecuteFunction();
-  const { fetch: fetchRepay } = useWeb3ExecuteFunction();
-  const { fetch: fetchClose } = useWeb3ExecuteFunction();
-  const { data: minReqCollateral, fetch: fetchMinReqCollateral } =
-    useWeb3ExecuteFunction();
-  const { data: isLiquidationRequired, fetch: fetchIsLiquidationRequired } =
-    useWeb3ExecuteFunction();
-  const { data: agreementStruct, fetch: fetchAgreementStruct } =
-    useWeb3ExecuteFunction();
-  const [isMinting, setMinting] = useState(false);
-  const [mintingSuccess, setMintingSuccess] = useState(false);
-  const [mintingError, setMintingError] = useState(false);
-  const [isProposing, setProposing] = useState(false);
-  const [proposeSuccess, setProposeSuccess] = useState(false);
-  const [proposeError, setProposeError] = useState(false);
-  const [isActivating, setActivating] = useState(false);
-  const [activateSuccess, setActivateSuccess] = useState(false);
-  const [activateError, setActivateError] = useState(false);
-  const [isAddingCollateral, setAddingCollateral] = useState(false);
-  const [addingCollateralSuccess, setAddingCollateralSuccess] = useState(false);
-  const [addingCollateralError, setAddingCollateralError] = useState(false);
-  const [isWithdrawingCollateral, setWithdrawingCollateral] = useState(false);
-  const [withdrawingCollateralSuccess, setWithdrawingCollateralSuccess] =
-    useState(false);
-  const [withdrawingCollateralError, setWithdrawingCollateralError] =
-    useState(false);
-  const [isRepaying, setRepaying] = useState(false);
-  const [repaySuccess, setRepaySuccess] = useState(false);
-  const [repayError, setRepayError] = useState(false);
-  const [isClosing, setClosing] = useState(false);
-  const [closeSuccess, setCloseSuccess] = useState(false);
-  const [closeError, setCloseError] = useState(false);
-  const [agreementData, setAgreementData] = useState();
+  const {
+    data: mintTx,
+    fetch: fetchMint,
+    isFetching: isMinting,
+    error: mintingError,
+  } = useWeb3ExecuteFunction();
+  const {
+    data: approveTx,
+    fetch: fetchApprove,
+    isFetching: isApproving,
+    error: approveError,
+  } = useWeb3ExecuteFunction();
+  const {
+    data: agreementID,
+    fetch: fetchPropose,
+    isFetching: isProposing,
+    error: proposeError,
+  } = useWeb3ExecuteFunction();
+  const {
+    data: activateTx,
+    fetch: fetchActivate,
+    isFetching: isActivating,
+    error: activateError,
+  } = useWeb3ExecuteFunction();
+  const {
+    data: addCollateralTx,
+    fetch: fetchAddCollateral,
+    isFetching: isAddingCollateral,
+    error: addingCollateralError,
+  } = useWeb3ExecuteFunction();
+  const {
+    data: withdrawCollateralTx,
+    fetch: fetchWithdrawCollateral,
+    isFetching: isWithdrawingCollateral,
+    error: withdrawingCollateralError,
+  } = useWeb3ExecuteFunction();
+  const {
+    data: repayTx,
+    fetch: fetchRepay,
+    isFetching: isRepaying,
+    error: repayError,
+  } = useWeb3ExecuteFunction();
+  const {
+    data: closeTx,
+    fetch: fetchClose,
+    isFetching: isClosing,
+    error: closeError,
+  } = useWeb3ExecuteFunction();
+  const {
+    data: minReqCollateral,
+    fetch: fetchMinReqCollateral,
+    isFetching: isFetchingMinReqCollateral,
+    error: minReqCollateralFetchError,
+  } = useWeb3ExecuteFunction();
+  const {
+    data: isLiquidationRequired,
+    fetch: fetchIsLiquidationRequired,
+    isFetching: isFetchingIfLiquidationRequired,
+    error: fetchingIfLiquidationRequiredError,
+  } = useWeb3ExecuteFunction();
+  const {
+    data: agreementStruct,
+    fetch: fetchAgreementStruct,
+    isFetching: isFetchingAgreementStruct,
+    error: fetchingAgreementStructError,
+  } = useWeb3ExecuteFunction();
+  const {
+    data: numAgreements,
+    fetch: fetchNumAgreements,
+    isFetching: isFetchingNumAgreements,
+    error: fetchingNumAgreementsError,
+  } = useWeb3ExecuteFunction();
+  const [fetchingAgreementData, setFetchingAgreement] = useState(false);
+  const [updatedAgreement, setUpdatedAgreement] = useState(false);
+  const [agreementData, setAgreementData] =
+    useState<Contract.AgreementDetails>();
+
+  useEffect(() => {
+    if (agreementID) {
+      const tx = agreementID as TransactionResponse;
+      const receipt = tx.wait(1).then((receipt) => {
+        console.log(`receipt ${JSON.stringify(receipt)}`);
+      });
+
+      // console.log(JSON.stringify(agreementID));
+      //   const id = (agreementID as BigNumber).toString();
+      //   fetchAgrementData({ id: id });
+    }
+  }, [agreementID]);
 
   /**
    * mint Tokens
    */
   const mint = async ({ receiver, amount }: Contract.MintProps) => {
-    setMinting(true);
     const usdcAmount = Moralis.Units.Token(amount, USDC_DECIMALS);
     await fetchMint({
       params: {
@@ -71,12 +123,9 @@ export const useContract = () => {
         params: { account: receiver, amount: usdcAmount },
       },
       onSuccess: () => {
-        setMintingSuccess(true), setMinting(false);
         newAlert({ type: "success", message: `Successfully minted tokens!` });
       },
       onError: (e) => {
-        setMintingError(true);
-        setMinting(false);
         newAlert({ type: "error", message: e.message });
       },
     });
@@ -95,8 +144,9 @@ export const useContract = () => {
           amount: amount,
         },
       },
-      onSuccess: () =>
-        newAlert({ type: "success", message: "Approved token transfer" }),
+      onSuccess: () => {
+        newAlert({ type: "success", message: "Approved token transfer" });
+      },
       onError: (e) => newAlert({ type: "error", message: e.message }),
     });
     return tx as TransactionResponse;
@@ -106,27 +156,22 @@ export const useContract = () => {
    * propose Agreememt
    */
   const propose = async ({ amount, duration, rate }: Contract.ProposeProps) => {
-    setProposing(true);
     const usdcAmount = Moralis.Units.Token(amount, USDC_DECIMALS);
     rate = ((10 * Number(rate)) % 100).toFixed(0);
     await approve({ spender: EXCHANGE_ADDRESS, amount: usdcAmount });
-    console.log(rate, rate, EXCHANGE_CONFIG);
     await fetchPropose({
       params: {
         ...EXCHANGE_CONFIG,
         functionName: "propose",
         params: { amount: usdcAmount, duration: duration, rate: rate },
       },
-      onSuccess: () => {
-        setProposeSuccess(true), setProposing(false);
+      onSuccess: async () => {
         newAlert({
           type: "success",
-          message: `Successfully proposed agreement. ID ${agreementID}`,
+          message: `Successfully proposed agreement. `,
         });
       },
       onError: (e) => {
-        setProposeError(true);
-        setProposing(false);
         newAlert({ type: "error", message: e.message });
       },
     });
@@ -136,7 +181,7 @@ export const useContract = () => {
    * activate Agreement
    */
   const activate = async ({ id, amount }: Contract.ActivateProps) => {
-    setActivating(true);
+    amount = Moralis.Units.ETH(amount);
     await fetchActivate({
       params: {
         ...EXCHANGE_CONFIG,
@@ -145,15 +190,12 @@ export const useContract = () => {
         msgValue: amount,
       },
       onSuccess: () => {
-        setActivateSuccess(true), setActivating(false);
         newAlert({
           type: "success",
           message: `Successfully activated Agreement ID ${id}`,
         });
       },
       onError: (e) => {
-        setActivateError(true);
-        setActivating(false);
         newAlert({ type: "error", message: e.message });
       },
     });
@@ -163,7 +205,7 @@ export const useContract = () => {
    * add collateral to Agreement
    */
   const addCollateral = async ({ id, amount }: Contract.AddCollateralProps) => {
-    setAddingCollateral(true);
+    amount = Moralis.Units.ETH(amount);
     await fetchAddCollateral({
       params: {
         ...EXCHANGE_CONFIG,
@@ -172,15 +214,12 @@ export const useContract = () => {
         msgValue: amount,
       },
       onSuccess: () => {
-        setAddingCollateralSuccess(true), setAddingCollateral(false);
         newAlert({
           type: "success",
           message: `Successfully added collateral to Agreement ID ${id}`,
         });
       },
       onError: (e) => {
-        setAddingCollateralError(true);
-        setAddingCollateral(false);
         newAlert({ type: "error", message: e.message });
       },
     });
@@ -193,7 +232,7 @@ export const useContract = () => {
     id,
     amount,
   }: Contract.WithdrawCollateralProps) => {
-    setWithdrawingCollateral(true);
+    amount = Moralis.Units.ETH(amount);
     await fetchWithdrawCollateral({
       params: {
         ...EXCHANGE_CONFIG,
@@ -201,15 +240,12 @@ export const useContract = () => {
         params: { id: id, amount: amount },
       },
       onSuccess: () => {
-        setWithdrawingCollateralSuccess(true), setWithdrawingCollateral(false);
         newAlert({
           type: "success",
           message: `Successfully withdrawed collateral from Agreement ID ${id}`,
         });
       },
       onError: (e) => {
-        setWithdrawingCollateralError(true);
-        setWithdrawingCollateral(false);
         newAlert({ type: "error", message: e.message });
       },
     });
@@ -219,7 +255,6 @@ export const useContract = () => {
    * repay Agreement
    */
   const repay = async ({ id, amount }: Contract.RepayProps) => {
-    setRepaying(true);
     const usdcAmount = Moralis.Units.Token(amount, USDC_DECIMALS);
     await approve({ spender: EXCHANGE_ADDRESS, amount: usdcAmount });
     await fetchRepay({
@@ -229,15 +264,12 @@ export const useContract = () => {
         params: { id: id, amount: amount },
       },
       onSuccess: () => {
-        setRepaySuccess(true), setRepaying(false);
         newAlert({
           type: "success",
           message: `Successfully repaid Agreement ID ${id}`,
         });
       },
       onError: (e) => {
-        setRepayError(true);
-        setRepaying(false);
         newAlert({ type: "error", message: e.message });
       },
     });
@@ -247,7 +279,6 @@ export const useContract = () => {
    * close Agreement
    */
   const close = async ({ id }: Contract.CloseProps) => {
-    setClosing(true);
     await fetchClose({
       params: {
         ...EXCHANGE_CONFIG,
@@ -255,15 +286,12 @@ export const useContract = () => {
         params: { id: id },
       },
       onSuccess: () => {
-        setCloseSuccess(true), setClosing(false);
         newAlert({
           type: "success",
           message: `Successfully closed Agreement ID ${id}`,
         });
       },
       onError: (e) => {
-        setCloseError(true);
-        setClosing(false);
         newAlert({ type: "error", message: e.message });
       },
     });
@@ -273,6 +301,8 @@ export const useContract = () => {
    * get Agreement Data
    */
   const fetchAgrementData = async ({ id }: Contract.GetAgreementDataProps) => {
+    setFetchingAgreement(true);
+    setUpdatedAgreement(false);
     if (!isWeb3Enabled) {
       await enableWeb3();
     }
@@ -315,11 +345,53 @@ export const useContract = () => {
         newAlert({ type: "error", message: e.message });
       },
     });
+    setFetchingAgreement(false);
+    updateAgreementAfterFetch({ id: id });
+    saveAgreement({ id: id });
   };
-  useEffect(() => {
-    const data = [minReqCollateral, isLiquidationRequired, agreementStruct];
-    setAgreementData(data as unknown as undefined);
-  }, [minReqCollateral, isLiquidationRequired, agreementStruct]);
+
+  /**
+   * update Agreement Details after a fetch
+   */
+  const updateAgreementAfterFetch = ({ id }: { id: string }) => {
+    if (agreementStruct) {
+      const agreement = agreementStruct as Contract.AgreementStruct;
+      const details: Contract.AgreementDetails = {
+        id: id,
+        deposit: agreement[0].toString(),
+        collateral: agreement[1].toString(),
+        repaidAmt: agreement[2].toString(),
+        futureValue: agreement[3].toString(),
+        start: agreement[4].toString(),
+        duration: agreement[5].toString(),
+        rate: agreement[6].toString(),
+        status: agreement[7].toString(),
+        lender: agreement[8],
+        borrower: agreement[9],
+        minReqCollateral: (minReqCollateral as BigNumber).toString(),
+        isLiquidationRequired: (isLiquidationRequired as BigNumber).toString(),
+      };
+      setAgreementData(details);
+      setUpdatedAgreement(true);
+    }
+  };
+
+  /**
+   * gets number of agreements
+   */
+
+  const getNumAgreements = async () => {
+    await fetchNumAgreements({
+      params: {
+        ...EXCHANGE_CONFIG,
+        functionName: "s_numIDs",
+      },
+      onSuccess: () => {},
+      onError: (e) => {
+        newAlert({ type: "error", message: e.message });
+      },
+    });
+  };
 
   return {
     mint,
@@ -331,31 +403,39 @@ export const useContract = () => {
     close,
     fetchAgrementData,
     isMinting,
-    mintingSuccess,
+    mintTx,
     mintingError,
+    isApproving,
+    approveTx,
+    approveError,
     isProposing,
-    proposeSuccess,
+    agreementID,
     proposeError,
     isActivating,
-    activateSuccess,
+    activateTx,
     activateError,
     isAddingCollateral,
-    addingCollateralSuccess,
+    addCollateralTx,
     addingCollateralError,
     isWithdrawingCollateral,
-    withdrawingCollateralSuccess,
+    withdrawCollateralTx,
     withdrawingCollateralError,
     isRepaying,
-    repaySuccess,
+    repayTx,
     repayError,
     isClosing,
-    closeSuccess,
+    closeTx,
     closeError,
     agreementData,
+    updatedAgreement,
+    fetchingAgreementData,
+    numAgreements,
+    isFetchingNumAgreements,
+    fetchingNumAgreementsError,
   };
 };
 
-namespace Contract {
+export namespace Contract {
   /**
    * @param receiver Wallet address
    * @param amount Token amount. Eg. 2 for two tokens
@@ -387,7 +467,7 @@ namespace Contract {
 
   /**
    * @id Agreement ID
-   * @amount WEI amount.
+   * @amount ETH amount.
    */
   export type ActivateProps = {
     id: string;
@@ -396,7 +476,7 @@ namespace Contract {
 
   /**
    * @param id Agreement ID
-   * @param amount WEI amount.
+   * @param amount ETH amount.
    */
   export type AddCollateralProps = {
     id: string;
@@ -405,7 +485,7 @@ namespace Contract {
 
   /**
    * @param id Agreement ID
-   * @param amount WEI amount
+   * @param amount ETH amount
    */
   export type WithdrawCollateralProps = {
     id: string;
@@ -433,5 +513,37 @@ namespace Contract {
    */
   export type GetAgreementDataProps = {
     id: string;
+  };
+
+  /**
+   *
+   */
+  export type AgreementStruct = [
+    deposit: BigNumber,
+    collateral: BigNumber,
+    repaidAmt: BigNumber,
+    futureValue: BigNumber,
+    start: BigNumber,
+    duration: BigNumber,
+    rate: BigNumber,
+    status: BigNumber,
+    lender: string,
+    borrower: string
+  ];
+
+  export type AgreementDetails = {
+    id?: string;
+    deposit: string;
+    collateral: string;
+    repaidAmt: string;
+    futureValue: string;
+    start: string;
+    duration: string;
+    rate: string;
+    status: string;
+    lender: string;
+    borrower: string;
+    minReqCollateral: string;
+    isLiquidationRequired: String;
   };
 }
