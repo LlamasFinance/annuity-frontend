@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useMoralis } from "react-moralis";
 import { ConnectButton } from "web3uikit";
 import { CHAIN_ID } from "../../constants";
 

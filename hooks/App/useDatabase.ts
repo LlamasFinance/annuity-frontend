@@ -1,4 +1,4 @@
-import { Contract } from "./useContract";
+import { Contract } from "../";
 import { useNewMoralisObject } from "react-moralis";
 import { useAlert } from "../App/useAlert";
 

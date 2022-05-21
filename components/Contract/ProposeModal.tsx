@@ -9,7 +9,7 @@ interface Props {
   onSubmit: (data: FormDataReturned) => void;
 }
 
-const ProposeModal = ({ isVisible, onSubmit, onClose }: Props) => {
+export const ProposeModal = ({ isVisible, onSubmit, onClose }: Props) => {
   return (
     <Modal
       title="Propose Agreement"

@@ -1,6 +1,3 @@
-import { useAlert } from "./useAlert";
-
-export const useApp = () => {
-  const { newAlert } = useAlert();
-  return { newAlert };
-};
+export * from "./useAlert";
+export * from "./useDatabase";
+export * from "./useWeb3";

@@ -1,6 +1,4 @@
 import { Form } from "web3uikit";
-import { MintForm } from "..";
-import { useContract } from "../../hooks";
 import { FormDataReturned } from "web3uikit/dist/components/Form/types";
 
 interface Props {

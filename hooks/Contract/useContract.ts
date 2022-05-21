@@ -2,20 +2,15 @@ import { TransactionResponse } from "@ethersproject/abstract-provider";
 import { BigNumber, Contract } from "ethers";
 import { Moralis } from "moralis";
 import { useEffect, useState } from "react";
-import {
-  useMoralis,
-  useWeb3Contract,
-  useWeb3ExecuteFunction,
-} from "react-moralis";
+import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 import {
   EXCHANGE_ADDRESS,
   EXCHANGE_CONFIG,
-  USDC_ADDRESS,
   USDC_CONFIG,
   USDC_DECIMALS,
 } from "../../constants";
 import { useAlert } from "../App/useAlert";
-import { useDatabase } from "./useDatabase";
+import { useDatabase } from "../";
 
 export const useContract = () => {
   const { newAlert } = useAlert();
