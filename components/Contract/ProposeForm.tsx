@@ -1,8 +1,13 @@
 import { Form } from "web3uikit";
 import { MintForm } from "..";
 import { useContract } from "../../hooks";
-export const ProposeForm = () => {
-  const { handlePropose } = useContract();
+import { FormDataReturned } from "web3uikit/dist/components/Form/types";
+
+interface Props {
+  onSubmit: (data: FormDataReturned) => void;
+}
+
+export const ProposeForm = ({ onSubmit }: Props) => {
   return (
     <div>
       <Form
@@ -34,8 +39,8 @@ export const ProposeForm = () => {
             key: "RATE",
           },
         ]}
-        onSubmit={handlePropose}
-        title="Propose Agreement"
+        onSubmit={onSubmit}
+        title=""
         id="propose-form"
       />
     </div>

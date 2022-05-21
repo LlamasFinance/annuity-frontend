@@ -5,17 +5,17 @@ import { EXCHANGE_ADDRESS, USDC_DECIMALS } from "../../constants";
 import { useApp } from "../";
 import { useContractFunction } from "./useContractFunction";
 
+export type ProposeProps = {
+  amount: string;
+  duration: string;
+  rate: string;
+};
+
 export const usePropose = () => {
   const { account } = useMoralis();
   const { newAlert } = useApp();
   const { runFunction: runExchangeFunction } = useContractFunction("exchange");
   const { runFunction: runUsdcFunction } = useContractFunction("usdc");
-
-  type ProposeProps = {
-    amount: string;
-    duration: string;
-    rate: string;
-  };
 
   const propose = async ({ amount, duration, rate }: ProposeProps) => {
     const spender = EXCHANGE_ADDRESS;
@@ -31,13 +31,12 @@ export const usePropose = () => {
 
     const receipt = await tx.wait(1);
 
-    if (receipt) {
-      await runExchangeFunction({
+    receipt &&
+      (await runExchangeFunction({
         successMessage: successMessage,
         functionName: "propose",
         params: { amount, duration, rate },
-      });
-    }
+      }));
   };
 
   const handlePropose = async ({ data }: FormDataReturned) => {
