@@ -1,22 +1,33 @@
-import { ethers } from "ethers";
+import React from "react";
 import { NextPage } from "next";
-import Link from "next/link";
-import { useEffect } from "react";
+import { useState } from "react";
 import { useMoralis } from "react-moralis";
+import { ProposeModal } from "../components";
 import { useContract } from "../hooks";
 
 const App: NextPage = () => {
   const { isInitialized } = useMoralis();
-  const { events } = useContract();
-  console.log(events);
+  const { testContract } = useContract();
+  const [isProposeModalVisible, setProposeModalVisibility] = useState(false);
 
   if (isInitialized) {
     return (
       <div>
         <h1>App</h1>
-        <Link href="/propose">
-          <a className="btn btn-secondary">New Proposal</a>
-        </Link>
+        <button className="btn btn-primary" onClick={testContract}>
+          Test contract
+        </button>{" "}
+        <button
+          className="btn btn-primary"
+          onClick={() => setProposeModalVisibility(true)}
+        >
+          Propose Agreement
+        </button>
+        <ProposeModal
+          isVisible={isProposeModalVisible}
+          onClose={() => setProposeModalVisibility(false)}
+          onSubmit={() => {}}
+        />
       </div>
     );
   }

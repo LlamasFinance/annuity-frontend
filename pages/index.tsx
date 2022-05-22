@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import { Hero } from "web3uikit";
-import { LandingNav } from "../components";
 
 const Home: NextPage = () => {
   return (
