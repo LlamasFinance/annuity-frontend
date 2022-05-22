@@ -1,9 +1,15 @@
-import { TransactionResponse } from "@ethersproject/abstract-provider";
-import { BigNumber, Contract } from "ethers";
+import { id } from "@ethersproject/hash";
+import {
+  TransactionReceipt,
+  TransactionResponse,
+} from "@ethersproject/providers";
+import { BigNumber, Contract, ContractReceipt, ethers } from "ethers";
 import { Moralis } from "moralis";
+import { string } from "prop-types";
 import { useEffect, useState } from "react";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 import {
+  EXCHANGE_ABI,
   EXCHANGE_ADDRESS,
   EXCHANGE_CONFIG,
   USDC_CONFIG,
@@ -13,7 +19,7 @@ import { useAlert } from "../App/useAlert";
 
 export const useContract = () => {
   const { newAlert } = useAlert();
-  const { enableWeb3, isWeb3Enabled, account } = useMoralis();
+  const { enableWeb3, isWeb3Enabled, account, web3 } = useMoralis();
   const {
     data: mintTx,
     fetch: fetchMint,
@@ -27,7 +33,7 @@ export const useContract = () => {
     error: approveError,
   } = useWeb3ExecuteFunction();
   const {
-    data: agreementID,
+    data: proposeTx,
     fetch: fetchPropose,
     isFetching: isProposing,
     error: proposeError,
@@ -87,8 +93,7 @@ export const useContract = () => {
     error: fetchingNumAgreementsError,
   } = useWeb3ExecuteFunction();
   const [fetchingAgreementData, setFetchingAgreement] = useState(false);
-  const [updatedAgreement, setUpdatedAgreement] = useState(false);
-  const [agreementData, setAgreementData] =
+  const [updatedAgreement, setUpdatedAgreement] =
     useState<Contract.AgreementDetails>();
 
   /**
@@ -107,6 +112,7 @@ export const useContract = () => {
       },
       onError: (e) => {
         newAlert({ type: "error", message: e.message });
+        throw e;
       },
     });
   };
@@ -127,7 +133,10 @@ export const useContract = () => {
       onSuccess: () => {
         newAlert({ type: "success", message: "Approved token transfer" });
       },
-      onError: (e) => newAlert({ type: "error", message: e.message }),
+      onError: (e) => {
+        newAlert({ type: "error", message: e.message });
+        throw e;
+      },
     });
     return tx as TransactionResponse;
   };
@@ -145,17 +154,24 @@ export const useContract = () => {
         functionName: "propose",
         params: { amount: usdcAmount, duration: duration, rate: rate },
       },
-      onSuccess: async () => {
+      onSuccess: async (content) => {
+        //   We need a better way of getting the id
+        const tx = content as TransactionResponse;
+        const receipt = (await tx.wait(1)) as ContractReceipt;
+        /* @ts-ignore */
+        const id = receipt.events[2].args.id.toString();
         newAlert({
           type: "success",
-          message: `Successfully proposed agreement. `,
+          message: `Successfully proposed agreement w/id - ${id} `,
         });
+        console.log(`Proposed new agreement with id - ${id}`);
+        updateAgreementData({ id: id });
       },
       onError: (e) => {
         newAlert({ type: "error", message: e.message });
+        throw e;
       },
     });
-    console.log("agreementId = ", agreementID);
   };
 
   /**
@@ -175,6 +191,7 @@ export const useContract = () => {
           type: "success",
           message: `Successfully activated Agreement ID ${id}`,
         });
+        updateAgreementData({ id: id });
       },
       onError: (e) => {
         newAlert({ type: "error", message: e.message });
@@ -199,6 +216,7 @@ export const useContract = () => {
           type: "success",
           message: `Successfully added collateral to Agreement ID ${id}`,
         });
+        updateAgreementData({ id: id });
       },
       onError: (e) => {
         newAlert({ type: "error", message: e.message });
@@ -225,6 +243,7 @@ export const useContract = () => {
           type: "success",
           message: `Successfully withdrawed collateral from Agreement ID ${id}`,
         });
+        updateAgreementData({ id: id });
       },
       onError: (e) => {
         newAlert({ type: "error", message: e.message });
@@ -242,13 +261,14 @@ export const useContract = () => {
       params: {
         ...EXCHANGE_CONFIG,
         functionName: "repay",
-        params: { id: id, amount: amount },
+        params: { id: id, amount: usdcAmount },
       },
       onSuccess: () => {
         newAlert({
           type: "success",
           message: `Successfully repaid Agreement ID ${id}`,
         });
+        updateAgreementData({ id: id });
       },
       onError: (e) => {
         newAlert({ type: "error", message: e.message });
@@ -271,6 +291,7 @@ export const useContract = () => {
           type: "success",
           message: `Successfully closed Agreement ID ${id}`,
         });
+        updateAgreementData({ id: id });
       },
       onError: (e) => {
         newAlert({ type: "error", message: e.message });
@@ -279,86 +300,90 @@ export const useContract = () => {
   };
 
   /**
-   * get Agreement Data
+   * gets Agreement Data and updates database
    */
-  const getAgreementData = async ({ id }: Contract.GetAgreementDataProps) => {
+  const updateAgreementData = async ({
+    id,
+  }: Contract.GetAgreementDataProps) => {
+    //   Initialize a new object to save  to our database
+    let agreementObj = new Object() as Contract.AgreementDetails;
+    agreementObj.id = id;
+
     setFetchingAgreement(true);
-    setUpdatedAgreement(false);
+
     if (!isWeb3Enabled) {
       await enableWeb3();
     }
+
     await fetchMinReqCollateral({
       params: {
         ...EXCHANGE_CONFIG,
         functionName: "getMinReqCollateral",
         params: { id: id },
       },
-      onSuccess: () => {
-        console.log(`Min req collateral ${minReqCollateral}`);
+      onSuccess: async (content) => {
+        console.log(`Min req collateral ${await content}`);
+        agreementObj.minReqCollateral = (content as BigNumber).toString();
       },
       onError: (e) => {
         newAlert({ type: "error", message: e.message });
       },
     });
+
     await fetchIsLiquidationRequired({
       params: {
         ...EXCHANGE_CONFIG,
         functionName: "isLiquidationRequired",
         params: { id: id },
       },
-      onSuccess: () => {
-        console.log(`Is Liquidation required ${isLiquidationRequired}`);
+      onSuccess: async (content) => {
+        console.log(`Is Liquidation required ${content}`);
+        agreementObj.isLiquidationRequired = content as string;
       },
       onError: (e) => {
         newAlert({ type: "error", message: e.message });
       },
     });
+
     await fetchAgreementStruct({
       params: {
         ...EXCHANGE_CONFIG,
         functionName: "s_idToAgreement",
         params: { "": id },
       },
-      onSuccess: () => {
-        console.log(`Agreement struct ${agreementStruct}`);
+      onSuccess: async (content) => {
+        console.log(`Agreement struct ${await content}`);
+        const [
+          deposit,
+          collateral,
+          repaidAmt,
+          futureValue,
+          start,
+          duration,
+          rate,
+          status,
+          lender,
+          borrower,
+        ] = content as Contract.AgreementStruct;
+        agreementObj.deposit = deposit.toString();
+        agreementObj.collateral = collateral.toString();
+        agreementObj.repaidAmt = repaidAmt.toString();
+        agreementObj.futureValue = futureValue.toString();
+        agreementObj.start = start.toString();
+        agreementObj.duration = duration.toString();
+        agreementObj.rate = rate.toString();
+        agreementObj.status = status.toString();
+        agreementObj.lender = lender.toString();
+        agreementObj.borrower = borrower.toString();
       },
       onError: (e) => {
         newAlert({ type: "error", message: e.message });
       },
     });
     setFetchingAgreement(false);
-    console.log(
-      agreementStruct,
-      isLiquidationRequired,
-      minReqCollateral,
-      "recently fetched"
-    );
-  };
-
-  /**
-   * update Agreement Details after a fetch
-   */
-  const updateAgreementAfterFetch = ({ id }: { id: string }) => {
-    if (agreementStruct) {
-      const agreement = agreementStruct as Contract.AgreementStruct;
-      const details: Contract.AgreementDetails = {
-        id: id,
-        deposit: agreement[0].toString(),
-        collateral: agreement[1].toString(),
-        repaidAmt: agreement[2].toString(),
-        futureValue: agreement[3].toString(),
-        start: agreement[4].toString(),
-        duration: agreement[5].toString(),
-        rate: agreement[6].toString(),
-        status: agreement[7].toString(),
-        lender: agreement[8],
-        borrower: agreement[9],
-        minReqCollateral: (minReqCollateral as BigNumber).toString(),
-        isLiquidationRequired: (isLiquidationRequired as BigNumber).toString(),
-      };
-      setAgreementData(details);
-      setUpdatedAgreement(true);
-    }
+    console.log(agreementObj);
+    setUpdatedAgreement(agreementObj);
+    return agreementObj;
   };
 
   /**
@@ -386,8 +411,29 @@ export const useContract = () => {
     const duration = "1";
     const rate = "5.5";
     if (account) {
-      mint({ receiver: account, amount: usdcAmount });
-      propose({ amount: usdcAmount, duration: duration, rate: rate });
+      await mint({ receiver: account, amount: usdcAmount });
+      await propose({
+        amount: usdcAmount,
+        duration: duration,
+        rate: rate,
+      });
+      let id = "1";
+      if (id) {
+        let { minReqCollateral, futureValue } = await updateAgreementData({
+          id: id,
+        });
+        const collateral = Moralis.Units.FromWei(
+          BigNumber.from(minReqCollateral).add("100").toString()
+        );
+        futureValue = Moralis.Units.FromWei(futureValue, 6);
+        const withdrawAmt = Moralis.Units.FromWei("99");
+        await activate({ id: id, amount: collateral });
+        await withdrawCollateral({ id: id, amount: withdrawAmt });
+        await mint({ receiver: account, amount: futureValue });
+        await repay({ id: id, amount: futureValue });
+
+        await close({ id: id });
+      }
     }
   };
 
@@ -399,7 +445,7 @@ export const useContract = () => {
     withdrawCollateral,
     repay,
     close,
-    getAgreementData,
+    updateAgreementData,
     testContract,
     isMinting,
     mintTx,
@@ -408,7 +454,7 @@ export const useContract = () => {
     approveTx,
     approveError,
     isProposing,
-    agreementID,
+    proposeTx,
     proposeError,
     isActivating,
     activateTx,
@@ -425,7 +471,6 @@ export const useContract = () => {
     isClosing,
     closeTx,
     closeError,
-    agreementData,
     updatedAgreement,
     fetchingAgreementData,
     numAgreements,

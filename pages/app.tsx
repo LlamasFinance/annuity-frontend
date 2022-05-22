@@ -3,16 +3,20 @@ import { NextPage } from "next";
 import { useState } from "react";
 import { useMoralis } from "react-moralis";
 import { ProposeModal } from "../components";
+import { useContract } from "../hooks";
 
 const App: NextPage = () => {
   const { isInitialized } = useMoralis();
-
+  const { testContract } = useContract();
   const [isProposeModalVisible, setProposeModalVisibility] = useState(false);
 
   if (isInitialized) {
     return (
       <div>
         <h1>App</h1>
+        <button className="btn btn-primary" onClick={testContract}>
+          Test contract
+        </button>{" "}
         <button
           className="btn btn-primary"
           onClick={() => setProposeModalVisibility(true)}
