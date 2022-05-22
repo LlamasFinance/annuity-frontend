@@ -9,6 +9,14 @@ export const AppNav = () => {
         <Link href="/app">
           <a className="btn btn-ghost text-xl normal-case">daisyUI</a>
         </Link>
+        <ul className="AppNav__links">
+          <li className="AppNav__link">
+            <Link href="/app/market">Market</Link>
+          </li>
+          <li className="AppNav__link">
+            <Link href="/app/account">My account</Link>
+          </li>
+        </ul>
       </div>
       <div className="flex-none">
         <ConnectButton

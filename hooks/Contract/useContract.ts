@@ -16,10 +16,13 @@ import {
   USDC_DECIMALS,
 } from "../../constants";
 import { useAlert } from "../App/useAlert";
+import { useDatabase } from "../../hooks/App/useDatabase";
 
 export const useContract = () => {
   const { newAlert } = useAlert();
   const { enableWeb3, isWeb3Enabled, account, web3 } = useMoralis();
+  const { saveNewAgreement } = useDatabase();
+
   const {
     data: mintTx,
     fetch: fetchMint,
@@ -165,7 +168,8 @@ export const useContract = () => {
           message: `Successfully proposed agreement w/id - ${id} `,
         });
         console.log(`Proposed new agreement with id - ${id}`);
-        updateAgreementData({ id: id });
+        const agreement = await updateAgreementData({ id: id });
+        await saveNewAgreement(agreement);
       },
       onError: (e) => {
         newAlert({ type: "error", message: e.message });
@@ -307,7 +311,7 @@ export const useContract = () => {
   }: Contract.GetAgreementDataProps) => {
     //   Initialize a new object to save  to our database
     let agreementObj = new Object() as Contract.AgreementDetails;
-    agreementObj.id = id;
+    agreementObj._id = id; // moralis won't save new object in db if it has an id property
 
     setFetchingAgreement(true);
 
@@ -373,8 +377,8 @@ export const useContract = () => {
         agreementObj.duration = duration.toString();
         agreementObj.rate = rate.toString();
         agreementObj.status = status.toString();
-        agreementObj.lender = lender.toString();
-        agreementObj.borrower = borrower.toString();
+        agreementObj.lender = lender.toString().toLowerCase();
+        agreementObj.borrower = borrower.toString().toLowerCase();
       },
       onError: (e) => {
         newAlert({ type: "error", message: e.message });
@@ -576,7 +580,8 @@ export namespace Contract {
   ];
 
   export type AgreementDetails = {
-    id?: string;
+    _id?: string;
+    createdAt?: Date;
     deposit: string;
     collateral: string;
     repaidAmt: string;

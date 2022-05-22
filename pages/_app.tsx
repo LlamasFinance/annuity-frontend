@@ -1,5 +1,6 @@
 import "../styles/globals.css";
 import "../styles/components/AppNav.css";
+import "../styles/components/Account.css";
 
 import type { AppProps } from "next/app";
 import { MoralisProvider } from "react-moralis";
