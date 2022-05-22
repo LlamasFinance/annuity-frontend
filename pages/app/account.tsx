@@ -2,6 +2,7 @@ import React from "react";
 import { Table } from "web3uikit";
 import { Moralis } from "moralis";
 import { useMoralis } from "react-moralis";
+import ProposeButton from "../../components/Contract/ProposeButton";
 
 import useFetchUserAgreements from "../../hooks/App/db/useFetchUserAgreements";
 import { Contract } from "../../hooks/Contract/useContract";
@@ -26,6 +27,10 @@ const Account = (props: Props) => {
 
   return (
     <div className="Account">
+      <div className="Account__header">
+        <h1 className="Account__title">Overview</h1>
+        <ProposeButton />
+      </div>
       <Table
         columnsConfig="1fr 1fr 1fr 1fr 1fr 1fr"
         header={[
