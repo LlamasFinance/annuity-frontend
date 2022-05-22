@@ -7,8 +7,20 @@ import { useContract } from "../hooks";
 
 const App: NextPage = () => {
   const { isInitialized } = useMoralis();
-  const { testContract } = useContract();
+  const { testContract, propose } = useContract();
   const [isProposeModalVisible, setProposeModalVisibility] = useState(false);
+
+  const handleAgreementSubmit = React.useCallback((data) => {
+    setProposeModalVisibility(false);
+    propose({
+      amount: data.data.find(({ key }: { key: string }) => key === "AMOUNT")
+        ?.inputResult,
+      duration: data.data.find(({ key }: { key: string }) => key === "DURATION")
+        ?.inputResult,
+      rate: data.data.find(({ key }: { key: string }) => key === "RATE")
+        ?.inputResult,
+    });
+  }, []);
 
   if (isInitialized) {
     return (
@@ -26,7 +38,7 @@ const App: NextPage = () => {
         <ProposeModal
           isVisible={isProposeModalVisible}
           onClose={() => setProposeModalVisibility(false)}
-          onSubmit={() => {}}
+          onSubmit={handleAgreementSubmit}
         />
       </div>
     );

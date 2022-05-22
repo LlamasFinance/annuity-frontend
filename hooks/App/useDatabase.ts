@@ -15,7 +15,7 @@ export const useDatabase = () => {
    * save a new agreement
    */
   const saveNewAgreement = async (data: Contract.AgreementDetails) => {
-    if (data.id) {
+    if (data._id) {
       saveAgreement(data, {
         onSuccess: (agreement) => {
           newAlert({
@@ -39,7 +39,7 @@ export const useDatabase = () => {
     //   }
   };
 
-  return { saveAgreement };
+  return { saveNewAgreement };
 };
 
 namespace Database {}
