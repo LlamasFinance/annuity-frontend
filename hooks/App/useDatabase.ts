@@ -16,6 +16,7 @@ export const useDatabase = () => {
    */
   const saveNewAgreement = async (data: Contract.AgreementDetails) => {
     if (data._id) {
+      delete data._id;
       saveAgreement(data, {
         onSuccess: (agreement) => {
           newAlert({

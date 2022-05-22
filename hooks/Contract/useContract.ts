@@ -377,8 +377,8 @@ export const useContract = () => {
         agreementObj.duration = duration.toString();
         agreementObj.rate = rate.toString();
         agreementObj.status = status.toString();
-        agreementObj.lender = lender.toString();
-        agreementObj.borrower = borrower.toString();
+        agreementObj.lender = lender.toString().toLowerCase();
+        agreementObj.borrower = borrower.toString().toLowerCase();
       },
       onError: (e) => {
         newAlert({ type: "error", message: e.message });
@@ -581,6 +581,7 @@ export namespace Contract {
 
   export type AgreementDetails = {
     _id?: string;
+    createdAt?: Date;
     deposit: string;
     collateral: string;
     repaidAmt: string;
