@@ -230,12 +230,17 @@ export const useContract = () => {
         params: { id: id, amount: amount },
         msgValue: amount,
       },
-      onSuccess: () => {
+      onSuccess: async (tx) => {
         newAlert({
           type: "success",
           message: `Successfully added collateral to Agreement ID ${id}`,
         });
-        updateAgreementData({ id: id });
+        const transaction = tx as TransactionResponse;
+        const receipt = await transaction.wait(1);
+        if (receipt) {
+          const agreement = await updateAgreementData({ id: id });
+          await updateAgreement(agreement);
+        }
       },
       onError: (e) => {
         newAlert({ type: "error", message: e.message });
@@ -257,12 +262,17 @@ export const useContract = () => {
         functionName: "withdrawCollateral",
         params: { id: id, amount: amount },
       },
-      onSuccess: () => {
+      onSuccess: async (tx) => {
         newAlert({
           type: "success",
           message: `Successfully withdrawed collateral from Agreement ID ${id}`,
         });
-        updateAgreementData({ id: id });
+        const transaction = tx as TransactionResponse;
+        const receipt = await transaction.wait(1);
+        if (receipt) {
+          const agreement = await updateAgreementData({ id: id });
+          await updateAgreement(agreement);
+        }
       },
       onError: (e) => {
         newAlert({ type: "error", message: e.message });
@@ -282,12 +292,17 @@ export const useContract = () => {
         functionName: "repay",
         params: { id: id, amount: usdcAmount },
       },
-      onSuccess: () => {
+      onSuccess: async (tx) => {
         newAlert({
           type: "success",
           message: `Successfully repaid Agreement ID ${id}`,
         });
-        updateAgreementData({ id: id });
+        const transaction = tx as TransactionResponse;
+        const receipt = await transaction.wait(1);
+        if (receipt) {
+          const agreement = await updateAgreementData({ id: id });
+          await updateAgreement(agreement);
+        }
       },
       onError: (e) => {
         newAlert({ type: "error", message: e.message });
@@ -305,12 +320,17 @@ export const useContract = () => {
         functionName: "close",
         params: { id: id },
       },
-      onSuccess: () => {
+      onSuccess: async (tx) => {
         newAlert({
           type: "success",
           message: `Successfully closed Agreement ID ${id}`,
         });
-        updateAgreementData({ id: id });
+        const transaction = tx as TransactionResponse;
+        const receipt = await transaction.wait(1);
+        if (receipt) {
+          const agreement = await updateAgreementData({ id: id });
+          await updateAgreement(agreement);
+        }
       },
       onError: (e) => {
         newAlert({ type: "error", message: e.message });
@@ -358,7 +378,6 @@ export const useContract = () => {
       onSuccess: async (content) => {
         console.log(`Is Liquidation required ${content}`);
         const result = (content as Boolean).toString();
-        console.log(result);
         agreementObj.isLiquidationRequired = result;
       },
       onError: (e) => {
@@ -404,11 +423,7 @@ export const useContract = () => {
     // wait until obj has been set before returning
     while (true) {
       const { uid, minReqCollateral, isLiquidationRequired } = agreementObj;
-      console.log(
-        uid.length,
-        minReqCollateral.length,
-        isLiquidationRequired.length
-      );
+      console.log("fetching ...");
       if (
         uid.length > 0 &&
         minReqCollateral.length > 0 &&
@@ -464,11 +479,11 @@ export const useContract = () => {
         futureValue = Moralis.Units.FromWei(futureValue, 6);
         const withdrawAmt = Moralis.Units.FromWei("99");
         await activate({ id: id, amount: collateral });
-        //   await withdrawCollateral({ id: id, amount: withdrawAmt });
-        //   await mint({ receiver: account, amount: futureValue });
-        //   await repay({ id: id, amount: futureValue });
+        await withdrawCollateral({ id: id, amount: withdrawAmt });
+        await mint({ receiver: account, amount: futureValue });
+        await repay({ id: id, amount: futureValue });
 
-        // await close({ id: id });
+        await close({ id: id });
       }
     }
   };
