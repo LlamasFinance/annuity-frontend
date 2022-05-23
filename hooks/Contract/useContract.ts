@@ -21,7 +21,7 @@ import { useDatabase } from "../../hooks/App/useDatabase";
 export const useContract = () => {
   const { newAlert } = useAlert();
   const { enableWeb3, isWeb3Enabled, account, web3 } = useMoralis();
-  const { saveNewAgreement } = useDatabase();
+  const { saveNewAgreement, updateAgreement } = useDatabase();
 
   const {
     data: mintTx,
@@ -149,6 +149,7 @@ export const useContract = () => {
    */
   const propose = async ({ amount, duration, rate }: Contract.ProposeProps) => {
     const usdcAmount = Moralis.Units.Token(amount, USDC_DECIMALS);
+    let returnID = "";
     rate = ((10 * Number(rate)) % 100).toFixed(0);
     await approve({ spender: EXCHANGE_ADDRESS, amount: usdcAmount });
     await fetchPropose({
@@ -168,6 +169,7 @@ export const useContract = () => {
           message: `Successfully proposed agreement w/id - ${id} `,
         });
         console.log(`Proposed new agreement with id - ${id}`);
+        returnID = id;
         const agreement = await updateAgreementData({ id: id });
         await saveNewAgreement(agreement);
       },
@@ -176,6 +178,14 @@ export const useContract = () => {
         throw e;
       },
     });
+    // wait until id has been set before returning
+    while (true) {
+      if (returnID) {
+        console.log("id ", returnID);
+        return returnID;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
   };
 
   /**
@@ -190,12 +200,17 @@ export const useContract = () => {
         params: { id: id, amount: amount },
         msgValue: amount,
       },
-      onSuccess: () => {
+      onSuccess: async (tx) => {
         newAlert({
           type: "success",
           message: `Successfully activated Agreement ID ${id}`,
         });
-        updateAgreementData({ id: id });
+        const transaction = tx as TransactionResponse;
+        const receipt = await transaction.wait(1);
+        if (receipt) {
+          const agreement = await updateAgreementData({ id: id });
+          await updateAgreement(agreement);
+        }
       },
       onError: (e) => {
         newAlert({ type: "error", message: e.message });
@@ -311,7 +326,7 @@ export const useContract = () => {
   }: Contract.GetAgreementDataProps) => {
     //   Initialize a new object to save  to our database
     let agreementObj = new Object() as Contract.AgreementDetails;
-    agreementObj._id = id; // moralis won't save new object in db if it has an id property
+    agreementObj.uid = id; // moralis won't save new object in db if it has an id property
 
     setFetchingAgreement(true);
 
@@ -342,7 +357,9 @@ export const useContract = () => {
       },
       onSuccess: async (content) => {
         console.log(`Is Liquidation required ${content}`);
-        agreementObj.isLiquidationRequired = content as string;
+        const result = (content as Boolean).toString();
+        console.log(result);
+        agreementObj.isLiquidationRequired = result;
       },
       onError: (e) => {
         newAlert({ type: "error", message: e.message });
@@ -384,10 +401,26 @@ export const useContract = () => {
         newAlert({ type: "error", message: e.message });
       },
     });
-    setFetchingAgreement(false);
-    console.log(agreementObj);
-    setUpdatedAgreement(agreementObj);
-    return agreementObj;
+    // wait until obj has been set before returning
+    while (true) {
+      const { uid, minReqCollateral, isLiquidationRequired } = agreementObj;
+      console.log(
+        uid.length,
+        minReqCollateral.length,
+        isLiquidationRequired.length
+      );
+      if (
+        uid.length > 0 &&
+        minReqCollateral.length > 0 &&
+        isLiquidationRequired.length > 0
+      ) {
+        setFetchingAgreement(false);
+        console.log(agreementObj);
+        setUpdatedAgreement(agreementObj);
+        return agreementObj;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
   };
 
   /**
@@ -416,12 +449,11 @@ export const useContract = () => {
     const rate = "5.5";
     if (account) {
       await mint({ receiver: account, amount: usdcAmount });
-      await propose({
+      const id = await propose({
         amount: usdcAmount,
         duration: duration,
         rate: rate,
       });
-      let id = "1";
       if (id) {
         let { minReqCollateral, futureValue } = await updateAgreementData({
           id: id,
@@ -432,11 +464,11 @@ export const useContract = () => {
         futureValue = Moralis.Units.FromWei(futureValue, 6);
         const withdrawAmt = Moralis.Units.FromWei("99");
         await activate({ id: id, amount: collateral });
-        await withdrawCollateral({ id: id, amount: withdrawAmt });
-        await mint({ receiver: account, amount: futureValue });
-        await repay({ id: id, amount: futureValue });
+        //   await withdrawCollateral({ id: id, amount: withdrawAmt });
+        //   await mint({ receiver: account, amount: futureValue });
+        //   await repay({ id: id, amount: futureValue });
 
-        await close({ id: id });
+        // await close({ id: id });
       }
     }
   };
@@ -580,8 +612,8 @@ export namespace Contract {
   ];
 
   export type AgreementDetails = {
-    _id?: string;
     createdAt?: Date;
+    uid: string;
     deposit: string;
     collateral: string;
     repaidAmt: string;
