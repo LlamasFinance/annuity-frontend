@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { Faq } from '../../../typings';
 import style from './Faqs.module.scss';
+
+interface Faq {
+  question: string,
+  answer: string
+}
 
 interface Prop {
     data: Faq[],

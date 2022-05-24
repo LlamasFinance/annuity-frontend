@@ -20,6 +20,9 @@
 
         h2 {
             font-family: $font-base;
+            color: $black-color;
+            font-weight: 700;
+            margin: 1.6rem 0;
             font-size: 1.3rem;
         }
 
@@ -40,6 +43,7 @@
 
     .content.show {
         height: auto;
+        margin: 0.5rem 0;
         max-height: 1000px;
         transition: all 0.5s cubic-bezier(1,0,1,0);
     }
