@@ -24,3 +24,10 @@ export const EXCHANGE_CONFIG = {
   abi: EXCHANGE_ABI,
   contractAddress: EXCHANGE_ADDRESS,
 };
+
+export enum STATUS {
+  Proposed,
+  Active,
+  Repaid,
+  Closed,
+}
