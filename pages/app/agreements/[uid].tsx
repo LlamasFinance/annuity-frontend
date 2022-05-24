@@ -4,6 +4,7 @@ import useFetchSpecificAgreements from "../../../hooks/App/db/useFetchSpecificAg
 import Moralis from "moralis";
 import { Contract } from "../../../hooks/Contract/useContract";
 import { useEffect, useState } from "react";
+import { useTokenValue } from "../../../hooks";
 
 const Details = () => {
   const router = useRouter();
@@ -11,32 +12,48 @@ const Details = () => {
   const { results } = useFetchSpecificAgreements(uid);
   const [agreement, setAgreement] =
     useState<Moralis.Object<Contract.AgreementDetails>>();
+  const defaultObj = new Object() as Contract.AgreementDetails;
+  const [
+    {
+      deposit,
+      collateral,
+      repaidAmt,
+      futureValue,
+      start,
+      duration,
+      rate,
+      status,
+      lender,
+      borrower,
+      minReqCollateral,
+      isLiquidationRequired,
+    },
+    setAttributes,
+  ] = useState<Contract.AgreementDetails>(defaultObj);
+  const { weiValue: collateralValue } = useTokenValue({
+    weiAmount: collateral,
+  });
+  const { usdcValue: depositValue } = useTokenValue({
+    usdcAmount: deposit,
+  });
 
   useEffect(() => {
-    setAgreement(results[0] as Moralis.Object<Contract.AgreementDetails>);
+    if (results) {
+      const agreement = results[0] as Moralis.Object<Contract.AgreementDetails>;
+      setAgreement(agreement);
+      console.log(agreement);
+      if (agreement?.attributes) {
+        setAttributes({ ...agreement.attributes });
+      }
+    }
   }, [results]);
-
-  const {
-    deposit,
-    collateral,
-    repaidAmt,
-    futureValue,
-    start,
-    duration,
-    rate,
-    status,
-    lender,
-    borrower,
-    minReqCollateral,
-    isLiquidationRequired,
-  } = agreement?.attributes;
 
   return (
     <div>
       <p>Borrower: {borrower}</p>
       <p>Lender: {lender}</p>
-      <p>Deposit: {deposit}</p>
-      <p>Collateral: {collateral}</p>
+      <p>Deposit: ${depositValue}</p>
+      <p>Collateral: ${collateralValue}</p>
     </div>
   );
 };
