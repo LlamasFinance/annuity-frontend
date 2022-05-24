@@ -1,0 +1,17 @@
+/* buttons.scss file */
+
+.btn {
+    position: relative;
+
+    padding: 0.6rem 1.4rem;
+    border-radius: 6px;
+    border: none;
+    background-color: $primary-blue;
+    
+    font-weight: 500;
+    color: $white-color;
+    outline: none; 
+    font-family: $font-base;
+    cursor: pointer;
+    transition: all 0.5s ease;
+}

@@ -1,0 +1,307 @@
+@import '../../../../styles/variables.module.scss';
+
+.container {
+    min-height: 100vh;
+    width: 100%;
+
+    padding: 2rem;
+    position: relative;
+
+    overflow-y: hidden;
+}
+
+.lineContainer {
+    width: 85%;
+
+    stroke-dasharray: 1190;
+    stroke-dashoffset: 1190;
+    
+    animation: animate-line 2s linear forwards;
+   
+    @keyframes animate-line {
+        0% {
+            stroke-dashoffset: 1190;
+        }
+        100% {
+            stroke-dashoffset: 0;
+        }
+    }
+
+    .lineMobile {
+        display: none;
+        margin: auto;
+    }
+
+    @media screen and (max-width: 900px) {
+        .line {
+            display: none;
+        }
+
+        .lineMobile {
+            display: block;
+        }
+    }
+
+    .cards {
+        padding: 2rem;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        position: absolute;
+
+        div {
+            max-width: 250px;
+            max-height: fit-content;
+            position: relative;
+
+            div {
+                width: 50px;
+                height: 50px;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+                background-color: $white-color;
+                border-radius: 25%;
+
+                margin-bottom: 2rem;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+
+                svg {
+                    width: 60%;
+                    height: 60%;
+                    color: $secondary-blue;
+                }
+            }
+
+            span {
+                position: absolute;
+                right: -10%;
+                bottom: 8%;
+
+                font-family: $font-button;
+                font-weight: 600;
+                font-size: 12rem;
+                color: rgba(0,0,0,0.1);
+            }
+
+            h2 {
+                font-family: $font-base;
+                font-size: 1.1rem;
+                font-weight: 600;
+                margin: 0;
+            }
+
+            p {
+                font-family: $font-base;
+                color: $gray-title;
+                font-weight: 500;
+                font-size: 0.9rem;
+            }
+        }
+
+        .card1 {
+            position: absolute;
+            bottom: 2%;
+            left: 18%;
+
+            span {
+                right: 6%;
+            }
+        }
+
+        .card2 {
+            position: absolute;
+            left: 52%;
+            bottom: 26%;
+        }
+
+        .card3 {
+            position: absolute;
+            right: 6%;
+            top: 2%;
+        }
+
+        @media screen and (max-width: 1300px) {
+            .card1 {   
+                bottom: 8%;
+            }
+    
+            .card2 {
+                bottom: 30%;
+            }
+        }
+
+        @media screen and (max-width: 1200px) {
+            .card1 {   
+                bottom: 12%;
+            }
+    
+            .card2 {
+                bottom: 33%;
+            }
+        }
+
+        @media screen and (max-width: 1100px) {
+            .card1 {   
+                bottom: 16%;
+            }
+    
+            .card2 {
+                bottom: 35%;
+            }
+        }
+
+        @media screen and (max-width: 1000px) {
+            .card1 {   
+                bottom: 22%;
+            }
+    
+            .card2 {
+                bottom: 38%;
+            }
+        }
+
+        @media screen and (max-width: 900px) {
+            div {
+                div {
+                    position: absolute;
+                    left: -30%;
+                }
+            }
+
+            .card1 {   
+                top: 30%;
+                left: 30vw;
+            }
+    
+            .card2 {
+                top: 54%;
+                left: 44.5vw 
+            }
+
+            .card3 {
+                top: 88%;
+                left: 26vw;
+
+                div {
+                    position: absolute;
+                    left: 120%;
+                }
+            }
+        }
+
+        @media screen and (max-width: 800px) {
+            .card1 {     
+                left: 28vw;
+            }
+    
+            .card2 {
+                left: 44.5vw 
+            }
+
+            .card3 {
+                left: 23vw;
+            }
+        }
+
+        @media screen and (max-width: 700px) {
+            .card1 {     
+                left: 26vw;
+            }
+    
+            .card3 {
+                left: 20.5vw;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            .card1 {     
+                left: 24vw;
+            }
+    
+            .card3 {
+                left: 17vw;
+            }
+        }
+
+        @media screen and (max-width: 500px) {
+            .card1 {     
+                left: 22vw;
+            }
+
+            .card2 {     
+                left: 48vw;
+
+                span {
+                    right: 60%;
+                }
+            }
+    
+            .card3 {
+                left: 16vw;
+            }
+        }
+
+        @media screen and (max-width: 450px) {
+            div {
+                max-width: 200px;
+
+                span {
+                  font-size: 10rem;
+                }
+
+                h2 {
+                  font-size: 1rem;
+                }
+
+                p {
+                  font-size: 0.7rem;   
+                }
+            }
+        }
+
+    }
+}
+
+.header {
+    padding: 2rem;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: 400px;
+   
+    h2 {
+        font-family: $font-title;
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    p {
+        font-family: $font-base;
+        color: $gray-title;
+        font-weight: 500;
+    }
+
+    @media screen and (max-width: 900px) {
+        position: relative;
+        max-width: none;
+
+        text-align: center;
+
+        p {
+            margin: 0 2rem;
+        }
+    }
+
+    @media screen and (max-width: 500px) {
+        p {
+            margin: 0
+        }
+    }
+}

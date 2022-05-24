@@ -16,7 +16,7 @@ export const Layout = ({ children }: any) => {
 
   return (
     <>
-      {isInitialized && pathname != "/" ? <AppNav /> : <LandingNav />}
+      {isInitialized && pathname != "/" ? <AppNav /> : ''}
       <main>{children}</main>
     </>
   );

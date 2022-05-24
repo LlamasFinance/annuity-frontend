@@ -1,14 +1,23 @@
 import type { NextPage } from "next";
 import { Hero } from "web3uikit";
+import Head from "next/head";
+import { Header, WhyAnnuities, HowItWork, WhyUs, Questions, Footer } from "../components/Landing";
 
 const Home: NextPage = () => {
   return (
     <div>
-      <h1>Landing Page</h1>
-      <Hero
-        backgroundURL="https://moralis.io/wp-content/uploads/2021/06/blue-blob-background-2.svg"
-        title="web3uiKit, my hero!"
-      />
+      <Head>
+        <title>Llama Finance</title>
+        <link rel="icon" href="images/black-logo.svg" />
+      </Head>
+
+      <Header />
+      <WhyAnnuities />
+      <HowItWork />
+      <WhyUs />
+      <Questions />
+      <Footer />
+
     </div>
   );
 };

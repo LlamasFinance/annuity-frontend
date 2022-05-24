@@ -1,0 +1,86 @@
+@import '../../../../styles/variables.module.scss';
+@import '../../../../styles/buttons.scss';
+
+.container {
+    width: 100%;
+    min-height: 100vh; 
+
+    padding: 4%;
+
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+
+    background-image: linear-gradient(to bottom, $secondary-color 85%, rgba(234,238,255,0));
+
+    @media screen and (max-width: 900px) {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .left {
+        padding: 2rem;
+
+        h2 {
+            font-family: $font-title;
+            color: $gray-title;
+            font-weight: 700;
+            font-size: 3rem;
+        }
+
+        p {
+            max-width: 350px;
+            font-family: $font-base;
+            font-weight: 400;
+            font-size: 1.2rem;
+            color: $gray-text;
+
+            margin: 0;
+        }
+
+        button {
+            @extend .btn;
+
+            margin-top: 3rem;
+        }
+
+        @media screen and (max-width: 900px) {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            h2, p {
+                text-align: center;
+            }
+
+            p {
+                max-width: 60vw;
+            }
+        }
+
+        @media screen and (max-width: 450px) {
+            p {
+                max-width: 70vw;
+            }
+        }
+    }
+
+    .right {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows:  repeat(2, 1fr);
+        row-gap: 20px;
+
+        @media screen and (max-width: 900px) {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @media screen and (max-width: 1250px) {
+            row-gap: 0;
+        }
+        
+    }
+}

@@ -4,7 +4,13 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        "Nunito Sans": [ "Nunito Sans", 'sans-serif'],
+        'Rubik': [ 'Rubik', 'sans-serif'],
+        'Poppins': [ 'Poppins', 'sans-serif'],
+      },
+    },
   },
   plugins: [require('daisyui')],
 }

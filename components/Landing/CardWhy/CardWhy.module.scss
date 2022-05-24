@@ -1,0 +1,70 @@
+@import '../../../styles/variables.module.scss';
+
+.container {
+    max-width: 300px;
+    height: min-content;
+    padding: 1.5rem;
+    border-radius: 12px;
+
+    background-color: $white-color;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+
+   
+    h2 {
+       font-family: $font-title; 
+       color: $gray-title;
+
+       font-size: 1.5em;
+       margin: 0.2em 0;
+    }
+
+    p {
+        font-family: $font-base;
+        font-size: 0.9rem;
+
+        color: $gray-text;
+        width: 95%;
+    }
+
+    @media screen and (max-width: 1250px) {
+
+        max-width: 250px;
+        align-self: center;
+        justify-self: center;
+
+        h2 {
+           font-size: 1.3rem;
+        }
+
+        p {
+            font-size: 0.8rem;
+        }
+    }
+
+    @media screen and (max-width: 1000px) {
+
+        max-width: 220px;
+
+        h2 {
+           font-size: 1.1rem;
+        }
+
+        p {
+            font-size: 0.7rem;
+        }
+    }
+
+    @media screen and (max-width: 900px) {
+
+        max-width: 300px;
+        margin: 1rem 0;
+
+        h2 {
+           font-size: 1.5rem;
+        }
+
+        p {
+            font-size: 0.9rem;
+        }
+    }
+}
