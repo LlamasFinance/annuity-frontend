@@ -8,6 +8,7 @@ const ProposeButton = () => {
 
   const handleAgreementSubmit = React.useCallback((data) => {
     setModalVisibility(false);
+
     propose({
       amount: data.data.find(({ key }: { key: string }) => key === "AMOUNT")
         ?.inputResult,

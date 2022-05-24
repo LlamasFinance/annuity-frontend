@@ -10,20 +10,7 @@ import { Contract } from "../../hooks/Contract/useContract";
 interface Props {}
 
 const Account = (props: Props) => {
-  const fetchUserAgreements = useFetchUserAgreements();
-  const { isInitialized } = useMoralis();
-  const [agreements, setAgreements] = React.useState<
-    Array<Contract.AgreementDetails>
-  >([]);
-
-  React.useEffect(() => {
-    if (isInitialized) {
-      const userAddress = Moralis.User.current()?.get("ethAddress");
-      fetchUserAgreements(userAddress).then((response: Array<any>) => {
-        setAgreements(response.map(({ attributes }) => attributes));
-      });
-    }
-  }, [isInitialized]);
+  const { results: agreements } = useFetchUserAgreements();
 
   return (
     <div className="Account">
@@ -40,17 +27,16 @@ const Account = (props: Props) => {
           <span>Rate</span>,
           <span>Duration</span>,
         ]}
-        data={agreements.map(
-          ({ createdAt, status, deposit, rate, duration }) => {
-            return [
-              <span>{createdAt?.toLocaleDateString()}</span>,
-              <span>{status}</span>,
-              <span>{Number(deposit) / 10 ** 6}</span>,
-              <span>{Number(rate) / 10}</span>,
-              <span>{duration}</span>,
-            ];
-          }
-        )}
+        data={agreements.map(({ createdAt, attributes }) => {
+          const { status, deposit, rate, duration } = attributes;
+          return [
+            <span>{createdAt?.toLocaleDateString()}</span>,
+            <span>{status}</span>,
+            <span>{Number(deposit) / 10 ** 6}</span>,
+            <span>{Number(rate) / 10}</span>,
+            <span>{duration}</span>,
+          ];
+        })}
         pageSize={10}
       />
     </div>
