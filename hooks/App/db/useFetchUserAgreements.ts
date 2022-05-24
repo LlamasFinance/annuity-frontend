@@ -16,28 +16,29 @@ export default function useFetchUserAgreements() {
     data: lenderAgreements,
     error,
     isLoading,
-  } = useMoralisQuery(
+  } = useMoralisQuery<Contract.AgreementDetails>(
     "Agreement",
-    (query) => query.equalTo("lender", account),
+    (query) => query.equalTo("lender", account || "").descending("createdAt"),
     [account, isInitialized],
     { live: true }
   );
   /**
-   * fetch user agreements
+   * fetch borrower agreements
    */
-  const { data: borrowerAgreements } = useMoralisQuery(
-    "Agreement",
-    (query) => query.equalTo("borrower", account),
-    [account, isInitialized],
-    { live: true }
-  );
+  const { data: borrowerAgreements } =
+    useMoralisQuery<Contract.AgreementDetails>(
+      "Agreement",
+      (query) =>
+        query.equalTo("borrower", account || "").descending("createdAt"),
+      [account, isInitialized],
+      { live: true }
+    );
+
+  /**
+   * combine the two agreements
+   */
   useEffect(() => {
-    setResults([
-      ...new Set([
-        ...(lenderAgreements as Array<any>),
-        ...(borrowerAgreements as Array<any>),
-      ]),
-    ]);
+    setResults([...new Set([...lenderAgreements, ...borrowerAgreements])]);
   }, [lenderAgreements, borrowerAgreements]);
 
   //   const { newAlert } = useAlert();

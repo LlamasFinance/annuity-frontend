@@ -9,14 +9,14 @@ const ProposeButton = () => {
   const handleAgreementSubmit = React.useCallback((data) => {
     setModalVisibility(false);
 
-    propose({
-      amount: data.data.find(({ key }: { key: string }) => key === "AMOUNT")
-        ?.inputResult,
-      duration: data.data.find(({ key }: { key: string }) => key === "DURATION")
-        ?.inputResult,
-      rate: data.data.find(({ key }: { key: string }) => key === "RATE")
-        ?.inputResult,
-    });
+    // propose({
+    //   amount: data.data.find(({ key }: { key: string }) => key === "AMOUNT")
+    //     ?.inputResult,
+    //   duration: data.data.find(({ key }: { key: string }) => key === "DURATION")
+    //     ?.inputResult,
+    //   rate: data.data.find(({ key }: { key: string }) => key === "RATE")
+    //     ?.inputResult,
+    // });
   }, []);
 
   return (
