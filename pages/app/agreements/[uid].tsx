@@ -11,7 +11,8 @@ import style from '../../../styles/components/agreement.module.scss';
 import { FaFileContract } from 'react-icons/fa';
 import { AiOutlineUser } from 'react-icons/ai';
 import { BsBarChartFill, BsFillClockFill } from 'react-icons/bs';
-import { IoIosPaper } from 'react-icons/io';
+import { IoIosPaper, IoLogoUsd } from 'react-icons/io';
+import { SiEthereum } from 'react-icons/si';
 
 const Details = () => {
   const router = useRouter();
@@ -24,8 +25,18 @@ const Details = () => {
     inputType: "wei",
   });
 
+  const { inUsd: minReqCollInETH } = useTokenValue({
+    amount: minReqCollateral,
+    inputType: "wei",
+  });
+
   const { inUsd: depositInUsd } = useTokenValue({
     amount: deposit,
+    inputType: "usdc",
+  });
+
+  const { inUsd: futureValueInUsd } = useTokenValue({
+    amount: futureValue,
     inputType: "usdc",
   });
 
@@ -91,19 +102,71 @@ const Details = () => {
 
         </div>
         <div className={style.annuitantMoney}>
-          <p>Deposit: ${collateralInUsd}</p>
-          <p>futureValue: {futureValue}</p>
+          <div className={style.usdc}>
+            <div className={style.usdcIcon}><IoLogoUsd /></div>
+            <div>
+              <p>USDC Deposited:</p>
+              <span>${depositInUsd}</span>  
+            </div>
+          </div>
+          <hr /> 
+          <div className={style.usdc}>
+            <div className={style.usdcIcon}><IoLogoUsd /></div>
+            <div>
+              <p>USDC Future Value:</p>
+              <span>${futureValueInUsd}</span>
+            </div>
+          </div>
+          <hr />
+
           <button>Withdraw</button>
         </div>
       </div>
 
       <div className={style.provider}>
         <h2>Provider</h2>
+        <div className={style.annuitantMoney}>
+          <div className={style.usdc}>
+            <div className={style.usdcIcon}><SiEthereum /></div>
+            <div>
+              <p>ETH Collateral:</p>
+              <span>{collateralInUsd} ETH</span>  
+            </div>
+          </div>
+          <hr /> 
+          <div className={style.usdc}>
+            <div className={style.usdcIcon}><SiEthereum /></div>
+            <div>
+              <p>ETH Value:</p>
+              <span>{collateralInUsd} ETH</span>  
+            </div>
+          </div>
+          <hr /> 
+          <div className={style.usdc}>
+            <div className={style.usdcIcon}><IoLogoUsd /></div>
+            <div>
+              <p>Liquidation minimum:</p>
+              <span>${minReqCollateral}</span>
+            </div>
+          </div>
+          <hr />
+          <div className={style.usdc}>
+            <div className={style.usdcIcon}><IoLogoUsd /></div>
+            <div>
+              <p>USDC Repaid:</p>
+              <span>${repaidAmt}</span>
+            </div>
+          </div>
+          <hr />
+
+          <div>
+            <button>Add Colateral</button>
+            <button>Repay Loan</button>
+          </div>
+          
+        </div>
         <div>
-          <p>Collateral: ${depositInUsd}</p>
-          <p>minReqCollateral: {minReqCollateral} </p>
-          <p>repaidAmt: {repaidAmt}</p>
-          <p>isLiquidationRequired: {isLiquidationRequired} </p>
+          <p>USDC Repaid: {isLiquidationRequired} </p>
         </div>
       </div>
        

@@ -54,6 +54,7 @@
 
 .annuitant {
     font-family: $font-base;
+    margin: 1.5rem 0;
 
     div {
         display: flex;
@@ -112,14 +113,64 @@
         }
     }
 
-    .annuitantMoney {
-        flex-direction: column;
+}
 
-        button {
-            @extend .btn;
+.annuitantMoney {
+    flex-direction: column;
 
-            margin-top: 1rem;
-            width: fit-content;
+    hr {
+        margin: 0 1rem;
+        width: 25%;
+        background-color: black;
+    }
+
+    .usdc {
+        display: flex;
+        align-items: center;
+        margin: 1rem;
+
+        .usdcIcon {
+            height: 30px;
+            width: 30px;
+            border-radius: 8px;
+            background-color: #EFEFEF;
+            margin-right: 1rem;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            svg {
+                height: 60%;
+                width: 60%;
+            }
         }
+
+        div {
+            span {
+                margin-left: 0.6rem;
+                font-weight: 700
+            }
+        }
+    }
+
+    button {
+        @extend .btn;
+
+        margin: 1rem;
+        width: fit-content;
+    }
+}
+
+.provider {
+    font-family: $font-base;
+    margin: 1.5rem 0;
+
+    div {
+        display: flex;
+    }
+
+    button {
+        margin-top: 2rem;
     }
 }

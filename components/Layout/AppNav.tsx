@@ -8,7 +8,7 @@ export const AppNav = () => {
       <div className="flex-1 justify-between">
         <Link href="/">
           <div className="flex justify-start items-center cursor-pointer">
-            <img src='images/black-logo.svg' alt="Logo" 
+            <img src='/images/black-logo.svg' alt="Logo" 
              className="h-[64px] "
             />
             <p className="font-extrabold text-lg font-sans">Llamas Finances</p>
