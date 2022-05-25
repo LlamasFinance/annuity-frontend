@@ -5,9 +5,14 @@ import { CHAIN_ID } from "../../constants";
 export const AppNav = () => {
   return (
     <div className="AppNav navbar bg-base-100">
-      <div className="flex-1">
+      <div className="flex-1 justify-between">
         <Link href="/">
-          <a className="btn btn-ghost text-xl normal-case">daisyUI</a>
+          <div className="flex justify-start items-center cursor-pointer">
+            <img src='images/black-logo.svg' alt="Logo" 
+             className="h-[64px] "
+            />
+            <p className="font-extrabold text-lg font-sans">Llamas Finances</p>
+          </div>
         </Link>
         <ul className="AppNav__links">
           <li className="AppNav__link">

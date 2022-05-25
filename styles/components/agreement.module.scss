@@ -1,0 +1,125 @@
+@import '../../styles/variables.module.scss';
+@import '../../styles/buttons.scss';
+
+.container {
+    min-height: 90vh;
+    width: 100%;
+
+    padding: 2.5rem;
+
+    h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+}
+
+.info {
+    font-family: $font-base;
+
+    .infoCard {
+        display: flex;
+        align-items: center;
+        margin: 1rem 0;
+
+        .icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 100px;
+            background-color: #EFECFD;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            margin-right: 1rem;
+
+            svg {
+                height: 40%;
+                width: 40%;
+                color: #7468E4;
+            }
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 0.9rem;
+            color: $gray-title;
+        }
+    }
+}
+
+.annuitant {
+    font-family: $font-base;
+
+    div {
+        display: flex;
+
+        .annuitantCard {
+            margin: 1rem;
+            align-items: center;
+
+            .annuitantIcon {
+                width: 70px;
+                height: 70px;
+                border-radius: 8px;
+                background-color: #1a56af1c;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            
+                margin-right: 1rem;
+
+                svg {
+                    height: 50%;
+                    width: 50%;
+                    color: #1A55AF;
+                }
+            }
+
+            .duration {
+                background-color: #fa5f1c1c;
+
+                svg {
+                    color: #FFB648;
+                }
+            }
+
+            .rate {
+                background-color: #427a0a18;
+
+                svg {
+                    color: #427A0A;
+                }
+            }
+
+            .annuitantInfo {
+                flex-direction: column;
+
+                h2 {
+                    font-size: 1.1rem;
+                }
+
+                p {
+                    font-size: 0.95rem;
+                    color: $gray-title;
+                }
+            }
+        }
+    }
+
+    .annuitantMoney {
+        flex-direction: column;
+
+        button {
+            @extend .btn;
+
+            margin-top: 1rem;
+            width: fit-content;
+        }
+    }
+}

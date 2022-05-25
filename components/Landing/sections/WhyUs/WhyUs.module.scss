@@ -84,6 +84,8 @@
 
                 h2 {
                     font-family: $font-title;
+                    color: $black-color;
+                    font-size: 1.5rem;
                     font-weight: 800;
                     margin-top: 4.8rem;
                 }
@@ -97,6 +99,8 @@
                 button {
                     @extend .btn;
                     font-size: 0.9rem;
+                    display: flex;
+                    justify-content: center;
 
                     svg {
                         vertical-align: middle;
@@ -137,6 +141,12 @@
                     background-color: $white-color;
                     color: #000;
                     padding: 0.6rem 0;
+
+                    svg {
+                        vertical-align: middle;
+                        margin: auto;
+                        margin-left: 1rem;
+                    }
 
                     font-size: 1.1rem;
                 }
