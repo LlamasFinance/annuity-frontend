@@ -15,8 +15,8 @@ enum inputType {
  * @param inputType wei, eth, usd,usdc
  */
 interface Props {
-  amount: string;
-  inputType: "wei" | "eth" | "usd" | "usdc";
+  amount?: string;
+  inputType?: "wei" | "eth" | "usd" | "usdc";
 }
 export const useTokenValue = ({ amount, inputType }: Props) => {
   const [inUsdc, setUsdc] = useState("");
@@ -37,6 +37,9 @@ export const useTokenValue = ({ amount, inputType }: Props) => {
   });
 
   useEffect(() => {
+    updateNativePrice();
+  }, []);
+  useEffect(() => {
     updateValue({ amount: amount, inputType: inputType });
   }, [amount, inputType]);
 
@@ -48,36 +51,45 @@ export const useTokenValue = ({ amount, inputType }: Props) => {
       onSuccess: (results) => {},
       onError: (e) => newAlert({ type: "error", message: e.message }),
     });
-    let nativePrice = results?.nativePrice?.value || ""; // wei per 1$
+    let nativePrice = results?.nativePrice?.value || "0"; // wei per 1$
     nativePrice = Moralis.Units.FromWei(nativePrice); // eth per 1$
     setNativePrice(nativePrice);
   };
 
-  const updateValue = async ({ amount, inputType }: Props) => {
+  const updateValue = async (props: Props) => {
     await updateNativePrice();
-    let inUsd, inUsdc, inEth, inWei;
-    if (inputType == "eth") {
-      inEth = amount;
-      inWei = Moralis.Units.Token(amount, 18);
-      inUsd = (Number(inEth) / Number(nativePrice)).toString();
-    } else if (inputType == "wei") {
-      inWei = amount;
-      inEth = Moralis.Units.FromWei(amount);
-      inUsd = (Number(inEth) / Number(nativePrice)).toString();
-    } else if (inputType == "usd") {
-      inUsd = amount;
-      inEth = (Number(nativePrice) * Number(inUsd)).toString();
-      inWei = Moralis.Units.Token(inEth, 18);
-    } else {
-      inUsd = Moralis.Units.FromWei(amount, 6);
-      inEth = (Number(nativePrice) * Number(inUsd)).toString();
-      inWei = Moralis.Units.Token(inEth, 18);
-    }
-    inUsdc = Moralis.Units.Token(inUsd, 6);
+    const { inUsd, inUsdc, inEth, inWei } = getValue(props);
     setUsd(inUsd);
     setUsdc(inUsdc);
     setEth(inEth);
     setWei(inWei);
+  };
+
+  const getValue = ({ amount, inputType }: Props) => {
+    let inUsd = "",
+      inUsdc = "",
+      inEth = "",
+      inWei = "";
+    if (amount && inputType && nativePrice) {
+      if (inputType == "eth") {
+        inEth = amount;
+        inWei = Moralis.Units.Token(amount, 18);
+        inUsd = (Number(inEth) / Number(nativePrice)).toFixed(4).toString();
+      } else if (inputType == "wei") {
+        inWei = amount;
+        inEth = Number(Moralis.Units.FromWei(amount)).toFixed(4).toString();
+        inUsd = (Number(inEth) / Number(nativePrice)).toFixed(4).toString();
+      } else if (inputType == "usd") {
+        inUsd = amount;
+        inEth = (Number(nativePrice) * Number(inUsd)).toFixed(4).toString();
+        inWei = Moralis.Units.Token(inEth, 18);
+      } else {
+        inUsd = Moralis.Units.FromWei(amount, 6);
+        inEth = (Number(nativePrice) * Number(inUsd)).toFixed(8).toString();
+        inWei = Moralis.Units.Token(inEth, 18);
+      }
+      inUsdc = Moralis.Units.Token(inUsd, 6);
+    }
     return {
       inUsdc: inUsdc,
       inUsd: inUsd,
@@ -86,5 +98,13 @@ export const useTokenValue = ({ amount, inputType }: Props) => {
     };
   };
 
-  return { inUsd, inEth, inWei, inUsdc, updateValue, updateNativePrice };
+  return {
+    inUsd,
+    inEth,
+    inWei,
+    inUsdc,
+    updateValue,
+    getValue,
+    updateNativePrice,
+  };
 };

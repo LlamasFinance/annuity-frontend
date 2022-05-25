@@ -19,7 +19,7 @@ export default function useFetchUserAgreements() {
   } = useMoralisQuery<Contract.AgreementDetails>(
     "Agreement",
     (query) => query.equalTo("lender", account || "").descending("createdAt"),
-    [account, isInitialized],
+    [account],
     { live: true }
   );
   /**
@@ -30,7 +30,7 @@ export default function useFetchUserAgreements() {
       "Agreement",
       (query) =>
         query.equalTo("borrower", account || "").descending("createdAt"),
-      [account, isInitialized],
+      [account],
       { live: true }
     );
 

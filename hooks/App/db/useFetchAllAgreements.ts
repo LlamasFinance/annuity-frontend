@@ -2,9 +2,10 @@ import React from "react";
 import { useAlert } from "../../App/useAlert";
 import { Moralis } from "moralis";
 import { useMoralisQuery } from "react-moralis";
-import { Contract } from "../../";
+import { Contract, useDatabase } from "../../";
 
 export default function useFetchAllAgreements() {
+  const { isUpdatingDb } = useDatabase();
   const {
     data: results,
     error,
@@ -12,7 +13,7 @@ export default function useFetchAllAgreements() {
   } = useMoralisQuery<Contract.AgreementDetails>(
     "Agreement",
     (query) => query.descending("createdAt"),
-    undefined,
+    [isUpdatingDb],
     { live: true }
   );
 

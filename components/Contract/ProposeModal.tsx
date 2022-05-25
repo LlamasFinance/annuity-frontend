@@ -2,6 +2,7 @@ import React from "react";
 import { Modal } from "web3uikit";
 import { ProposeForm } from "./ProposeForm";
 import { FormDataReturned } from "web3uikit/dist/components/Form/types";
+import { MintForm } from "./MintForm";
 
 interface Props {
   isVisible: boolean;
@@ -18,6 +19,7 @@ export const ProposeModal = ({ isVisible, onSubmit, onClose }: Props) => {
       headerHasBottomBorder
       onCloseButtonPressed={onClose}
     >
+      <MintForm />
       <ProposeForm onSubmit={onSubmit} />
     </Modal>
   );
