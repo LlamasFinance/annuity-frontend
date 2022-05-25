@@ -6,6 +6,9 @@ import { Contract } from "../../../hooks/Contract/useContract";
 import { useEffect, useState } from "react";
 import { useTokenValue } from "../../../hooks";
 
+import AddCollateralButton from "../../../components/Contract/AddColateralButton";
+import RepayLoanButton from "../../../components/Contract/RepayLoanButton";
+
 import style from '../../../styles/components/agreement.module.scss';
 
 import { FaFileContract } from 'react-icons/fa';
@@ -25,7 +28,7 @@ const Details = () => {
     inputType: "wei",
   });
 
-  const { inUsd: minReqCollInETH } = useTokenValue({
+  const { inUsd: minReqCollInUsd } = useTokenValue({
     amount: minReqCollateral,
     inputType: "wei",
   });
@@ -146,7 +149,7 @@ const Details = () => {
             <div className={style.usdcIcon}><IoLogoUsd /></div>
             <div>
               <p>Liquidation minimum:</p>
-              <span>${minReqCollateral}</span>
+              <span>${minReqCollInUsd}</span>
             </div>
           </div>
           <hr />
@@ -158,20 +161,17 @@ const Details = () => {
             </div>
           </div>
           <hr />
-
-          <div>
-            <button>Add Colateral</button>
-            <button>Repay Loan</button>
-          </div>
-          
-        </div>
-        <div>
+        </div> 
+      </div>
+      <div className={style.forms}>
+        <AddCollateralButton />
+        <RepayLoanButton />
+      </div>
+   
+      <p>start: {start} </p>
+      <div>
           <p>USDC Repaid: {isLiquidationRequired} </p>
         </div>
-      </div>
-       
-      <p>start: {start} </p>
-      
     </div>
   );
 };
