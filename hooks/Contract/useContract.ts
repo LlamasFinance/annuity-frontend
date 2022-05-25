@@ -21,7 +21,7 @@ import { useDatabase } from "../../hooks/App/useDatabase";
 export const useContract = () => {
   const { newAlert } = useAlert();
   const { enableWeb3, isWeb3Enabled, account, web3 } = useMoralis();
-  const { saveNewAgreement, updateAgreement } = useDatabase();
+  const { updateAgreement } = useDatabase();
 
   const {
     data: mintTx,
@@ -176,7 +176,7 @@ export const useContract = () => {
       });
       console.log(`Proposed new agreement with id - ${id}`);
       const agreement = await updateAgreementData({ id: id });
-      await saveNewAgreement(agreement);
+      await updateAgreement(agreement);
       return id;
     }
   };

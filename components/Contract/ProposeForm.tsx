@@ -1,16 +1,27 @@
+import { useState } from "react";
 import { Form } from "web3uikit";
 import { FormDataReturned } from "web3uikit/dist/components/Form/types";
+import { useContract } from "../../hooks";
 
 interface Props {
   onSubmit: (data: FormDataReturned) => void;
 }
 
 export const ProposeForm = ({ onSubmit }: Props) => {
+  const [key, setKey] = useState("propose");
+  const { isApproving, isProposing } = useContract();
+
   return (
     <div>
       <Form
         customFooter={
-          <button type="submit" className="btn btn-primary" id="form-submit">
+          <button
+            type="submit"
+            className={`btn btn-primary ${
+              isApproving ? "loading" : isProposing ? "loading" : ""
+            }`}
+            id="form-submit"
+          >
             Submit
           </button>
         }
@@ -37,8 +48,12 @@ export const ProposeForm = ({ onSubmit }: Props) => {
             key: "RATE",
           },
         ]}
-        onSubmit={onSubmit}
-        title=""
+        key={key}
+        onSubmit={(data) => {
+          onSubmit(data);
+          setKey(key + new Date().toString());
+        }}
+        title="Propose Annuity Agreement"
         id="propose-form"
       />
     </div>

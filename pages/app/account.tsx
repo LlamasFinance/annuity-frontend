@@ -6,12 +6,16 @@ import ProposeButton from "../../components/Contract/ProposeButton";
 
 import useFetchUserAgreements from "../../hooks/App/db/useFetchUserAgreements";
 import { Contract } from "../../hooks/Contract/useContract";
+import { STATUS } from "../../constants";
+import { useTokenValue } from "../../hooks";
+import Link from "next/link";
 
 interface Props {}
 
 const Account = (props: Props) => {
   const { results: agreements } = useFetchUserAgreements();
-
+  const { account } = useMoralis();
+  const { getValue } = useTokenValue({});
   return (
     <div className="Account">
       <div className="Account__header">
@@ -21,20 +25,33 @@ const Account = (props: Props) => {
       <Table
         columnsConfig="1fr 1fr 1fr 1fr 1fr 1fr"
         header={[
-          <span>Date</span>,
+          <span>Position</span>,
+          <span>ID</span>,
           <span>Status</span>,
-          <span>Deposit</span>,
-          <span>Rate</span>,
-          <span>Duration</span>,
+          <span>USD Deposit ($)</span>,
+          <span>ETH Collateral</span>,
+          <span>Details</span>,
         ]}
         data={agreements.map(({ createdAt, attributes }) => {
-          const { status, deposit, rate, duration } = attributes;
+          const { lender, uid, status, deposit, collateral } = attributes;
+          let { inEth } = getValue({
+            amount: collateral,
+            inputType: "wei",
+          });
+          inEth = Number(inEth) == 0 ? "--" : inEth;
           return [
-            <span>{createdAt?.toLocaleDateString()}</span>,
-            <span>{status}</span>,
-            <span>{Number(deposit) / 10 ** 6}</span>,
-            <span>{Number(rate) / 10}</span>,
-            <span>{duration}</span>,
+            <span>{account == lender ? "Annuitant" : "Insurer"}</span>,
+            <span>{uid}</span>,
+            <span>{STATUS[Number(status)]}</span>,
+            <span>
+              {getValue({ amount: deposit, inputType: "usdc" }).inUsd}
+            </span>,
+            <span>{inEth}</span>,
+            <span>
+              <Link href={`/app/agreements/${uid}`}>
+                <button className="btn-default btn">Details</button>
+              </Link>
+            </span>,
           ];
         })}
         pageSize={10}

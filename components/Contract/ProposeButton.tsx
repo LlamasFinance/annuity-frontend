@@ -6,10 +6,8 @@ const ProposeButton = () => {
   const [isModalVisible, setModalVisibility] = React.useState(false);
   const { propose } = useContract();
 
-  const handleAgreementSubmit = React.useCallback((data) => {
-    setModalVisibility(false);
-
-    propose({
+  const handleAgreementSubmit = React.useCallback(async (data) => {
+    await propose({
       amount: data.data.find(({ key }: { key: string }) => key === "AMOUNT")
         ?.inputResult,
       duration: data.data.find(({ key }: { key: string }) => key === "DURATION")
@@ -17,6 +15,7 @@ const ProposeButton = () => {
       rate: data.data.find(({ key }: { key: string }) => key === "RATE")
         ?.inputResult,
     });
+    setModalVisibility(false);
   }, []);
 
   return (
