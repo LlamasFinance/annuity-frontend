@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const RepayLoanForm = ({ onSubmit }: Props) => {
-  const [key, setKey] = useState("propose");
+  const [key, setKey] = useState("repayLoan");
 //   const { isApproving, isProposing } = useContract();
 
   return (

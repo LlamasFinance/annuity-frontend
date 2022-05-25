@@ -7,8 +7,8 @@ interface Props {
   onSubmit: (data: FormDataReturned) => void;
 }
 
-export const AddColateralForm = ({ onSubmit }: Props) => {
-  const [key, setKey] = useState("colateral");
+export const WithdrawForm = ({ onSubmit }: Props) => {
+  const [key, setKey] = useState("withdraw");
 //   const { isApproving, isProposing } = useContract();
 
   return (
@@ -20,7 +20,7 @@ export const AddColateralForm = ({ onSubmit }: Props) => {
             className={`btn btn-primary ${""}`}
             id="form-submit"
           >
-            Submit
+            Withdraw
           </button>
         }
         data={[
@@ -37,8 +37,8 @@ export const AddColateralForm = ({ onSubmit }: Props) => {
           onSubmit(data);
           setKey(key + new Date().toString());
         }}
-        title="ETH Amount"
-        id="colateral-form"
+        title="Withdraw Collateral"
+        id="withdraw-form"
       />
     </div>
   );

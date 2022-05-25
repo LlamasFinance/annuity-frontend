@@ -13,7 +13,7 @@ interface Props {
 export const RepayLoanModal = ({ isVisible, onSubmit, onClose }: Props) => {
   return (
     <Modal
-      title="Add Colateral"
+      title="Repay Loan"
       isVisible={isVisible}
       hasFooter={false}
       headerHasBottomBorder

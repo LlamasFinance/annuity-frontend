@@ -6,10 +6,10 @@ const AddCollateralButton = () => {
   const [isModalVisible, setModalVisibility] = useState(false);
   // const { propose } = useContract();
 
-  // const handleColateralSubmit = React.useCallback(async (data) => {
-  //   
-  //   setModalVisibility(false);
-  // }, []);
+  const handleColateralSubmit = React.useCallback(async (data) => {
+    alert('submit colateral');
+    setModalVisibility(false);
+  }, []);
 
   return (
     <>
@@ -17,12 +17,12 @@ const AddCollateralButton = () => {
         className="btn btn-primary"
         onClick={() => setModalVisibility(true)}
       >
-        Add Colateral
+        Add Collateral
       </button>
       <AddColateralModal
         isVisible={isModalVisible}
         onClose={() => setModalVisibility(false)}
-        onSubmit={() => console.log()}
+        onSubmit={handleColateralSubmit}
       />
     </>
   );

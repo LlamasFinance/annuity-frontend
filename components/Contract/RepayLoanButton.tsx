@@ -6,10 +6,10 @@ const RepayLoanButton = () => {
   const [isModalVisible, setModalVisibility] = useState(false);
   // const { propose } = useContract();
 
-  // const handleColateralSubmit = React.useCallback(async (data) => {
-  //   
-  //   setModalVisibility(false);
-  // }, []);
+  const handleRepayLoan = React.useCallback(async (data) => {
+    alert('repay loan')
+    setModalVisibility(false);
+  }, []);
 
   return (
     <>
@@ -22,7 +22,7 @@ const RepayLoanButton = () => {
       <RepayLoanModal
         isVisible={isModalVisible}
         onClose={() => setModalVisibility(false)}
-        onSubmit={() => console.log()}
+        onSubmit={handleRepayLoan}
       />
     </>
   );
