@@ -6,7 +6,7 @@ export const AppNav = () => {
   return (
     <div className="AppNav navbar bg-base-100">
       <div className="flex-1">
-        <Link href="/app">
+        <Link href="/">
           <a className="btn btn-ghost text-xl normal-case">daisyUI</a>
         </Link>
         <ul className="AppNav__links">

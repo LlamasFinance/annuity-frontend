@@ -1,0 +1,109 @@
+@import '../../../styles/variables.module.scss';
+@import '../../../styles/buttons.scss';
+// @use 'buttons';
+
+.container {
+    height: 80px;
+    padding: 1rem 3rem;
+    background-color: $secondary-blue;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    overflow: hidden;
+
+    p {
+        color: $white-color;
+        font-family: $font-title;
+        font-weight: 700;
+        font-size: 20px;
+
+        max-width: 160px;
+
+        @media screen and (max-width: 900px) {
+            display: none;
+        }
+    }
+
+    div {
+        display: flex;
+
+        @media screen and (max-width: 900px) {
+            flex-direction: column;
+            margin: 2rem 0;
+        }
+    }
+
+    button {
+        @extend .btn;
+
+        background-color: $third-color;
+        font-weight: 500;
+        font-size: 1rem;
+        letter-spacing: 1px;
+        padding: 0.4rem 1.2rem;
+        border-radius: 8px;
+    }
+
+    .mobileTitle {
+        display: block;
+        font-size: 15px;
+        max-width: 90px;
+
+        @media screen and (min-width: 900px) {
+            display: none;
+        }
+    }
+
+    @media screen and (max-width: 900px) {
+        padding: 1.2rem;
+
+        button {
+            font-size: 0.8rem;
+            letter-spacing: 0.8px;
+            padding: 0.4rem 1rem;  
+        }
+    }
+}
+
+.rates {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin: 0 1.5rem;
+
+    span {
+        color: $third-color;
+        font-family: $font-title;
+        font-weight: 800;
+        font-size: 24px;
+    }
+
+    p {
+        font-weight: 500;
+        font-size: 1em;
+        width: 80%;
+
+        margin: 0;
+
+        @media screen and (max-width: 900px) {
+            display: block;
+        }
+    }
+
+    @media screen and (max-width: 1100px) {
+        span {
+          font-size: 22px;
+        }
+
+        p {
+          font-size: 0.9em;   
+        }
+
+        margin: 0 1.2rem;
+    }
+
+}

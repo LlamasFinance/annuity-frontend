@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&family=Poppins:wght@100;200;400&family=Rubik:wght@400;500;600&display=swap');
+
+$font-base: "Poppins", sans-serif;
+$font-title: "Nunito Sans", sans-serif;
+$font-button: "Rubik", sans-serif;
+$primary-color: #ffffff;
+$secondary-color: #EAEEFF;
+$third-color: #10BFC7;
+$primary-blue: #0C1DB0;
+$secondary-blue: #111152;
+$black-color: #030303;
+$white-color: #ffffff;
+$gray-text: #8B8C8C;
+$gray-title: #363940;
+
+:export {
+    fontBase: $font-base;
+    fontTitle: $font-title;
+    fontButton: $font-button;
+    primaryColor: $primary-color;
+    secondaryColor: $secondary-color;
+    thirdColor: $third-color;
+    primaryBlue: $primary-blue;
+    secondaryBlue: $secondary-blue;
+    blackColor: $black-color;
+    whiteColor: $white-color;
+    grayText: $gray-text;
+    grayTitle: $gray-title;
+}  

@@ -1,0 +1,299 @@
+@import '../../../../styles/variables.module.scss';
+
+.container {
+    min-height: 100vh;
+}
+
+.content {
+    width: 100%;
+    min-height: 100vh;
+
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+
+    @media screen and (max-width: 900px) {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.left {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media screen and (max-width: 900px) {
+        min-height: 100vh;
+    }
+}
+
+.leftContent {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+
+    div {
+        display: flex;
+        margin-bottom: 1rem;
+    }
+
+    h2 {
+        color: $black-color;
+        font-family: $font-title;
+        font-size: 3.5rem;
+        text-align: left;
+        font-weight: 900;
+        line-height: 1.2em;
+
+        margin-bottom: 0;
+    }
+
+    p {
+        font-family: $font-base;
+        text-align: left;
+        font-size: 17px;
+        font-weight: 400;
+        color: #676767;
+
+        margin: 1rem 0 2rem 0;
+    }
+
+    button {
+        position: relative;
+       
+
+        padding: 0.6rem 1.4rem;
+        border-radius: 6px;
+        border: none;
+
+        background-color: $white-color;
+        text-transform: uppercase;
+        font-weight: 400;
+        color: $primary-blue;;
+        outline: none; 
+        font-family: $font-button;
+        font-size: 0.85rem;
+        letter-spacing: 2px;
+        cursor: pointer;
+    }
+
+    .apply {
+        background-color: $primary-blue;
+        color: $white-color;
+        transition: all 0.5s ease;
+
+        &:hover {
+            background-color: #1224c0
+        }
+    }
+
+    .checks {
+        div {
+            svg {
+                width: 18px;
+                height: 18px;
+                align-self: center;
+                color: $primary-blue;
+                margin-right: 0.3rem;
+            }
+
+            margin: 1rem 1.5rem 0 0;
+            font-family: $font-base;
+            font-size: 1.02em;
+            color: #757095; 
+        }
+    }
+
+    @media screen and (max-width: 1200px) {
+        h2 {
+            font-size: 3rem;
+        }
+
+        .checks {
+            div {
+                svg {
+                    width: 15px;
+                    height: 15px;
+                }
+              
+                font-size: 0.8em;
+            }
+        } 
+    }
+    @media screen and (max-width: 1000px) {
+        h2 {
+            font-size: 2.6rem;
+        }
+
+        p {
+            font-size: 15px;
+        }
+    }
+
+    @media screen and (max-width: 900px) {
+        align-items: center;
+
+        h2 {
+            text-align: center;
+        }
+
+        p {
+            text-align: center;
+        }
+    }
+
+    @media screen and (max-width: 510px) {
+        h2 {
+            font-size: 2.5rem;
+        }
+
+        p {
+            max-width: 60%;
+            font-size: 16px;
+            margin: 2rem 0;
+        }
+
+        div {
+            flex-direction: column;
+        }
+
+        button {
+            margin-bottom: 1rem;
+        }
+
+        .checks {
+            align-items: center;
+
+            div {
+                flex-direction: row;
+            }
+        }
+
+    }
+}
+
+.right {
+    width: 100%;
+    height: 90%;
+    background-color: $secondary-color;
+    position: relative;
+
+    .boxes {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        div {
+            position: absolute;
+        }
+        .box1 {
+            top: 25%;
+            left: -10%;
+
+            padding: 0.8rem 1.6rem;
+            border-radius: 8px;
+            background-color: $white-color;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+
+            font-family: $font-base;
+            font-weight: 600;
+
+            display: flex;
+            justify-content: center;
+
+            svg {
+                width: 20px;
+                height: 20px;
+                color: $primary-blue;
+                margin-right: 0.4rem;
+            }
+        }
+    }
+
+
+    .effects {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+
+        img {
+            position: absolute;
+            right: 0;
+
+            height: 100%;
+        }
+
+        div {
+            width: 100%;
+            height: 100%;
+            position: relative;
+
+            img {
+                position: absolute;
+                display: block;
+            }
+            .circle1 {
+                width: 45%;
+                left: -4%;
+                bottom: 2%
+            }
+            .circle2 {
+                width: 40%;
+                bottom: -20%;
+            }
+        }
+
+    }
+
+    .family {
+        width: 115%;
+        position: absolute;
+        right: 0;
+        bottom: -14%;
+    }
+
+    @media screen and (max-width: 1250px) {
+        .family {
+            width: 120%;
+            bottom: -10%;
+        }
+    }
+
+    @media screen and (max-width: 900px) {
+        width: 100%;
+        min-height: 100vh;
+
+        .boxes {
+            .box1 {
+                width: 220px;
+
+                bottom: 4%;
+                top: auto;
+                left: 0; 
+                right: 0; 
+                margin-left: auto; 
+                margin-right: auto; 
+            }
+        }
+
+        .family {
+            width: 80%;
+            bottom: 10%;
+            left: 0; 
+            right: 0; 
+            margin-left: auto; 
+            margin-right: auto; 
+        }
+    }
+
+    @media screen and (max-width: 510px) {
+        .family {
+            width: 100%;
+        }
+    }
+}
