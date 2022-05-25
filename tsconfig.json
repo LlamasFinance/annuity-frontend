@@ -27,6 +27,7 @@
         "./components",
         "./hooks",
         "./hooks/**/*.ts",
+        "./hooks/**/**/*.ts",
     ],
     "exclude": [
         "node_modules"

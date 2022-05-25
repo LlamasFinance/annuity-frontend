@@ -34,7 +34,7 @@ const Market = (props: Props) => {
         data={agreements.map(({ createdAt, attributes }) => {
           const { status, deposit, rate, duration, uid } = attributes;
           return [
-            <span>{STATUS[status]}</span>,
+            <span>{STATUS[Number(status)]}</span>,
             <span>{Number(deposit) / 10 ** 6}</span>,
             <span>{Number(rate) / 10}</span>,
             <span>{duration}</span>,
