@@ -88,17 +88,20 @@ const Details = () => {
             <AiOutlineUser />
           </div>
           <div className={style.infoText}>
-            <h2>Lender (Annuitant)</h2>
-            <span>
+            <div className={style.lender}>
+              <h2>Lender (Annuitant)</h2>
+             
               <Tooltip
                 content={
                   "This is the person who proposes an annuity agreement and receives the guaranteed future value"
                 }
                 position="right"
               >
-                <Icon fill="#68738D" size={50} svg="helpCircle" />
+                <Icon fill="#68738D" size={30} svg="helpCircle" />
               </Tooltip>
-            </span>
+            
+            </div>
+           
             <p>
               {lender && lender.substring(0, 5)}...
               {lender && lender.substring(lender.length - 5)}
