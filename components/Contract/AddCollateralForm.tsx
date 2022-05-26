@@ -34,6 +34,9 @@ export const AddCollateralForm = ({ id }: Props) => {
 
   return (
     <div>
+      <p>
+        {`It's always good to add extra ETH collateral to derisk your chances of getting liquidated`}
+      </p>
       <Form
         customFooter={
           <button

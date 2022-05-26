@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { Table } from "web3uikit";
+import { Icon, Table, Tooltip } from "web3uikit";
 import useFetchSpecificAgreements from "../../../hooks/App/db/useFetchSpecificAgreement";
 import Moralis from "moralis";
 import { Contract } from "../../../hooks/Contract/useContract";
@@ -88,10 +88,20 @@ const Details = () => {
             <AiOutlineUser />
           </div>
           <div className={style.infoText}>
-            <h2>Borrower</h2>
+            <h2>Lender (Annuitant)</h2>
+            <span>
+              <Tooltip
+                content={
+                  "This is the person who proposes an annuity agreement and receives the guaranteed future value"
+                }
+                position="right"
+              >
+                <Icon fill="#68738D" size={50} svg="helpCircle" />
+              </Tooltip>
+            </span>
             <p>
-              {borrower && borrower.substring(0, 5)}...
-              {borrower && borrower.substring(borrower.length - 5)}
+              {lender && lender.substring(0, 5)}...
+              {lender && lender.substring(lender.length - 5)}
             </p>
           </div>
         </div>
@@ -100,10 +110,10 @@ const Details = () => {
             <AiOutlineUser />
           </div>
           <div className={style.infoText}>
-            <h2>Lender</h2>
+            <h2>Borrower (Provider)</h2>
             <p>
-              {lender && lender.substring(0, 5)}...
-              {lender && lender.substring(lender.length - 5)}
+              {borrower && borrower.substring(0, 5)}...
+              {borrower && borrower.substring(borrower.length - 5)}
             </p>
           </div>
         </div>
