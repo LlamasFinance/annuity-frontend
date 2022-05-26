@@ -167,17 +167,17 @@ const Details = () => {
             </div>
             <div>
               <p>ETH Collateral:</p>
-              <span>{collateral} ETH</span>
+              <span>{collateral == "0" ? "---" : collateral} ETH</span>
             </div>
           </div>
           <hr />
           <div className={style.usdc}>
             <div className={style.usdcIcon}>
-              <SiEthereum />
+              <IoLogoUsd />
             </div>
             <div>
               <p>ETH Value:</p>
-              <span>{collateral} ETH</span>
+              <span>${collateral == "0" ? "---" : collateral} </span>
             </div>
           </div>
           <hr />
@@ -197,7 +197,7 @@ const Details = () => {
             </div>
             <div>
               <p>USDC Repaid:</p>
-              <span>${repaidAmt}</span>
+              <span>${repaidAmt == "0" ? "---" : repaidAmt}</span>
             </div>
           </div>
           <hr />
@@ -208,10 +208,10 @@ const Details = () => {
         <RepayLoanButton />
       </div>
 
-      <p>start: {start} </p>
+      {/* <p>start: {start} </p>
       <div>
         <p>USDC Repaid: {isLiquidationRequired} </p>
-      </div>
+      </div> */}
     </div>
   );
 };
