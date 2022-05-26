@@ -14,6 +14,7 @@ const App: NextPage = () => {
         <h1>App</h1>
         <button className="btn btn-primary" onClick={testContract}>
           Test contract
+          
         </button>{" "}
         <ProposeButton />
       </div>

@@ -11,7 +11,7 @@ export const MintForm = () => {
   const { newAlert } = useAlert();
   console.log(account);
   const handleMintSubmit = React.useCallback(
-    (data) => {
+    (data:any) => {
       if (isInitialized) {
         if (!account) authenticate();
         mint({

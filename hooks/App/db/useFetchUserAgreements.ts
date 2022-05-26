@@ -40,6 +40,12 @@ export default function useFetchUserAgreements() {
   useEffect(() => {
     setResults([...new Set([...lenderAgreements, ...borrowerAgreements])]);
   }, [lenderAgreements, borrowerAgreements]);
+  // useEffect(() => {
+  //   setResults([...new Set([...borrowerAgreements])]);
+  // }, [borrowerAgreements]);
+  // useEffect(() => {
+  //   setResults([...new Set([...lenderAgreements])]);
+  // }, [lenderAgreements]);
 
   //   const { newAlert } = useAlert();
 
