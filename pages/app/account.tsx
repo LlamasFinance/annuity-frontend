@@ -24,7 +24,7 @@ const Account = (props: Props) => {
       <UserInfo address={account || ''} />
 
       <div className="Account__header">
-        <h1 className="Account__title">Account Overview</h1>
+        <h1 className="Account__title">My Agreements</h1>
         <div className="flex gap-x-4">
           <MintButton />
           <ProposeButton />

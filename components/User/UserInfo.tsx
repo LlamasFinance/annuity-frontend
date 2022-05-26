@@ -1,5 +1,5 @@
 import { Moralis } from "moralis";
-import { useMoralis } from "react-moralis";
+import { useMoralis, useNativeBalance } from "react-moralis";
 import { useState, useEffect } from 'react';
 import { Blockie } from "web3uikit";
 import style from './UserInfo.module.scss';
@@ -21,24 +21,22 @@ const UserInfo = ({ address }: Props) => {
 
     return(
         <div className={style.container}>
-            {userError && <p>{userError.message}</p>}
-            <div>
+            <div className={style.first}>
                 <SetUserInfoButton />
                 <Blockie scale={8} seed={address} />
-                <div>
-                    <h2>{ username ? username : 'Introduce'}</h2>
-                    <p>{address?.substring(0,6)}...{address?.substring(address.length - 6)}</p> 
+                <div className={style.info}>
+                    <h2>{ username ? username.charAt(0).toUpperCase() + username.slice(1) : address}</h2>
+                    <p>{username && address?.substring(0,6)}...{address?.substring(address.length - 6)}</p> 
                     {
                         email ?
-                        <h2>{email}</h2>
+                        <span>Email: {email}</span>
                         :
                         ''
                     }
                 </div>
-                <div>
-                    {bio}
-                </div>
-                
+            </div>
+            <div className={style.bio}>
+                {bio?.charAt(0).toUpperCase() + bio?.slice(1)}
             </div>
             
         </div>
