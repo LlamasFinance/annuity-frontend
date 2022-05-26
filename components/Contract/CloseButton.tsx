@@ -39,7 +39,7 @@ export const CloseButton = ({ id }: Props) => {
   return (
     <>
       <button
-        className={`btn ${isClosing && "loading"}`}
+        className={`btn btn-primary mt-8 ${isClosing && "loading"}`}
         onClick={handleWithdrawClick}
       >
         {status == "0" ? "Cancel Agreement" : "Withdraw Future Value"}
