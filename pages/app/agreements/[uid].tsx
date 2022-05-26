@@ -14,7 +14,7 @@ import style from "../../../styles/components/agreement.module.scss";
 
 import { FaFileContract } from "react-icons/fa";
 import { AiOutlineUser } from "react-icons/ai";
-import { BsBarChartFill, BsFillClockFill } from "react-icons/bs";
+import { BsBarChartFill, BsFillClockFill, BsFillCalendarCheckFill } from "react-icons/bs";
 import { IoIosPaper, IoLogoUsd } from "react-icons/io";
 import { SiEthereum } from "react-icons/si";
 import { STATUS } from "../../../constants";
@@ -136,7 +136,21 @@ const Details = () => {
               <h2>{rate}%</h2>
             </div>
           </div>
+
+          <div className={style.annuitantCard}>
+            <div className={`${style.annuitantIcon} ${style.date}`}>
+              <BsFillCalendarCheckFill />
+            </div>
+            <div className={style.annuitantInfo}>
+              <p>Start Date</p>
+              <h2>{ start !== '0' ?
+                new Date(parseInt(start) * 1000).toLocaleDateString('en-us', { year:"numeric", month:"long", day:"numeric"}) 
+                : 'Not activated'
+              }</h2>
+            </div>
+          </div>
         </div>
+
         <div className={style.annuitantMoney}>
           <div className={style.usdc}>
             <div className={style.usdcIcon}>
