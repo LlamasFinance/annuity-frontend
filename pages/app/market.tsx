@@ -1,10 +1,10 @@
 import { GetServerSideProps } from "next";
-import React from "react";
+import React, { useState } from "react";
 import Moralis from "moralis";
 import { Contract } from "../../hooks/Contract/useContract";
 import ProposeButton from "../../components/Contract/ProposeButton";
 import MintButton from "../../components/Contract/MintButton";
-import { Table } from "web3uikit";
+import { Icon, Table } from "web3uikit";
 import { APP_ID, SERVER_URL, STATUS } from "../../constants";
 import useFetchAllAgreements from "../../hooks/App/db/useFetchAllAgreements";
 import Link from "next/link";
@@ -14,7 +14,24 @@ interface Props {
 }
 
 const Market = (props: Props) => {
-  const { results: agreements } = useFetchAllAgreements();
+  //   const [sortKey, setKey] = useState<any>("createdAt");
+  const [sortOrder, setOrder] = useState<any>("desc");
+  const { refetch, results: agreements } = useFetchAllAgreements();
+
+  const sort = React.useCallback(
+    (key: string) => {
+      if (sortOrder === "asc") {
+        refetch({ sortKey: key as any, sortOrder: sortOrder });
+        setOrder("dsc");
+      }
+      if (sortOrder === "desc") {
+        refetch({ sortKey: key as any, sortOrder: sortOrder });
+        setOrder("asc");
+      }
+    },
+    [sortOrder]
+  );
+
   return (
     <div className="Account">
       <div className="Account__header">
@@ -24,16 +41,17 @@ const Market = (props: Props) => {
           <ProposeButton />
         </div>
       </div>
+
       <Table
         columnsConfig="1fr 1fr 1fr 1fr 1fr 1fr 1fr"
         header={[
-          <span>Status</span>,
-          <span>Amount ($USDC)</span>,
-          <span>APY (%)</span>,
-          <span>Duration (years)</span>,
-          <span>Date</span>,
-          <span>ID</span>,
-          <span>Details</span>,
+          <span onClick={() => sort("status")}>Status </span>,
+          <span onClick={() => sort("amount")}>Amount ($USDC)</span>,
+          <span onClick={() => sort("rate")}>APY (%)</span>,
+          <span onClick={() => sort("duration")}>Duration (years)</span>,
+          <span onClick={() => sort("createdAt")}>Date</span>,
+          <span onClick={() => sort("uid")}>ID</span>,
+          <span onClick={() => sort("details")}>Details</span>,
         ]}
         data={agreements.map(({ createdAt, attributes }) => {
           const { status, deposit, rate, duration, uid } = attributes;
