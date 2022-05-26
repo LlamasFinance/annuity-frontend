@@ -1,26 +1,24 @@
 import React from "react";
 import { Modal } from "web3uikit";
-import { MintForm } from "./MintForm";
-import  AddUsdcToken from "./AddUsdcToken";
+import { SetUserInfoForm } from './SetUserInfoForm';
 
 interface Props {
   isVisible: boolean;
   onClose: () => void;
 }
 
-export const MintModal = ({ isVisible, onClose }: Props) => {
+export const SetUserInfoModal = ({ isVisible, onClose }: Props) => {
   return (
     <Modal
-      title="Mint USDC"
+      title="Edit Profile"
       isVisible={isVisible}
       hasFooter={false}
       headerHasBottomBorder
       onCloseButtonPressed={onClose}
     >
-      <AddUsdcToken />
-      <MintForm />
+      <SetUserInfoForm />
     </Modal>
   );
 };
 
-export default MintModal;
+export default SetUserInfoModal;

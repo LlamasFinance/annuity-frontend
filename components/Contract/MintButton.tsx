@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { MintModal } from "./MintModal";
 import { useContract } from "../../hooks";
 
-const AddCollateralButton = () => {
+const MintButton = () => {
   const [isModalVisible, setModalVisibility] = useState(false);
   // const { propose } = useContract();
 
@@ -22,4 +22,4 @@ const AddCollateralButton = () => {
   );
 };
 
-export default AddCollateralButton;
+export default MintButton;

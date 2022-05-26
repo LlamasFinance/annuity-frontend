@@ -6,6 +6,7 @@ import { Contract } from "../../../hooks/Contract/useContract";
 import { useCallback, useEffect, useState } from "react";
 import { useTokenValue } from "../../../hooks";
 
+import { Blockie } from "web3uikit";
 import AddCollateralButton from "../../../components/Contract/AddCollateralButton";
 import WithdrawCollateralButton from "../../../components/Contract/WithdrawCollateralButton";
 import RepayLoanButton from "../../../components/Contract/RepayLoanButton";
@@ -50,6 +51,10 @@ const Details = () => {
   const cancelled = status == "3" && start == "0";
   const repaid = status == "2";
 
+  function emptyAdress(address: string) {
+    return address?.substring(lender.length - 8).split('').every((el) => el === '0')
+  }
+
   //   const { inUsd: collateralInUsd } = useTokenValue({
   //     amount: collateral,
   //     inputType: "wei",
@@ -70,6 +75,7 @@ const Details = () => {
   //     inputType: "usdc",
   //   });
 
+
   return (
     <div className={style.container}>
       <div className={style.info}>
@@ -85,20 +91,28 @@ const Details = () => {
         </div>
         <div className={style.infoCard}>
           <div className={style.icon}>
-            <AiOutlineUser />
+            {
+              emptyAdress(lender) ?
+              <AiOutlineUser />
+              :
+              <Blockie scale={7.2} seed={lender} />  
+            }
           </div>
           <div className={style.infoText}>
-            <h2>Lender (Annuitant)</h2>
-            <span>
+            <div className={style.lender}>
+              <h2>Lender (Annuitant)</h2>
+             
               <Tooltip
                 content={
                   "This is the person who proposes an annuity agreement and receives the guaranteed future value"
                 }
                 position="right"
               >
-                <Icon fill="#68738D" size={50} svg="helpCircle" />
+                <Icon fill="#68738D" size={30} svg="helpCircle" />
               </Tooltip>
-            </span>
+            
+            </div>
+           
             <p>
               {lender && lender.substring(0, 5)}...
               {lender && lender.substring(lender.length - 5)}
@@ -107,7 +121,12 @@ const Details = () => {
         </div>
         <div className={style.infoCard}>
           <div className={style.icon}>
-            <AiOutlineUser />
+            {
+              emptyAdress(borrower) ?
+              <AiOutlineUser />
+              :
+              <Blockie scale={7.2} seed={borrower} /> 
+            } 
           </div>
           <div className={style.infoText}>
             <h2>Borrower (Provider)</h2>
