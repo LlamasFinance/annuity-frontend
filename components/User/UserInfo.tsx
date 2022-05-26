@@ -13,7 +13,7 @@ interface Props {
 
 const UserInfo = ({ address }: Props) => {
 
-    const { user, userError } = useMoralis();
+    const { user } = useMoralis();
 
     const username = user?.get("username");
     const email = user?.get("email");
