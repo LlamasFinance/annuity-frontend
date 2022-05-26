@@ -1,9 +1,11 @@
 import React from "react";
 import { useState } from "react";
+import { Moralis } from "moralis";
 import { useMoralis } from "react-moralis";
 import { Form } from "web3uikit";
 import { FormDataReturned } from "web3uikit/dist/components/Form/types";
 import { useAlert, useContract } from "../../hooks";
+import useFetchSpecificAgreements from "../../hooks/App/db/useFetchSpecificAgreement";
 
 interface Props {
   id: string;
@@ -14,6 +16,7 @@ export const ActivateForm = ({ id }: Props) => {
   const { activate, isActivating } = useContract();
   const { account, isInitialized, isAuthenticated } = useMoralis();
   const { newAlert } = useAlert();
+  const { minReqCollateral } = useFetchSpecificAgreements(id);
 
   const handleActivate = React.useCallback(
     async (data) => {
@@ -34,6 +37,12 @@ export const ActivateForm = ({ id }: Props) => {
 
   return (
     <div>
+      <p>
+        The minimum required ETH to activate this agreement is{" "}
+        {Moralis.Units.FromWei(Number(minReqCollateral) * 1.01 || "0")} but it's
+        recommended to deposit more so that you won't get liquidated
+        immediately.
+      </p>
       <Form
         customFooter={
           <button

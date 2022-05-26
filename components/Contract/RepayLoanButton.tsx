@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import { RepayLoanModal } from "./RepayLoanModal";
 import { useContract } from "../../hooks";
 
-const RepayLoanButton = () => {
-  const [isModalVisible, setModalVisibility] = useState(false);
-  // const { propose } = useContract();
+interface Props {
+  id: string;
+}
 
-  const handleRepayLoan = React.useCallback(async (data) => {
-    alert('repay loan')
-    setModalVisibility(false);
-  }, []);
+const RepayLoanButton = ({ id }: Props) => {
+  const [isModalVisible, setModalVisibility] = useState(false);
 
   return (
     <>
@@ -22,7 +20,7 @@ const RepayLoanButton = () => {
       <RepayLoanModal
         isVisible={isModalVisible}
         onClose={() => setModalVisibility(false)}
-        onSubmit={handleRepayLoan}
+        id={id}
       />
     </>
   );

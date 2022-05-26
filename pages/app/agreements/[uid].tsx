@@ -48,6 +48,7 @@ const Details = () => {
   } = useFetchSpecificAgreements(uid);
   const proposed = status == "0";
   const cancelled = status == "3" && start == "0";
+  const repaid = status == "2";
 
   //   const { inUsd: collateralInUsd } = useTokenValue({
   //     amount: collateral,
@@ -148,7 +149,7 @@ const Details = () => {
             <div className={style.annuitantInfo}>
               <p>Start Date</p>
               <h2>
-                {proposed
+                {!proposed
                   ? new Date(parseInt(start) * 1000).toLocaleDateString(
                       "en-us",
                       { year: "numeric", month: "long", day: "numeric" }
@@ -213,7 +214,7 @@ const Details = () => {
             </div>
             <div>
               <p>Liquidation minimum:</p>
-              <span>${cancelled ? "---" : minReqCollateral}</span>
+              <span>${cancelled || repaid ? "---" : minReqCollateral}</span>
             </div>
           </div>
           <hr />
@@ -232,7 +233,7 @@ const Details = () => {
       <div className={style.forms}>
         <AddCollateralButton id={id} />
         <WithdrawCollateralButton id={id} />
-        <RepayLoanButton />
+        <RepayLoanButton id={id} />
         <ActivateButton id={id} />
       </div>
     </div>

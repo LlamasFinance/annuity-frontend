@@ -1,9 +1,12 @@
+import { BigNumber } from "ethers";
 import React from "react";
 import { useState } from "react";
 import { useMoralis } from "react-moralis";
+import Moralis from "moralis";
 import { Form } from "web3uikit";
 import { FormDataReturned } from "web3uikit/dist/components/Form/types";
 import { useAlert, useContract } from "../../hooks";
+import useFetchSpecificAgreements from "../../hooks/App/db/useFetchSpecificAgreement";
 
 interface Props {
   id: string;
@@ -14,6 +17,18 @@ export const WithdrawCollateralForm = ({ id }: Props) => {
   const { withdrawCollateral, isWithdrawingCollateral } = useContract();
   const { account, isInitialized, isAuthenticated } = useMoralis();
   const { newAlert } = useAlert();
+  const { collateral, minReqCollateral, status } =
+    useFetchSpecificAgreements(id);
+  const repaid = status == "2";
+  const maxWithdrawAmt = repaid
+    ? collateral
+    : BigNumber.from(collateral || "0")
+        .sub(minReqCollateral || "0")
+        .toString();
+  const maxEthWithdrawAmt = Moralis.Units.FromWei(maxWithdrawAmt);
+  const message = repaid
+    ? `Since the agreement has been repaid, you can withdraw all of your collateral ${maxEthWithdrawAmt} ETH`
+    : `You cannot withdraw more than ${maxEthWithdrawAmt} ETH or else you will be liquidated.`;
 
   const handleWithdrawCollateral = React.useCallback(
     async (data) => {
@@ -34,6 +49,7 @@ export const WithdrawCollateralForm = ({ id }: Props) => {
 
   return (
     <div>
+      <p>{message}</p>
       <Form
         customFooter={
           <button
@@ -43,13 +59,13 @@ export const WithdrawCollateralForm = ({ id }: Props) => {
             }`}
             id="form-submit"
           >
-            Add
+            Withdraw
           </button>
         }
         data={[
           {
             inputWidth: "100%",
-            name: "eth amount",
+            name: "Eth amount",
             type: "text",
             value: "",
             key: "AMOUNT",
