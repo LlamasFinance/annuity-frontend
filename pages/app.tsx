@@ -2,12 +2,14 @@ import React from "react";
 import { NextPage } from "next";
 import { useMoralis } from "react-moralis";
 import ProposeButton from "../components/Contract/ProposeButton";
-import { useContract } from "../hooks";
+import { useContract, useTokenValue } from "../hooks";
+// import { useDexEthPrice } from "eth-hooks/hooks/dapps";
 
 const App: NextPage = () => {
   const { isInitialized } = useMoralis();
   const { testContract } = useContract();
-
+  //   const price = useDexEthPrice(undefined);
+  //   console.log("price", price);
   if (isInitialized) {
     return (
       <div>

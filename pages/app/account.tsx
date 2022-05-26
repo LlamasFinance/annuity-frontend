@@ -19,7 +19,7 @@ const Account = (props: Props) => {
   return (
     <div className="Account">
       <div className="Account__header">
-        <h1 className="Account__title">Overview</h1>
+        <h1 className="Account__title">Account Overview</h1>
         <ProposeButton />
       </div>
       <Table
