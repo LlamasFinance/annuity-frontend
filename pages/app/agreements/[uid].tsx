@@ -109,7 +109,11 @@ const Details = () => {
             </div>
             <div className={style.annuitantInfo}>
               <p>Status</p>
-              <h2>{STATUS[Number(status)]}</h2>
+              <h2>
+                {status == "3" && start == "0"
+                  ? "Cancelled"
+                  : STATUS[Number(status)]}
+              </h2>
             </div>
           </div>
 
