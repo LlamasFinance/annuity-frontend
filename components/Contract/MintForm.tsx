@@ -9,7 +9,7 @@ export const MintForm = () => {
   const { mint, isMinting } = useContract();
   const { account, isInitialized, authenticate } = useMoralis();
   const { newAlert } = useAlert();
-  console.log(account);
+
   const handleMintSubmit = React.useCallback(
     (data) => {
       if (isInitialized) {

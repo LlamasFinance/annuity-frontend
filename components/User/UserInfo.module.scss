@@ -1,0 +1,10 @@
+@import '../../styles/variables.module.scss';
+
+.container {
+    margin: 2rem 0;
+    padding: 2rem;
+    border: 1px solid rgb(221, 221, 221);
+    border-radius: 8px;
+
+    position: relative;
+}

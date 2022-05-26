@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Table } from "web3uikit";
 import { Moralis } from "moralis";
 import { useMoralis } from "react-moralis";
@@ -10,15 +10,19 @@ import { Contract } from "../../hooks/Contract/useContract";
 import { STATUS } from "../../constants";
 import { useTokenValue } from "../../hooks";
 import Link from "next/link";
+import UserInfo from "../../components/User/UserInfo";
 
 interface Props {}
 
 const Account = (props: Props) => {
   const { results: agreements } = useFetchUserAgreements();
-  const { account } = useMoralis();
+  const { account, user } = useMoralis();
   const { getValue } = useTokenValue({});
+
   return (
     <div className="Account">
+      <UserInfo address={account || ''} />
+
       <div className="Account__header">
         <h1 className="Account__title">Account Overview</h1>
         <div className="flex gap-x-4">
