@@ -1,20 +1,26 @@
 import { useRouter } from "next/router";
-import { Table } from "web3uikit";
+import { Icon, Table, Tooltip } from "web3uikit";
 import useFetchSpecificAgreements from "../../../hooks/App/db/useFetchSpecificAgreement";
 import Moralis from "moralis";
 import { Contract } from "../../../hooks/Contract/useContract";
 import { useCallback, useEffect, useState } from "react";
 import { useTokenValue } from "../../../hooks";
 
-import AddCollateralButton from "../../../components/Contract/AddColateralButton";
+import AddCollateralButton from "../../../components/Contract/AddCollateralButton";
+import WithdrawCollateralButton from "../../../components/Contract/WithdrawCollateralButton";
 import RepayLoanButton from "../../../components/Contract/RepayLoanButton";
-import WithdrawButton from "../../../components/Contract/WithdrawButton";
+import { CloseButton } from "../../../components/Contract/CloseButton";
+import ActivateButton from "../../../components/Contract/ActivateButton";
 
 import style from "../../../styles/components/agreement.module.scss";
 
 import { FaFileContract } from "react-icons/fa";
 import { AiOutlineUser } from "react-icons/ai";
-import { BsBarChartFill, BsFillClockFill, BsFillCalendarCheckFill } from "react-icons/bs";
+import {
+  BsBarChartFill,
+  BsFillClockFill,
+  BsFillCalendarCheckFill,
+} from "react-icons/bs";
 import { IoIosPaper, IoLogoUsd } from "react-icons/io";
 import { SiEthereum } from "react-icons/si";
 import { STATUS } from "../../../constants";
@@ -40,6 +46,9 @@ const Details = () => {
     error,
     isLoading,
   } = useFetchSpecificAgreements(uid);
+  const proposed = status == "0";
+  const cancelled = status == "3" && start == "0";
+  const repaid = status == "2";
 
   //   const { inUsd: collateralInUsd } = useTokenValue({
   //     amount: collateral,
@@ -79,10 +88,20 @@ const Details = () => {
             <AiOutlineUser />
           </div>
           <div className={style.infoText}>
-            <h2>Borrower</h2>
+            <h2>Lender (Annuitant)</h2>
+            <span>
+              <Tooltip
+                content={
+                  "This is the person who proposes an annuity agreement and receives the guaranteed future value"
+                }
+                position="right"
+              >
+                <Icon fill="#68738D" size={50} svg="helpCircle" />
+              </Tooltip>
+            </span>
             <p>
-              {borrower && borrower.substring(0, 5)}...
-              {borrower && borrower.substring(borrower.length - 5)}
+              {lender && lender.substring(0, 5)}...
+              {lender && lender.substring(lender.length - 5)}
             </p>
           </div>
         </div>
@@ -91,10 +110,10 @@ const Details = () => {
             <AiOutlineUser />
           </div>
           <div className={style.infoText}>
-            <h2>Lender</h2>
+            <h2>Borrower (Provider)</h2>
             <p>
-              {lender && lender.substring(0, 5)}...
-              {lender && lender.substring(lender.length - 5)}
+              {borrower && borrower.substring(0, 5)}...
+              {borrower && borrower.substring(borrower.length - 5)}
             </p>
           </div>
         </div>
@@ -109,11 +128,7 @@ const Details = () => {
             </div>
             <div className={style.annuitantInfo}>
               <p>Status</p>
-              <h2>
-                {status == "3" && start == "0"
-                  ? "Cancelled"
-                  : STATUS[Number(status)]}
-              </h2>
+              <h2>{cancelled ? "Cancelled" : STATUS[Number(status)]}</h2>
             </div>
           </div>
 
@@ -143,10 +158,14 @@ const Details = () => {
             </div>
             <div className={style.annuitantInfo}>
               <p>Start Date</p>
-              <h2>{ start !== '0' ?
-                new Date(parseInt(start) * 1000).toLocaleDateString('en-us', { year:"numeric", month:"long", day:"numeric"}) 
-                : 'Not activated'
-              }</h2>
+              <h2>
+                {!proposed
+                  ? new Date(parseInt(start) * 1000).toLocaleDateString(
+                      "en-us",
+                      { year: "numeric", month: "long", day: "numeric" }
+                    )
+                  : "Not activated"}
+              </h2>
             </div>
           </div>
         </div>
@@ -158,7 +177,7 @@ const Details = () => {
             </div>
             <div>
               <p>USDC Deposited:</p>
-              <span>${deposit}</span>
+              <span>${cancelled ? "---" : deposit}</span>
             </div>
           </div>
           <hr />
@@ -168,11 +187,11 @@ const Details = () => {
             </div>
             <div>
               <p>USDC Future Value:</p>
-              <span>${futureValue}</span>
+              <span>${cancelled ? "---" : futureValue}</span>
             </div>
           </div>
           <hr />
-          <WithdrawButton id={id} />
+          <CloseButton id={id} />
         </div>
       </div>
 
@@ -185,7 +204,7 @@ const Details = () => {
             </div>
             <div>
               <p>ETH Collateral:</p>
-              <span>{collateral == "0" ? "---" : collateral} ETH</span>
+              <span>{proposed || cancelled ? "---" : collateral} ETH</span>
             </div>
           </div>
           <hr />
@@ -195,7 +214,7 @@ const Details = () => {
             </div>
             <div>
               <p>ETH Value:</p>
-              <span>${collateral == "0" ? "---" : collateral} </span>
+              <span>${proposed || cancelled ? "---" : collateral} </span>
             </div>
           </div>
           <hr />
@@ -205,7 +224,7 @@ const Details = () => {
             </div>
             <div>
               <p>Liquidation minimum:</p>
-              <span>${minReqCollateral}</span>
+              <span>${cancelled || repaid ? "---" : minReqCollateral}</span>
             </div>
           </div>
           <hr />
@@ -215,21 +234,18 @@ const Details = () => {
             </div>
             <div>
               <p>USDC Repaid:</p>
-              <span>${repaidAmt == "0" ? "---" : repaidAmt}</span>
+              <span>${proposed || cancelled ? "---" : repaidAmt}</span>
             </div>
           </div>
           <hr />
         </div>
       </div>
       <div className={style.forms}>
-        <AddCollateralButton />
-        <RepayLoanButton />
+        <AddCollateralButton id={id} />
+        <WithdrawCollateralButton id={id} />
+        <RepayLoanButton id={id} />
+        <ActivateButton id={id} />
       </div>
-
-      {/* <p>start: {start} </p>
-      <div>
-        <p>USDC Repaid: {isLiquidationRequired} </p>
-      </div> */}
     </div>
   );
 };

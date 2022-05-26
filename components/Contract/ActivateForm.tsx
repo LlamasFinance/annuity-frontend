@@ -1,10 +1,9 @@
 import React from "react";
 import { useState } from "react";
+import { Moralis } from "moralis";
 import { useMoralis } from "react-moralis";
-import Moralis from "moralis";
 import { Form } from "web3uikit";
 import { FormDataReturned } from "web3uikit/dist/components/Form/types";
-import { SECONDS_IN_YEAR } from "../../constants";
 import { useAlert, useContract } from "../../hooks";
 import useFetchSpecificAgreements from "../../hooks/App/db/useFetchSpecificAgreement";
 
@@ -12,26 +11,19 @@ interface Props {
   id: string;
 }
 
-export const RepayLoanForm = ({ id }: Props) => {
-  const [key, setKey] = useState("repay");
-  const { repay, isRepaying } = useContract();
+export const ActivateForm = ({ id }: Props) => {
+  const [key, setKey] = useState("activate");
+  const { activate, isActivating } = useContract();
   const { account, isInitialized, isAuthenticated } = useMoralis();
   const { newAlert } = useAlert();
-  const { start, duration, futureValue } = useFetchSpecificAgreements(id);
-  const end = new Date(
-    (parseInt(start) + parseInt(duration) * SECONDS_IN_YEAR) * 1000
-  ).toLocaleDateString("en-us", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const { minReqCollateral } = useFetchSpecificAgreements(id);
 
-  const handleRepay = React.useCallback(
+  const handleActivate = React.useCallback(
     async (data) => {
       if (!account || !isAuthenticated) {
         newAlert({ type: "error", message: "Please connect your wallet" });
       } else if (isInitialized) {
-        await repay({
+        await activate({
           id: id,
           amount: data.data.find(({ key }: { key: string }) => key === "AMOUNT")
             ?.inputResult,
@@ -46,32 +38,34 @@ export const RepayLoanForm = ({ id }: Props) => {
   return (
     <div>
       <p>
-        You must repay ${Moralis.Units.FromWei(futureValue || "0", 6)} USDC by
-        end.{" "}
+        The minimum required ETH to activate this agreement is{" "}
+        {Moralis.Units.FromWei(Number(minReqCollateral) * 1.01 || "0")} but it's
+        recommended to deposit more so that you won't get liquidated
+        immediately.
       </p>
       <Form
         customFooter={
           <button
             type="submit"
-            className={`btn btn-primary ${isRepaying && "loading"}`}
+            className={`btn btn-primary ${isActivating && "loading"}`}
             id="form-submit"
           >
-            Repay
+            Submit
           </button>
         }
         data={[
           {
             inputWidth: "100%",
-            name: "USDC amount",
+            name: "Eth amount",
             type: "text",
             value: "",
             key: "AMOUNT",
           },
         ]}
+        id={"activate-form-id"}
         key={key}
-        onSubmit={handleRepay}
+        onSubmit={handleActivate}
         title=""
-        id="repay-form"
       />
     </div>
   );

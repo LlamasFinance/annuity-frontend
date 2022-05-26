@@ -7,21 +7,24 @@ import { useContract } from "../../hooks/Contract/useContract";
 export const MintForm = () => {
   const [key, setKey] = useState("mint");
   const { mint, isMinting } = useContract();
-  const { account, isInitialized, authenticate } = useMoralis();
+  const { account, isInitialized, isAuthenticated } = useMoralis();
   const { newAlert } = useAlert();
 
   const handleMintSubmit = React.useCallback(
-    (data) => {
-      if (isInitialized) {
-        if (!account) authenticate();
-        mint({
+    async (data) => {
+      if (!account || !isAuthenticated) {
+        newAlert({ type: "error", message: "Please connect your wallet" });
+      } else if (isInitialized) {
+        await mint({
           receiver: account || "",
           amount: data.data.find(({ key }: { key: string }) => key === "AMOUNT")
             ?.inputResult,
         });
       }
+      // clear form entry
+      setKey(key.substring(0, 3) + new Date().toString());
     },
-    [account]
+    [account, isAuthenticated, isInitialized]
   );
 
   return (
@@ -46,10 +49,7 @@ export const MintForm = () => {
           },
         ]}
         key={key}
-        onSubmit={(data) => {
-          handleMintSubmit(data);
-          setKey(key + new Date().toString());
-        }}
+        onSubmit={handleMintSubmit}
         title="Mint USDC tokens"
         id="mint-form"
       />

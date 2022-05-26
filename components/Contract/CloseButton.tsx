@@ -1,3 +1,4 @@
+import React from "react";
 import { useMoralis } from "react-moralis";
 import { STATUS } from "../../constants";
 import { useAlert } from "../../hooks";
@@ -8,14 +9,15 @@ interface Props {
   id: string;
 }
 
-export const WithdrawButton = ({ id }: Props) => {
-  const { close, closeError } = useContract();
-  const { account, isInitialized } = useMoralis();
+export const CloseButton = ({ id }: Props) => {
+  const { close, isClosing } = useContract();
+  const { account, isAuthenticated, isInitialized } = useMoralis();
   const { status, lender } = useFetchSpecificAgreements(id);
   const { newAlert } = useAlert();
 
-  const handleWithdrawClick = async () => {
-    if (account) {
+  const handleWithdrawClick = React.useCallback(async () => {
+    console.log(`account ${account}`);
+    if (account && isAuthenticated && isInitialized) {
       if (status != "0" && status != "2") {
         newAlert({
           type: "error",
@@ -23,7 +25,7 @@ export const WithdrawButton = ({ id }: Props) => {
         });
         return;
       }
-      if (account != "lender") {
+      if (account != lender) {
         newAlert({
           type: "error",
           message: "Only annuitant can withdraw their USDC",
@@ -32,12 +34,18 @@ export const WithdrawButton = ({ id }: Props) => {
       }
       await close({ id: id });
     }
-  };
+  }, [account, isAuthenticated, isInitialized, status, id, lender]);
+
   return (
     <>
-      <button onClick={handleWithdrawClick}>Withdraw</button>
+      <button
+        className={`btn ${isClosing && "loading"}`}
+        onClick={handleWithdrawClick}
+      >
+        {status == "0" ? "Cancel Agreement" : "Withdraw Future Value"}
+      </button>
     </>
   );
 };
 
-export default WithdrawButton;
+export default CloseButton;

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { RepayLoanModal } from "./RepayLoanModal";
+import { AddCollateralModal } from "./AddCollateralModal";
 import { useContract } from "../../hooks";
 
 interface Props {
   id: string;
 }
 
-const RepayLoanButton = ({ id }: Props) => {
+const AddCollateralButton = ({ id }: Props) => {
   const [isModalVisible, setModalVisibility] = useState(false);
 
   return (
@@ -15,9 +15,9 @@ const RepayLoanButton = ({ id }: Props) => {
         className="btn btn-primary"
         onClick={() => setModalVisibility(true)}
       >
-        Repay Loan
+        Add Collateral
       </button>
-      <RepayLoanModal
+      <AddCollateralModal
         isVisible={isModalVisible}
         onClose={() => setModalVisibility(false)}
         id={id}
@@ -26,4 +26,4 @@ const RepayLoanButton = ({ id }: Props) => {
   );
 };
 
-export default RepayLoanButton;
+export default AddCollateralButton;
