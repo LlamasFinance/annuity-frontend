@@ -6,11 +6,11 @@ import { Contract } from "../../../hooks/Contract/useContract";
 import { useCallback, useEffect, useState } from "react";
 import { useTokenValue } from "../../../hooks";
 
-import AddCollateralButton from "../../../components/Contract/AddColateralButton";
+import AddCollateralButton from "../../../components/Contract/AddCollateralButton";
+import WithdrawCollateralButton from "../../../components/Contract/WithdrawCollateralButton";
 import RepayLoanButton from "../../../components/Contract/RepayLoanButton";
-import WithdrawButton, {
-  CloseButton,
-} from "../../../components/Contract/CloseButton";
+import { CloseButton } from "../../../components/Contract/CloseButton";
+import ActivateButton from "../../../components/Contract/ActivateButton";
 
 import style from "../../../styles/components/agreement.module.scss";
 
@@ -46,6 +46,8 @@ const Details = () => {
     error,
     isLoading,
   } = useFetchSpecificAgreements(uid);
+  const proposed = status == "0";
+  const cancelled = status == "3" && start == "0";
 
   //   const { inUsd: collateralInUsd } = useTokenValue({
   //     amount: collateral,
@@ -115,11 +117,7 @@ const Details = () => {
             </div>
             <div className={style.annuitantInfo}>
               <p>Status</p>
-              <h2>
-                {status == "3" && start == "0"
-                  ? "Cancelled"
-                  : STATUS[Number(status)]}
-              </h2>
+              <h2>{cancelled ? "Cancelled" : STATUS[Number(status)]}</h2>
             </div>
           </div>
 
@@ -150,7 +148,7 @@ const Details = () => {
             <div className={style.annuitantInfo}>
               <p>Start Date</p>
               <h2>
-                {start !== "0"
+                {proposed
                   ? new Date(parseInt(start) * 1000).toLocaleDateString(
                       "en-us",
                       { year: "numeric", month: "long", day: "numeric" }
@@ -168,7 +166,7 @@ const Details = () => {
             </div>
             <div>
               <p>USDC Deposited:</p>
-              <span>${deposit}</span>
+              <span>${cancelled ? "---" : deposit}</span>
             </div>
           </div>
           <hr />
@@ -178,7 +176,7 @@ const Details = () => {
             </div>
             <div>
               <p>USDC Future Value:</p>
-              <span>${futureValue}</span>
+              <span>${cancelled ? "---" : futureValue}</span>
             </div>
           </div>
           <hr />
@@ -195,7 +193,7 @@ const Details = () => {
             </div>
             <div>
               <p>ETH Collateral:</p>
-              <span>{collateral == "0" ? "---" : collateral} ETH</span>
+              <span>{proposed || cancelled ? "---" : collateral} ETH</span>
             </div>
           </div>
           <hr />
@@ -205,7 +203,7 @@ const Details = () => {
             </div>
             <div>
               <p>ETH Value:</p>
-              <span>${collateral == "0" ? "---" : collateral} </span>
+              <span>${proposed || cancelled ? "---" : collateral} </span>
             </div>
           </div>
           <hr />
@@ -215,7 +213,7 @@ const Details = () => {
             </div>
             <div>
               <p>Liquidation minimum:</p>
-              <span>${minReqCollateral}</span>
+              <span>${cancelled ? "---" : minReqCollateral}</span>
             </div>
           </div>
           <hr />
@@ -225,21 +223,18 @@ const Details = () => {
             </div>
             <div>
               <p>USDC Repaid:</p>
-              <span>${repaidAmt == "0" ? "---" : repaidAmt}</span>
+              <span>${proposed || cancelled ? "---" : repaidAmt}</span>
             </div>
           </div>
           <hr />
         </div>
       </div>
       <div className={style.forms}>
-        <AddCollateralButton />
+        <AddCollateralButton id={id} />
+        <WithdrawCollateralButton id={id} />
         <RepayLoanButton />
+        <ActivateButton id={id} />
       </div>
-
-      {/* <p>start: {start} </p>
-      <div>
-        <p>USDC Repaid: {isLiquidationRequired} </p>
-      </div> */}
     </div>
   );
 };
