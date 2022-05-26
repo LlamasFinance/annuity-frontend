@@ -31,10 +31,10 @@ export const useDatabase = () => {
       const update = await agreement.save();
       if (update) {
         console.log(update);
-        newAlert({
-          type: "success",
-          message: `Updated agreement with ID ${id} to database`,
-        });
+        // newAlert({
+        //   type: "success",
+        //   message: `Updated agreement with ID ${id} to database`,
+        // });
         setUpdatingDb(false);
       }
     } else {
@@ -42,7 +42,7 @@ export const useDatabase = () => {
         onSuccess: (agreement) => {
           newAlert({
             type: "success",
-            message: `Saved new agreement with ID ${id} to database`,
+            message: `Saved agreement (ID ${id}) to database`,
           });
           setUpdatingDb(false);
         },

@@ -1,15 +1,38 @@
+import React from "react";
 import { useState } from "react";
+import { useMoralis } from "react-moralis";
 import { Form } from "web3uikit";
 import { FormDataReturned } from "web3uikit/dist/components/Form/types";
-import { useContract } from "../../hooks";
+import { useAlert, useContract } from "../../hooks";
 
-interface Props {
-  onSubmit: (data: FormDataReturned) => void;
-}
+interface Props {}
 
-export const ProposeForm = ({ onSubmit }: Props) => {
+export const ProposeForm = () => {
   const [key, setKey] = useState("propose");
-  const { isApproving, isProposing } = useContract();
+  const { propose, isApproving, isProposing } = useContract();
+  const { account, isAuthenticated, isInitialized } = useMoralis();
+  const { newAlert } = useAlert();
+
+  const handleProposeSubmit = React.useCallback(
+    async (data) => {
+      if (!account || !isAuthenticated) {
+        newAlert({ type: "error", message: "Please connect your wallet" });
+      } else if (isInitialized) {
+        await propose({
+          amount: data.data.find(({ key }: { key: string }) => key === "AMOUNT")
+            ?.inputResult,
+          duration: data.data.find(
+            ({ key }: { key: string }) => key === "DURATION"
+          )?.inputResult,
+          rate: data.data.find(({ key }: { key: string }) => key === "RATE")
+            ?.inputResult,
+        });
+      }
+      // clear form entry
+      setKey(key.substring(0, 3) + new Date().toString());
+    },
+    [account, isAuthenticated, isInitialized]
+  );
 
   return (
     <div>
@@ -18,7 +41,7 @@ export const ProposeForm = ({ onSubmit }: Props) => {
           <button
             type="submit"
             className={`btn btn-primary ${
-              isApproving ? "loading" : isProposing ? "loading" : ""
+              (isApproving || isProposing) && "loading"
             }`}
             id="form-submit"
           >
@@ -49,10 +72,7 @@ export const ProposeForm = ({ onSubmit }: Props) => {
           },
         ]}
         key={key}
-        onSubmit={(data) => {
-          onSubmit(data);
-          setKey(key + new Date().toString());
-        }}
+        onSubmit={handleProposeSubmit}
         title="Propose Annuity Agreement"
         id="propose-form"
       />

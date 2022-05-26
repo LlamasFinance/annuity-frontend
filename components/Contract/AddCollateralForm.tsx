@@ -1,37 +1,26 @@
 import React from "react";
 import { useState } from "react";
 import { useMoralis } from "react-moralis";
-import Moralis from "moralis";
 import { Form } from "web3uikit";
 import { FormDataReturned } from "web3uikit/dist/components/Form/types";
-import { SECONDS_IN_YEAR } from "../../constants";
 import { useAlert, useContract } from "../../hooks";
-import useFetchSpecificAgreements from "../../hooks/App/db/useFetchSpecificAgreement";
 
 interface Props {
   id: string;
 }
 
-export const RepayLoanForm = ({ id }: Props) => {
-  const [key, setKey] = useState("repay");
-  const { repay, isRepaying } = useContract();
+export const AddCollateralForm = ({ id }: Props) => {
+  const [key, setKey] = useState("addCollateral");
+  const { addCollateral, isAddingCollateral } = useContract();
   const { account, isInitialized, isAuthenticated } = useMoralis();
   const { newAlert } = useAlert();
-  const { start, duration, futureValue } = useFetchSpecificAgreements(id);
-  const end = new Date(
-    (parseInt(start) + parseInt(duration) * SECONDS_IN_YEAR) * 1000
-  ).toLocaleDateString("en-us", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
 
-  const handleRepay = React.useCallback(
+  const handleAddCollateral = React.useCallback(
     async (data) => {
       if (!account || !isAuthenticated) {
         newAlert({ type: "error", message: "Please connect your wallet" });
       } else if (isInitialized) {
-        await repay({
+        await addCollateral({
           id: id,
           amount: data.data.find(({ key }: { key: string }) => key === "AMOUNT")
             ?.inputResult,
@@ -46,32 +35,31 @@ export const RepayLoanForm = ({ id }: Props) => {
   return (
     <div>
       <p>
-        You must repay ${Moralis.Units.FromWei(futureValue || "0", 6)} USDC by
-        end.{" "}
+        {`It's always good to add extra ETH collateral to derisk your chances of getting liquidated`}
       </p>
       <Form
         customFooter={
           <button
             type="submit"
-            className={`btn btn-primary ${isRepaying && "loading"}`}
+            className={`btn btn-primary ${isAddingCollateral && "loading"}`}
             id="form-submit"
           >
-            Repay
+            Add
           </button>
         }
         data={[
           {
             inputWidth: "100%",
-            name: "USDC amount",
+            name: "eth amount",
             type: "text",
             value: "",
             key: "AMOUNT",
           },
         ]}
         key={key}
-        onSubmit={handleRepay}
+        onSubmit={handleAddCollateral}
         title=""
-        id="repay-form"
+        id="colateral-form"
       />
     </div>
   );

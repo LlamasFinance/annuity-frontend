@@ -1,10 +1,10 @@
+import { BigNumber } from "ethers";
 import React from "react";
 import { useState } from "react";
 import { useMoralis } from "react-moralis";
 import Moralis from "moralis";
 import { Form } from "web3uikit";
 import { FormDataReturned } from "web3uikit/dist/components/Form/types";
-import { SECONDS_IN_YEAR } from "../../constants";
 import { useAlert, useContract } from "../../hooks";
 import useFetchSpecificAgreements from "../../hooks/App/db/useFetchSpecificAgreement";
 
@@ -12,26 +12,30 @@ interface Props {
   id: string;
 }
 
-export const RepayLoanForm = ({ id }: Props) => {
-  const [key, setKey] = useState("repay");
-  const { repay, isRepaying } = useContract();
+export const WithdrawCollateralForm = ({ id }: Props) => {
+  const [key, setKey] = useState("wDrawCollateral");
+  const { withdrawCollateral, isWithdrawingCollateral } = useContract();
   const { account, isInitialized, isAuthenticated } = useMoralis();
   const { newAlert } = useAlert();
-  const { start, duration, futureValue } = useFetchSpecificAgreements(id);
-  const end = new Date(
-    (parseInt(start) + parseInt(duration) * SECONDS_IN_YEAR) * 1000
-  ).toLocaleDateString("en-us", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const { collateral, minReqCollateral, status } =
+    useFetchSpecificAgreements(id);
+  const repaid = status == "2";
+  const maxWithdrawAmt = repaid
+    ? collateral
+    : BigNumber.from(collateral || "0")
+        .sub(minReqCollateral || "0")
+        .toString();
+  const maxEthWithdrawAmt = Moralis.Units.FromWei(maxWithdrawAmt);
+  const message = repaid
+    ? `Since the agreement has been repaid, you can withdraw all of your collateral ${maxEthWithdrawAmt} ETH`
+    : `You cannot withdraw more than ${maxEthWithdrawAmt} ETH or else you will be liquidated.`;
 
-  const handleRepay = React.useCallback(
+  const handleWithdrawCollateral = React.useCallback(
     async (data) => {
       if (!account || !isAuthenticated) {
         newAlert({ type: "error", message: "Please connect your wallet" });
       } else if (isInitialized) {
-        await repay({
+        await withdrawCollateral({
           id: id,
           amount: data.data.find(({ key }: { key: string }) => key === "AMOUNT")
             ?.inputResult,
@@ -45,33 +49,32 @@ export const RepayLoanForm = ({ id }: Props) => {
 
   return (
     <div>
-      <p>
-        You must repay ${Moralis.Units.FromWei(futureValue || "0", 6)} USDC by
-        end.{" "}
-      </p>
+      <p>{message}</p>
       <Form
         customFooter={
           <button
             type="submit"
-            className={`btn btn-primary ${isRepaying && "loading"}`}
+            className={`btn btn-primary ${
+              isWithdrawingCollateral && "loading"
+            }`}
             id="form-submit"
           >
-            Repay
+            Withdraw
           </button>
         }
         data={[
           {
             inputWidth: "100%",
-            name: "USDC amount",
+            name: "Eth amount",
             type: "text",
             value: "",
             key: "AMOUNT",
           },
         ]}
         key={key}
-        onSubmit={handleRepay}
+        onSubmit={handleWithdrawCollateral}
         title=""
-        id="repay-form"
+        id="withdraw-colateral-form"
       />
     </div>
   );

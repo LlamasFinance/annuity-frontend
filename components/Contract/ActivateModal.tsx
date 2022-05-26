@@ -1,26 +1,30 @@
 import React from "react";
 import { Modal } from "web3uikit";
-import { ProposeForm } from "./ProposeForm";
+import { Form } from "web3uikit";
+import { ActivateForm } from "./ActivateForm";
 import { FormDataReturned } from "web3uikit/dist/components/Form/types";
-import { MintForm } from "./MintForm";
 
 interface Props {
   isVisible: boolean;
   onClose: () => void;
+  id: string;
 }
 
-export const ProposeModal = ({ isVisible, onClose }: Props) => {
+export const ActivateModal = ({ isVisible, onClose, id }: Props) => {
+  console.log(`modalisvisible ${isVisible}`);
   return (
     <Modal
-      title="Propose Agreement"
+      id={"activate-modal-id"}
+      key={"activate-modal-key"}
+      title="Activate Agreement"
       isVisible={isVisible}
       hasFooter={false}
       headerHasBottomBorder
       onCloseButtonPressed={onClose}
     >
-      <ProposeForm />
+      <ActivateForm id={id} />
     </Modal>
   );
 };
 
-export default ProposeModal;
+export default ActivateModal;

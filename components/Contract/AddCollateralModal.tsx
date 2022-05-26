@@ -1,26 +1,28 @@
 import React from "react";
 import { Modal } from "web3uikit";
-import { ProposeForm } from "./ProposeForm";
+import { Form } from "web3uikit";
+import { AddCollateralForm } from "./AddCollateralForm";
+import { WithdrawForm } from "./WithdrawForm";
 import { FormDataReturned } from "web3uikit/dist/components/Form/types";
-import { MintForm } from "./MintForm";
 
 interface Props {
   isVisible: boolean;
   onClose: () => void;
+  id: string;
 }
 
-export const ProposeModal = ({ isVisible, onClose }: Props) => {
+export const AddCollateralModal = ({ isVisible, onClose, id }: Props) => {
   return (
     <Modal
-      title="Propose Agreement"
+      title="Add Collateral"
       isVisible={isVisible}
       hasFooter={false}
       headerHasBottomBorder
       onCloseButtonPressed={onClose}
     >
-      <ProposeForm />
+      <AddCollateralForm id={id} />
     </Modal>
   );
 };
 
-export default ProposeModal;
+export default AddCollateralModal;
