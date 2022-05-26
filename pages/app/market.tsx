@@ -3,6 +3,7 @@ import React from "react";
 import Moralis from "moralis";
 import { Contract } from "../../hooks/Contract/useContract";
 import ProposeButton from "../../components/Contract/ProposeButton";
+import MintButton from "../../components/Contract/MintButton";
 import { Table } from "web3uikit";
 import { APP_ID, SERVER_URL, STATUS } from "../../constants";
 import useFetchAllAgreements from "../../hooks/App/db/useFetchAllAgreements";
@@ -18,7 +19,10 @@ const Market = (props: Props) => {
     <div className="Account">
       <div className="Account__header">
         <h1 className="Account__title">Market</h1>
-        <ProposeButton />
+        <div className="flex gap-x-4">
+          <MintButton />
+          <ProposeButton />
+        </div>
       </div>
       <Table
         columnsConfig="1fr 1fr 1fr 1fr 1fr 1fr 1fr"

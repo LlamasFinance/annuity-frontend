@@ -1,27 +1,28 @@
 import React from "react";
 import { Modal } from "web3uikit";
-import { ProposeForm } from "./ProposeForm";
+import { RepayLoanForm } from "./RepayLoanForm";
 import { FormDataReturned } from "web3uikit/dist/components/Form/types";
 import { MintForm } from "./MintForm";
+import  AddUsdcToken from "./AddUsdcToken";
 
 interface Props {
   isVisible: boolean;
   onClose: () => void;
-  onSubmit: (data: FormDataReturned) => void;
 }
 
-export const ProposeModal = ({ isVisible, onSubmit, onClose }: Props) => {
+export const MintModal = ({ isVisible, onClose }: Props) => {
   return (
     <Modal
-      title="Propose Agreement"
+      title="Mint USDC"
       isVisible={isVisible}
       hasFooter={false}
       headerHasBottomBorder
       onCloseButtonPressed={onClose}
     >
-      <ProposeForm onSubmit={onSubmit} />
+      <AddUsdcToken />
+      <MintForm />
     </Modal>
   );
 };
 
-export default ProposeModal;
+export default MintModal;
