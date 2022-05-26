@@ -38,7 +38,7 @@ export default function useFetchUserAgreements() {
    * combine the two agreements
    */
   useEffect(() => {
-    setResults([...new Set([...lenderAgreements, ...borrowerAgreements])]);
+    setResults([...new Set([...lenderAgreements, ...borrowerAgreements])]); // THIS needs to be unique array based on the account address. Right now it's a unique array based on unique agreements. Idk, but this is the file where you can debug.
   }, [lenderAgreements, borrowerAgreements]);
 
   //   const { newAlert } = useAlert();

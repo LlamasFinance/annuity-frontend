@@ -172,7 +172,7 @@ export const useContract = () => {
       id = receipt.events[2].args.id.toString();
       newAlert({
         type: "success",
-        message: `Successfully proposed agreement w/id - ${id} `,
+        message: `Successfully proposed agreement (ID ${id})  `,
       });
       console.log(`Proposed new agreement with id - ${id}`);
       const agreement = await updateAgreementData({ id: id });
@@ -196,7 +196,7 @@ export const useContract = () => {
       onSuccess: async (tx) => {
         newAlert({
           type: "success",
-          message: `Successfully activated Agreement ID ${id}`,
+          message: `Successfully activated Agreement (ID ${id})`,
         });
         const transaction = tx as TransactionResponse;
         const receipt = await transaction.wait(1);
@@ -226,7 +226,7 @@ export const useContract = () => {
       onSuccess: async (tx) => {
         newAlert({
           type: "success",
-          message: `Successfully added collateral to Agreement ID ${id}`,
+          message: `Successfully added collateral to Agreement (ID ${id})`,
         });
         const transaction = tx as TransactionResponse;
         const receipt = await transaction.wait(1);
@@ -258,7 +258,7 @@ export const useContract = () => {
       onSuccess: async (tx) => {
         newAlert({
           type: "success",
-          message: `Successfully withdrawed collateral from Agreement ID ${id}`,
+          message: `Successfully withdrawed collateral from Agreement (ID ${id})`,
         });
         const transaction = tx as TransactionResponse;
         const receipt = await transaction.wait(1);
@@ -288,7 +288,7 @@ export const useContract = () => {
       onSuccess: async (tx) => {
         newAlert({
           type: "success",
-          message: `Successfully repaid Agreement ID ${id}`,
+          message: `Successfully repaid Agreement (ID ${id})`,
         });
         const transaction = tx as TransactionResponse;
         const receipt = await transaction.wait(1);
@@ -316,7 +316,7 @@ export const useContract = () => {
       onSuccess: async (tx) => {
         newAlert({
           type: "success",
-          message: `Successfully closed Agreement ID ${id}`,
+          message: `Successfully closed Agreement (ID ${id})`,
         });
         const transaction = tx as TransactionResponse;
         const receipt = await transaction.wait(1);

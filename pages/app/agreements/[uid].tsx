@@ -8,13 +8,19 @@ import { useTokenValue } from "../../../hooks";
 
 import AddCollateralButton from "../../../components/Contract/AddColateralButton";
 import RepayLoanButton from "../../../components/Contract/RepayLoanButton";
-import WithdrawButton from "../../../components/Contract/WithdrawButton";
+import WithdrawButton, {
+  CloseButton,
+} from "../../../components/Contract/CloseButton";
 
 import style from "../../../styles/components/agreement.module.scss";
 
 import { FaFileContract } from "react-icons/fa";
 import { AiOutlineUser } from "react-icons/ai";
-import { BsBarChartFill, BsFillClockFill, BsFillCalendarCheckFill } from "react-icons/bs";
+import {
+  BsBarChartFill,
+  BsFillClockFill,
+  BsFillCalendarCheckFill,
+} from "react-icons/bs";
 import { IoIosPaper, IoLogoUsd } from "react-icons/io";
 import { SiEthereum } from "react-icons/si";
 import { STATUS } from "../../../constants";
@@ -143,10 +149,14 @@ const Details = () => {
             </div>
             <div className={style.annuitantInfo}>
               <p>Start Date</p>
-              <h2>{ start !== '0' ?
-                new Date(parseInt(start) * 1000).toLocaleDateString('en-us', { year:"numeric", month:"long", day:"numeric"}) 
-                : 'Not activated'
-              }</h2>
+              <h2>
+                {start !== "0"
+                  ? new Date(parseInt(start) * 1000).toLocaleDateString(
+                      "en-us",
+                      { year: "numeric", month: "long", day: "numeric" }
+                    )
+                  : "Not activated"}
+              </h2>
             </div>
           </div>
         </div>
@@ -172,7 +182,7 @@ const Details = () => {
             </div>
           </div>
           <hr />
-          <WithdrawButton id={id} />
+          <CloseButton id={id} />
         </div>
       </div>
 

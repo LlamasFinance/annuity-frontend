@@ -7,10 +7,9 @@ import { MintForm } from "./MintForm";
 interface Props {
   isVisible: boolean;
   onClose: () => void;
-  onSubmit: (data: FormDataReturned) => void;
 }
 
-export const ProposeModal = ({ isVisible, onSubmit, onClose }: Props) => {
+export const ProposeModal = ({ isVisible, onClose }: Props) => {
   return (
     <Modal
       title="Propose Agreement"
@@ -19,7 +18,7 @@ export const ProposeModal = ({ isVisible, onSubmit, onClose }: Props) => {
       headerHasBottomBorder
       onCloseButtonPressed={onClose}
     >
-      <ProposeForm onSubmit={onSubmit} />
+      <ProposeForm />
     </Modal>
   );
 };

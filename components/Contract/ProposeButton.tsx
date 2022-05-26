@@ -4,19 +4,6 @@ import { useContract } from "../../hooks";
 
 const ProposeButton = () => {
   const [isModalVisible, setModalVisibility] = React.useState(false);
-  const { propose } = useContract();
-
-  const handleAgreementSubmit = React.useCallback(async (data) => {
-    await propose({
-      amount: data.data.find(({ key }: { key: string }) => key === "AMOUNT")
-        ?.inputResult,
-      duration: data.data.find(({ key }: { key: string }) => key === "DURATION")
-        ?.inputResult,
-      rate: data.data.find(({ key }: { key: string }) => key === "RATE")
-        ?.inputResult,
-    });
-    setModalVisibility(false);
-  }, []);
 
   return (
     <>
@@ -29,7 +16,6 @@ const ProposeButton = () => {
       <ProposeModal
         isVisible={isModalVisible}
         onClose={() => setModalVisibility(false)}
-        onSubmit={handleAgreementSubmit}
       />
     </>
   );

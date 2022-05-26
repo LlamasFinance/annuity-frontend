@@ -8,7 +8,7 @@ interface Props {
   id: string;
 }
 
-export const WithdrawButton = ({ id }: Props) => {
+export const CloseButton = ({ id }: Props) => {
   const { close, closeError } = useContract();
   const { account, isInitialized } = useMoralis();
   const { status, lender } = useFetchSpecificAgreements(id);
@@ -35,9 +35,11 @@ export const WithdrawButton = ({ id }: Props) => {
   };
   return (
     <>
-      <button onClick={handleWithdrawClick}>Withdraw</button>
+      <button onClick={handleWithdrawClick}>
+        {status == "0" ? "Cancel Agreement" : "Withdraw Future Value"}
+      </button>
     </>
   );
 };
 
-export default WithdrawButton;
+export default CloseButton;
