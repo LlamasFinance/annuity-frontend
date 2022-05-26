@@ -3,6 +3,7 @@ import { Table } from "web3uikit";
 import { Moralis } from "moralis";
 import { useMoralis } from "react-moralis";
 import ProposeButton from "../../components/Contract/ProposeButton";
+import MintButton from "../../components/Contract/MintButton";
 
 import useFetchUserAgreements from "../../hooks/App/db/useFetchUserAgreements";
 import { Contract } from "../../hooks/Contract/useContract";
@@ -20,7 +21,11 @@ const Account = (props: Props) => {
     <div className="Account">
       <div className="Account__header">
         <h1 className="Account__title">Overview</h1>
-        <ProposeButton />
+        <div className="flex gap-x-4">
+          <MintButton />
+          <ProposeButton />
+        </div>
+        
       </div>
       <Table
         columnsConfig="1fr 1fr 1fr 1fr 1fr 1fr"
