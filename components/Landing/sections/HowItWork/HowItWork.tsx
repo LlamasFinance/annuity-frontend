@@ -64,8 +64,8 @@ const HowItWork = () => {
             <span>1</span>
             <h2>Set up your digital wallet</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-              sed do eiusmod tempor incididunt ut.
+              Get a wallet and mint USDC. Propose an annuity agreement
+              if you're a buyer. Lock USDC into the smart contract
             </p>
           </div>
           <div className={style.card2}>
@@ -75,8 +75,9 @@ const HowItWork = () => {
             <span>2</span>
             <h2>Choose an Agreement</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-              sed do eiusmod tempor incididunt ut.
+              View proposed annuities and their borrowing rates if you're
+              a seller. Activate an annuity by locking ETH Collateral into
+              the smart contract in order to borrow USDC
             </p>
           </div>
           <div className={style.card3}>
@@ -84,10 +85,10 @@ const HowItWork = () => {
               <GiReceiveMoney />
             </div>
             <span>3</span>
-            <h2>Recive Money</h2>
+            <h2>Recive Your Money</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-              sed do eiusmod tempor incididunt ut.
+            If the value of a provider’s ETH collateral nears the agreement’s future, then they will be
+            automatically liquidated
             </p>
           </div>
         </div>
