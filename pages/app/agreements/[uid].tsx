@@ -151,12 +151,12 @@ const Details = () => {
             <div className={style.annuitantInfo}>
               <p>Start Date</p>
               <h2>
-                {proposed
-                  ? "Not activated"
-                  : new Date(parseInt(start) * 1000).toLocaleDateString(
+                {!proposed
+                  ? new Date(parseInt(start) * 1000).toLocaleDateString(
                       "en-us",
                       { year: "numeric", month: "long", day: "numeric" }
-                    )}
+                    )
+                  : "Not activated"}
               </h2>
             </div>
           </div>
@@ -171,16 +171,7 @@ const Details = () => {
               <p>USDC Deposited:</p>
               <span>${cancelled ? "---" : deposit}</span>
             </div>
-            
-            <div className={style.activateBtn}>
-              <ActivateButton id={id} />
-              <span>
-                {LenderTooltip />
-              </span>
-              
-            </div>
             {proposed && <ActivateButton id={id} />}
-
           </div>
           <hr />
           <div className={style.usdc}>
@@ -226,9 +217,7 @@ const Details = () => {
             </div>
             <div className={style.usdcValues}>
               <p>Liquidation minimum:</p>
-              <span>
-                ${proposed || cancelled || repaid ? "---" : minReqCollateral}
-              </span>
+              <span>${cancelled || repaid ? "---" : minReqCollateral}</span>
             </div>
           </div>
           <hr />
