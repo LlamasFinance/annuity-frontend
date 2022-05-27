@@ -6,6 +6,7 @@ import { Form } from "web3uikit";
 import { FormDataReturned } from "web3uikit/dist/components/Form/types";
 import { useAlert, useContract } from "../../hooks";
 import useFetchSpecificAgreements from "../../hooks/App/db/useFetchSpecificAgreement";
+import { BigNumber } from "ethers";
 
 interface Props {
   id: string;
@@ -39,8 +40,13 @@ export const ActivateForm = ({ id }: Props) => {
     <div>
       <p>
         The minimum required ETH to activate this agreement is{" "}
-        {Moralis.Units.FromWei(Number(minReqCollateral) * 1.01 || "0")} but it's
-        recommended to deposit more so that you won't get liquidated
+        {Moralis.Units.FromWei(
+          BigNumber.from(minReqCollateral || "0")
+            .mul(101)
+            .div(100)
+            .toString()
+        )}{" "}
+        but it's recommended to deposit more so that you won't get liquidated
         immediately.
       </p>
       <Form

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { Icon, Table, Tooltip } from "web3uikit";
+import { Icon, Table, Tooltip, getEllipsisTxt } from "web3uikit";
 import useFetchSpecificAgreements from "../../../hooks/App/db/useFetchSpecificAgreement";
 import Moralis from "moralis";
 import { Contract } from "../../../hooks/Contract/useContract";
@@ -52,7 +52,7 @@ const Details = () => {
   const repaid = status == "2";
 
   function emptyAdress(address: string) {
-    return address?.substring(lender.length - 8).split('').every((el) => el === '0')
+    return address.substring(0, 3) == "0x0";
   }
 
   //   const { inUsd: collateralInUsd } = useTokenValue({
@@ -75,7 +75,6 @@ const Details = () => {
   //     inputType: "usdc",
   //   });
 
-
   return (
     <div className={style.container}>
       <div className={style.info}>
@@ -91,49 +90,40 @@ const Details = () => {
         </div>
         <div className={style.infoCard}>
           <div className={style.icon}>
-            {
-              emptyAdress(lender) ?
+            {emptyAdress(lender) ? (
               <AiOutlineUser />
-              :
-              <Blockie scale={7.2} seed={lender} />  
-            }
+            ) : (
+              <Blockie scale={7.2} seed={lender} />
+            )}
           </div>
           <div className={style.infoText}>
             <div className={style.lender}>
               <h2>Lender (Annuitant)</h2>
-             
+
               <Tooltip
                 content={
-                  "This is the person who proposes an annuity agreement and receives the guaranteed future value"
+                  "Person who proposes annuity agreement and receives the guaranteed future value"
                 }
                 position="right"
               >
                 <Icon fill="#68738D" size={30} svg="helpCircle" />
               </Tooltip>
-            
             </div>
-           
-            <p>
-              {lender && lender.substring(0, 5)}...
-              {lender && lender.substring(lender.length - 5)}
-            </p>
+
+            <p>{getEllipsisTxt(lender)}</p>
           </div>
         </div>
         <div className={style.infoCard}>
           <div className={style.icon}>
-            {
-              emptyAdress(borrower) ?
+            {emptyAdress(borrower) ? (
               <AiOutlineUser />
-              :
-              <Blockie scale={7.2} seed={borrower} /> 
-            } 
+            ) : (
+              <Blockie scale={7.2} seed={borrower} />
+            )}
           </div>
           <div className={style.infoText}>
             <h2>Borrower (Provider)</h2>
-            <p>
-              {borrower && borrower.substring(0, 5)}...
-              {borrower && borrower.substring(borrower.length - 5)}
-            </p>
+            <p>{getEllipsisTxt(borrower)}</p>
           </div>
         </div>
       </div>
