@@ -132,15 +132,18 @@
         }
 
         button {
-            display: block;
+            display: flex;
             align-self: center;
             margin-top: 16vh;
+
+            p {
+                margin-right: 0.5rem;
+            }
 
             svg {
                 width: 18px;
                 height: 18px;
                 vertical-align: middle;
-                margin-left: 0.4rem;
                 margin: 0;
             }
         }
