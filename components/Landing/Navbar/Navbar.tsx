@@ -67,7 +67,7 @@ const Navbar = () => {
               </Link>
 
               <ul className={style.navbarLinks}>
-                <li>
+                <li onClick={() => setToggle(false)}>
                   <a href="#fixedAnnuities">Quick Start</a>
                 </li>
                 <li>
@@ -75,13 +75,13 @@ const Navbar = () => {
                     Agreements
                   </Link>
                 </li>
-                <li>
+                <li onClick={() => setToggle(false)}>
                   <a href="#howItWork">How it works</a>
                 </li>
-                <li>
+                <li onClick={() => setToggle(false)}>
                   <a href="#whyUs">About Us</a>
                 </li>
-                <li>
+                <li onClick={() => setToggle(false)}>
                   <a href="#faqs">Education</a>
                 </li>
               </ul>
