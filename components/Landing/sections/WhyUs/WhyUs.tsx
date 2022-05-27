@@ -23,7 +23,7 @@ const WhyUs = () => {
             <div>
               <img src="images/earnIcon.svg" alt="Icon" />
             </div>
-            <h2>#1 Web3 Annuity</h2>
+            <h2>Better with Smart Contracts</h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</p>
             <button>Learn more <BsArrowRight /></button>
           </div>
@@ -46,22 +46,38 @@ const WhyUs = () => {
           <div>          
             <BsBookmarkCheck />
             <h3>Efficient</h3>
-            <p>Lore ipsum dolor sit amet, consectetur adpiscing elit, sed do eiusmod tempor incididunt</p>
+            <p>
+              <ul>
+                <li>No administration fees</li>
+                <li>0 comisions</li>
+                <li>0 cost riders</li>
+                <li>0 hidden fees</li>
+              </ul>
+            </p>
           </div>
           <div>
             <FaRegHandshake />
             <h3>Temper-proof & Guaranted</h3>
-            <p>Lore ipsum dolor sit amet, consectetur adpiscing elit, sed do eiusmod tempor incididunt</p>
+            <p><strong>0 deceptive practices</strong> because there are
+            no salesmen as it’s an open market
+           </p>
           </div>
           <div>
             <BiGitPullRequest />
             <h3>Logical</h3>
-            <p>Lore ipsum dolor sit amet, consectetur adpiscing elit, sed do eiusmod tempor incididunt</p>
+            <p><strong>1 universal language</strong> is all that’s
+            required to understand smart contract
+            annuities — <strong>code</strong> <br />
+            The code on the blockchain is the
+            foundational contract</p>
           </div>
           <div>
             <BsFileEarmarkCode />
             <h3>Equal Access</h3>
-            <p>Lore ipsum dolor sit amet, consectetur adpiscing elit, sed do eiusmod tempor incididunt</p>
+            <p>Universal access to <strong>buy</strong> is enabled
+            because all parties are anonymous and 
+            universal access to <strong>sell</strong> is created
+            because the peer-to-peer nature of the blockchain</p>
           </div>
         </div>
       </div>

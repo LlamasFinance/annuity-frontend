@@ -53,6 +53,13 @@
                 p {
                     font-size: 1rem;
                     color: $gray-title;
+
+                    ul {
+                        margin-left: 1rem;
+                    }
+                    li {
+                        list-style: circle;
+                    }
                 }
             }
         }
@@ -201,6 +208,11 @@
 
             .card1 {
                 box-shadow: 4px 10px 20px rgba(0, 90, 109, 0.15);
+
+                h2 { 
+                    font-size: 1.3rem;   
+                    margin-top: 4rem;
+                }
             }
 
             .card2 {
