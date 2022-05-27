@@ -75,7 +75,8 @@ const Account = (props: Props) => {
             <span>{uid}</span>,
             <span>{STATUS[Number(status)]}</span>,
             <span>
-              {getValue({ amount: deposit, inputType: "usdc" }).inUsd}
+              {/* {getValue({ amount: deposit, inputType: "usdc" }).inUsd} */}
+              {Number(deposit)/10**6}
             </span>,
             <span>{inEth}</span>,
             <span>
