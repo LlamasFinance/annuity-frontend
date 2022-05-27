@@ -14,7 +14,7 @@ export const CloseButton = ({ id }: Props) => {
   const { account, isAuthenticated, isInitialized } = useMoralis();
   const { status, lender } = useFetchSpecificAgreements(id);
   const { newAlert } = useAlert();
-
+  const proposed = status == "0";
   const handleWithdrawClick = React.useCallback(async () => {
     console.log(`account ${account}`);
     if (account && isAuthenticated && isInitialized) {
@@ -42,7 +42,7 @@ export const CloseButton = ({ id }: Props) => {
         className={`btn btn-primary mt-8 ${isClosing && "loading"}`}
         onClick={handleWithdrawClick}
       >
-        {status == "0" ? "Cancel Agreement" : "Withdraw Future Value"}
+        {proposed ? "Cancel Agreement" : "Withdraw Future Value"}
       </button>
     </>
   );

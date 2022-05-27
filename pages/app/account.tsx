@@ -42,11 +42,9 @@ const Account = (props: Props) => {
         ]}
         data={agreements.map(({ createdAt, attributes }) => {
           const { lender, uid, status, deposit, collateral } = attributes;
-          let { inEth } = getValue({
-            amount: collateral,
-            inputType: "wei",
-          });
-          inEth = Number(inEth) == 0 ? "--" : inEth;
+          const proposed = status == "0";
+          const collateralEmpty = collateral == "0";
+
           return [
             <span>{account == lender ? "Annuitant" : "Insurer"}</span>,
             <span>{uid}</span>,
@@ -54,7 +52,7 @@ const Account = (props: Props) => {
             <span>
               {getValue({ amount: deposit, inputType: "usdc" }).inUsd}
             </span>,
-            <span>{inEth}</span>,
+            <span>{collateralEmpty ? "---" : collateral}</span>,
             <span>
               <Link href={`/app/agreements/${uid}`}>
                 <button className="btn-default btn">Details</button>
