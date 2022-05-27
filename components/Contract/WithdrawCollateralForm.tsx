@@ -7,6 +7,7 @@ import { Form } from "web3uikit";
 import { FormDataReturned } from "web3uikit/dist/components/Form/types";
 import { useAlert, useContract } from "../../hooks";
 import useFetchSpecificAgreements from "../../hooks/App/db/useFetchSpecificAgreement";
+import { BsFillExclamationCircleFill } from 'react-icons/bs';
 
 interface Props {
   id: string;
@@ -49,7 +50,13 @@ export const WithdrawCollateralForm = ({ id }: Props) => {
 
   return (
     <div>
-      <p>{message}</p>
+      <div className="m-4 mt-8 flex items-center">
+       <BsFillExclamationCircleFill />
+        <p className="ml-2">
+          {message}
+        </p>
+      </div>
+
       <Form
         customFooter={
           <button

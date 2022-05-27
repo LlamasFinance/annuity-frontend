@@ -67,7 +67,7 @@
     font-family: $font-base;
     margin: 1.5rem 0;
 
-    div {
+    .annuitantComp {
         display: flex;
 
         .annuitantCard {
@@ -165,20 +165,16 @@
             }
         }
 
-        div {
+        .usdcValues {
+            display: flex;
+
             span {
-                margin-left: 0.6rem;
+                margin: 0 0.6rem;
                 font-weight: 700
             }
         }
     }
 
-    button {
-        @extend .btn;
-
-        margin: 1rem;
-        width: fit-content;
-    }
 }
 
 .provider {

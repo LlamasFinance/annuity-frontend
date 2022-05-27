@@ -113,7 +113,7 @@ const Details = () => {
 
       <div className={style.annuitant}>
         <h2>Annuitant</h2>
-        <div>
+        <div className={style.annuitantComp}>
           <div className={style.annuitantCard}>
             <div className={style.annuitantIcon}>
               <IoIosPaper />
@@ -167,17 +167,18 @@ const Details = () => {
             <div className={style.usdcIcon}>
               <IoLogoUsd />
             </div>
-            <div>
+            <div className={style.usdcValues}>
               <p>USDC Deposited:</p>
               <span>${cancelled ? "---" : deposit}</span>
             </div>
+            <ActivateButton id={id} />
           </div>
           <hr />
           <div className={style.usdc}>
             <div className={style.usdcIcon}>
               <IoLogoUsd />
             </div>
-            <div>
+            <div className={style.usdcValues}>
               <p>USDC Future Value:</p>
               <span>${cancelled ? "---" : futureValue}</span>
             </div>
@@ -194,7 +195,7 @@ const Details = () => {
             <div className={style.usdcIcon}>
               <SiEthereum />
             </div>
-            <div>
+            <div className={style.usdcValues}>
               <p>ETH Collateral:</p>
               <span>{proposed || cancelled ? "---" : collateral} ETH</span>
             </div>
@@ -204,7 +205,7 @@ const Details = () => {
             <div className={style.usdcIcon}>
               <IoLogoUsd />
             </div>
-            <div>
+            <div className={style.usdcValues}>
               <p>ETH Value:</p>
               <span>${proposed || cancelled ? "---" : collateral} </span>
             </div>
@@ -214,7 +215,7 @@ const Details = () => {
             <div className={style.usdcIcon}>
               <IoLogoUsd />
             </div>
-            <div>
+            <div className={style.usdcValues}>
               <p>Liquidation minimum:</p>
               <span>${cancelled || repaid ? "---" : minReqCollateral}</span>
             </div>
@@ -224,7 +225,7 @@ const Details = () => {
             <div className={style.usdcIcon}>
               <IoLogoUsd />
             </div>
-            <div>
+            <div className={style.usdcValues}>
               <p>USDC Repaid:</p>
               <span>${proposed || cancelled ? "---" : repaidAmt}</span>
             </div>
@@ -236,7 +237,6 @@ const Details = () => {
         <AddCollateralButton id={id} />
         <WithdrawCollateralButton id={id} />
         <RepayLoanButton id={id} />
-        <ActivateButton id={id} />
       </div>
     </div>
   );

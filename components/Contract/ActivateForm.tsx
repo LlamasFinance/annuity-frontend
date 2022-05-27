@@ -38,7 +38,7 @@ export const ActivateForm = ({ id }: Props) => {
 
   return (
     <div>
-      <p>
+      <p className="m-4 mt-8">
         The minimum required ETH to activate this agreement is{" "}
         {Moralis.Units.FromWei(
           BigNumber.from(minReqCollateral || "0")
