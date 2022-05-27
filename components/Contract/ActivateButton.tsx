@@ -12,7 +12,7 @@ const ActivateButton = ({ id }: Props) => {
   return (
     <>
       <button
-        className="btn btn-primary ml-8"
+        className="btn-dark btn ml-8"
         onClick={() => setModalVisibility(true)}
       >
         Activate Agreement
