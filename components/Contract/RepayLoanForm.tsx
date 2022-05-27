@@ -7,7 +7,8 @@ import { FormDataReturned } from "web3uikit/dist/components/Form/types";
 import { SECONDS_IN_YEAR } from "../../constants";
 import { useAlert, useContract } from "../../hooks";
 import useFetchSpecificAgreements from "../../hooks/App/db/useFetchSpecificAgreement";
-import { BsFillExclamationCircleFill } from 'react-icons/bs';
+import { BsFillExclamationCircleFill } from "react-icons/bs";
+import { BigNumber } from "ethers";
 
 interface Props {
   id: string;
@@ -18,7 +19,8 @@ export const RepayLoanForm = ({ id }: Props) => {
   const { repay, isRepaying } = useContract();
   const { account, isInitialized, isAuthenticated } = useMoralis();
   const { newAlert } = useAlert();
-  const { start, duration, futureValue } = useFetchSpecificAgreements(id);
+  const { start, duration, futureValue, repaidAmt } =
+    useFetchSpecificAgreements(id);
   const end = new Date(
     (parseInt(start) + parseInt(duration) * SECONDS_IN_YEAR) * 1000
   ).toLocaleDateString("en-us", {
@@ -44,21 +46,26 @@ export const RepayLoanForm = ({ id }: Props) => {
     [account, isAuthenticated, isInitialized]
   );
 
+  const repayNeeded = Moralis.Units.FromWei(
+    BigNumber.from(futureValue || "0")
+      .sub(repaidAmt || "0")
+      .toString(),
+    6
+  );
+  let message = `Provider must repay $${repayNeeded} USDC by ${end} when the agreement ends.`;
+
   return (
     <div>
       <div className="m-4 mt-8 flex items-center">
-       <BsFillExclamationCircleFill />
-        <p className="ml-2">
-          You must repay ${Moralis.Units.FromWei(futureValue || "0", 6)} USDC by
-          end.{" "}
-        </p>
+        <BsFillExclamationCircleFill />
+        <p className="ml-2"> {message}</p>
       </div>
-      
+
       <Form
         customFooter={
           <button
             type="submit"
-            className={`btn btn-primary ${isRepaying && "loading"}`}
+            className={`btn-dark btn ${isRepaying && "loading"}`}
             id="form-submit"
           >
             Repay

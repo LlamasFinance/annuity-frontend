@@ -171,7 +171,7 @@ const Details = () => {
               <p>USDC Deposited:</p>
               <span>${cancelled ? "---" : deposit}</span>
             </div>
-            <ActivateButton id={id} />
+            {proposed && <ActivateButton id={id} />}
           </div>
           <hr />
           <div className={style.usdc}>

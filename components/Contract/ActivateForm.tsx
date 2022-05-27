@@ -36,27 +36,27 @@ export const ActivateForm = ({ id }: Props) => {
     [account, isAuthenticated, isInitialized]
   );
 
+  const minReqCollateralEth = Moralis.Units.FromWei(
+    BigNumber.from(minReqCollateral || "0")
+      .mul("101")
+      .div("1000")
+      .toString()
+  );
+  const message = `The minimum required ETH to activate this agreement is
+        ${minReqCollateralEth} ETH
+        but it's recommended to deposit more so that you won't get liquidated
+        immediately.`;
   return (
     <div>
-      <p className="m-4 mt-8">
-        The minimum required ETH to activate this agreement is{" "}
-        {Moralis.Units.FromWei(
-          BigNumber.from(minReqCollateral || "0")
-            .mul(101)
-            .div(100)
-            .toString()
-        )}{" "}
-        but it's recommended to deposit more so that you won't get liquidated
-        immediately.
-      </p>
+      <p className="m-4 mt-8">{message}</p>
       <Form
         customFooter={
           <button
             type="submit"
-            className={`btn btn-primary ${isActivating && "loading"}`}
+            className={`btn-dark btn ${isActivating && "loading"}`}
             id="form-submit"
           >
-            Submit
+            Activate
           </button>
         }
         data={[

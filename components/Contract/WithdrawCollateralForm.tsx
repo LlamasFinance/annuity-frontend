@@ -7,7 +7,7 @@ import { Form } from "web3uikit";
 import { FormDataReturned } from "web3uikit/dist/components/Form/types";
 import { useAlert, useContract } from "../../hooks";
 import useFetchSpecificAgreements from "../../hooks/App/db/useFetchSpecificAgreement";
-import { BsFillExclamationCircleFill } from 'react-icons/bs';
+import { BsFillExclamationCircleFill } from "react-icons/bs";
 
 interface Props {
   id: string;
@@ -18,8 +18,9 @@ export const WithdrawCollateralForm = ({ id }: Props) => {
   const { withdrawCollateral, isWithdrawingCollateral } = useContract();
   const { account, isInitialized, isAuthenticated } = useMoralis();
   const { newAlert } = useAlert();
-  const { collateral, minReqCollateral, status } =
+  const { collateral, minReqCollateral, status, borrower } =
     useFetchSpecificAgreements(id);
+
   const repaid = status == "2";
   const maxWithdrawAmt = repaid
     ? collateral
@@ -28,8 +29,8 @@ export const WithdrawCollateralForm = ({ id }: Props) => {
         .toString();
   const maxEthWithdrawAmt = Moralis.Units.FromWei(maxWithdrawAmt);
   const message = repaid
-    ? `Since the agreement has been repaid, you can withdraw all of your collateral ${maxEthWithdrawAmt} ETH`
-    : `You cannot withdraw more than ${maxEthWithdrawAmt} ETH or else you will be liquidated.`;
+    ? `Provider can withdraw all of their collateral ${maxEthWithdrawAmt} ETH since the agreement has been repaid`
+    : `Provider cannot withdraw more than ${maxEthWithdrawAmt} ETH or else they will be liquidated.`;
 
   const handleWithdrawCollateral = React.useCallback(
     async (data) => {
@@ -51,19 +52,15 @@ export const WithdrawCollateralForm = ({ id }: Props) => {
   return (
     <div>
       <div className="m-4 mt-8 flex items-center">
-       <BsFillExclamationCircleFill />
-        <p className="ml-2">
-          {message}
-        </p>
+        <BsFillExclamationCircleFill />
+        <p className="ml-2">{message}</p>
       </div>
 
       <Form
         customFooter={
           <button
             type="submit"
-            className={`btn btn-primary ${
-              isWithdrawingCollateral && "loading"
-            }`}
+            className={`btn-dark btn ${isWithdrawingCollateral && "loading"}`}
             id="form-submit"
           >
             Withdraw

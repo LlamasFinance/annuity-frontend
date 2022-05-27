@@ -32,7 +32,21 @@ export default function useFetchSpecificAgreements(id: string) {
   } = useMoralisQuery<Contract.AgreementDetails>(
     "Agreement",
     (query) => query.equalTo("uid", id).limit(1).descending("createdAt"),
-    [id],
+    [
+      id,
+      deposit,
+      collateral,
+      repaidAmt,
+      futureValue,
+      start,
+      duration,
+      rate,
+      status,
+      lender,
+      borrower,
+      minReqCollateral,
+      isLiquidationRequired,
+    ],
     {
       live: true,
     }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAlert } from "../../App/useAlert";
 import { Moralis } from "moralis";
-import { useMoralisQuery } from "react-moralis";
+import { useMoralis, useMoralisQuery } from "react-moralis";
 import { Contract, useDatabase } from "../../";
 
 interface Props {
@@ -24,6 +24,7 @@ export default function useFetchAllAgreements() {
   const [stateSortKey, setSortKey] = useState<Props["sortKey"]>("createdAt");
   const [stateSortOrder, setSortOrder] = useState<Props["sortOrder"]>("desc");
   const { isUpdatingDb } = useDatabase();
+  const { account, isAuthenticated, isInitialized } = useMoralis();
 
   const {
     data: results,
@@ -35,7 +36,14 @@ export default function useFetchAllAgreements() {
       stateSortOrder == "desc"
         ? query.descending(stateSortKey)
         : query.ascending(stateSortKey),
-    [isUpdatingDb, stateSortKey, stateSortOrder],
+    [
+      isUpdatingDb,
+      stateSortKey,
+      stateSortOrder,
+      isAuthenticated,
+      isInitialized,
+      account,
+    ],
     { live: true }
   );
 

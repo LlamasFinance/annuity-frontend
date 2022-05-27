@@ -11,10 +11,7 @@ const WithdrawCollateralButton = ({ id }: Props) => {
 
   return (
     <>
-      <button
-        className="btn btn-primary"
-        onClick={() => setModalVisibility(true)}
-      >
+      <button className="btn-dark btn" onClick={() => setModalVisibility(true)}>
         Withdraw Collateral
       </button>
       <WithdrawCollateralModal

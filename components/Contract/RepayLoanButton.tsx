@@ -11,10 +11,7 @@ const RepayLoanButton = ({ id }: Props) => {
 
   return (
     <>
-      <button
-        className="btn btn-primary"
-        onClick={() => setModalVisibility(true)}
-      >
+      <button className="btn-dark btn" onClick={() => setModalVisibility(true)}>
         Repay Loan
       </button>
       <RepayLoanModal
