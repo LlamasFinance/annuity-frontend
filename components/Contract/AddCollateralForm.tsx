@@ -4,6 +4,7 @@ import { useMoralis } from "react-moralis";
 import { Form } from "web3uikit";
 import { FormDataReturned } from "web3uikit/dist/components/Form/types";
 import { useAlert, useContract } from "../../hooks";
+import { BsFillExclamationCircleFill } from 'react-icons/bs';
 
 interface Props {
   id: string;
@@ -34,9 +35,12 @@ export const AddCollateralForm = ({ id }: Props) => {
 
   return (
     <div>
-      <p>
+      <div className="m-4 mt-8 flex items-center">
+       <BsFillExclamationCircleFill />
+        <p className="ml-2">
         {`It's always good to add extra ETH collateral to derisk your chances of getting liquidated`}
-      </p>
+        </p>
+      </div>
       <Form
         customFooter={
           <button

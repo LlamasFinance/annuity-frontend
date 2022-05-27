@@ -7,6 +7,7 @@ import { FormDataReturned } from "web3uikit/dist/components/Form/types";
 import { SECONDS_IN_YEAR } from "../../constants";
 import { useAlert, useContract } from "../../hooks";
 import useFetchSpecificAgreements from "../../hooks/App/db/useFetchSpecificAgreement";
+import { BsFillExclamationCircleFill } from 'react-icons/bs';
 
 interface Props {
   id: string;
@@ -45,10 +46,14 @@ export const RepayLoanForm = ({ id }: Props) => {
 
   return (
     <div>
-      <p>
-        You must repay ${Moralis.Units.FromWei(futureValue || "0", 6)} USDC by
-        end.{" "}
-      </p>
+      <div className="m-4 mt-8 flex items-center">
+       <BsFillExclamationCircleFill />
+        <p className="ml-2">
+          You must repay ${Moralis.Units.FromWei(futureValue || "0", 6)} USDC by
+          end.{" "}
+        </p>
+      </div>
+      
       <Form
         customFooter={
           <button
