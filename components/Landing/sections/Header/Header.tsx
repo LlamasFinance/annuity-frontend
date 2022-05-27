@@ -1,5 +1,6 @@
 import React from 'react';
 import style from './Header.module.scss';
+import Link from 'next/link';
 
 import Navbar from '../../Navbar/Navbar';
 import BestAnnuities from '../../BestAnnuities/BestAnnuities';
@@ -14,16 +15,19 @@ const Header = () => {
         <div className={style.left}>
           <div className={style.leftContent}>
             <h2>
-              The best way to get confidence in the future.
+             Fixed Annuities 
             </h2>
+            <h3>
+            The best way to get confidence in the future.
+            </h3>
             <p>Helping you secure a guaranteed lifetime income</p>
             <div>
               <button className={style.apply}>
-                Apply Online
+                View Annuities
               </button>
-              <button>
+              {/* <button>
                 See Insurers
-              </button>
+              </button> */}
             </div>
             <div className={style.checks}>
               <div>

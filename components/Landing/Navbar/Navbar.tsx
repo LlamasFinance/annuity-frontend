@@ -41,11 +41,9 @@ const Navbar = () => {
         </li>
       </ul>
 
-      <Link href="/app">
+      <Link href="/app/market">
       <button>
-       
-          Get Started <BsDoorOpenFill />
-        
+          Get Started <BsDoorOpenFill /> 
       </button>
       </Link>
 
@@ -62,7 +60,7 @@ const Navbar = () => {
 
               <HiX onClick={() => setToggle(false)}/>
 
-              <Link href="/app">
+              <Link href="/app/market">
               <button onClick={() => connectWallet()}>
                 Get Started <BsDoorOpenFill />
               </button>

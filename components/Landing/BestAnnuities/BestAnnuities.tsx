@@ -22,11 +22,11 @@ const BestAnnuities = () => {
               !agreements.length ? 
 
               <>
-              <AnnuityRate rate='2.85%' time='2-Year' id='' />
+              <AnnuityRate rate='6%' time='2-Year' id='' />
               <AnnuityRate rate='5%' time='3-Year' id=''/>
-              <AnnuityRate rate='20%' time='5-Year' id=''/>
+              <AnnuityRate rate='7%' time='5-Year' id=''/>
               <AnnuityRate rate='4%' time='7-Year' id=''/>
-              <AnnuityRate rate='3.8%' time='9-Year' id=''/>
+              <AnnuityRate rate='8%' time='9-Year' id=''/>
               </>
               :
               agreements.map(({ attributes }, i) => {
