@@ -51,6 +51,17 @@
         margin-bottom: 0;
     }
 
+    h3 {
+        color: $black-color;
+        font-family: $font-title;
+        font-size: 2rem;
+        text-align: left;
+        font-weight: 800;
+        line-height: 1.2em;
+
+        margin: 1rem 0 0;
+    }
+
     p {
         font-family: $font-base;
         text-align: left;

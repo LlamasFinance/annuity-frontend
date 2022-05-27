@@ -7,7 +7,7 @@ import { BsArrowRight } from 'react-icons/bs';
 
 const Questions = () => {
   return (
-    <div className={style.container}>
+    <div className={style.container} id='faqs'>
       <div className={style.left}>
         <h2>Any questions? We got you.</h2>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 

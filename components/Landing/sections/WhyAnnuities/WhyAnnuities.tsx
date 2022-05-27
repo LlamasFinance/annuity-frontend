@@ -4,7 +4,7 @@ import CardWhy from '../../CardWhy/CardWhy';
 
 const WhyAnnuities = () => {
   return (
-    <div className={style.container}>
+    <div className={style.container} id='fixedAnnuities'>
       <div className={style.left}>
         <h2>So why Fixed Annuities?</h2>
         <p>A fixed annuity is a tax-deferred retirement savings vehicle that 

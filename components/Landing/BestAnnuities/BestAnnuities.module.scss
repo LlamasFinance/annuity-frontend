@@ -73,6 +73,8 @@
     justify-content: center;
     align-items: center;
 
+    cursor: pointer;
+
     margin: 0 1.5rem;
 
     span {
@@ -83,9 +85,10 @@
     }
 
     p {
+        height: min-content;
         font-weight: 500;
         font-size: 1em;
-        width: 80%;
+        width: 100%;
 
         margin: 0;
 

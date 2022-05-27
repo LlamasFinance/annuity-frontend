@@ -9,7 +9,7 @@ import { FaEthereum } from 'react-icons/fa';
 
 const HowItWork = () => {
   return (
-    <div className={style.container}>
+    <div className={style.container} id='howItWork'>
       <div className={style.header}>
           <h2> How it works </h2>
           <p>

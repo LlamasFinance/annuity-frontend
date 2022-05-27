@@ -3,7 +3,8 @@
 
 .container {
     min-height: 90vh;
-    width: 100%;
+    width: 60%;
+    margin: auto;
 
     padding: 2.5rem;
 
@@ -30,6 +31,13 @@
                 margin-right: 1rem;
             }
 
+            div {
+                div {
+                    &:nth-child(2) {
+                        width: 200px;
+                    }
+                }
+            }
         }
 
         .icon {
@@ -173,6 +181,24 @@
                 font-weight: 700
             }
         }
+
+        .activateBtn {
+            display: flex;
+            align-items: center;
+
+            span {
+                margin-left: 16px;
+
+                div {
+                    div {
+                        &:nth-child(2) {
+                            width: 200px;
+                        }
+                    }
+                }
+            }
+            
+        }
     }
 
 }
@@ -191,7 +217,7 @@
 }
 
 .forms {
-    width: 400px;
+    max-width: 600px;
     display: grid;
     grid-auto-flow: column;
     column-gap: 50px;
