@@ -3,12 +3,14 @@ import { useAlert } from "../../App/useAlert";
 import { Moralis } from "moralis";
 import { useMoralis, useMoralisQuery } from "react-moralis";
 import { Contract } from "../../Contract/useContract";
+import { useDatabase } from "../useDatabase";
 
 export default function useFetchUserAgreements() {
-  const { account, isInitialized } = useMoralis();
+  const { account, isInitialized, isAuthenticated } = useMoralis();
   const [results, setResults] = useState<
     Moralis.Object<Contract.AgreementDetails>[]
   >([]);
+  const { isUpdatingDb } = useDatabase();
   /**
    * fetch lender agreements
    */
@@ -19,7 +21,7 @@ export default function useFetchUserAgreements() {
   } = useMoralisQuery<Contract.AgreementDetails>(
     "Agreement",
     (query) => query.equalTo("lender", account || "").descending("createdAt"),
-    [account],
+    [account, isInitialized, isAuthenticated, isUpdatingDb],
     { live: true }
   );
   /**

@@ -171,21 +171,16 @@ const Details = () => {
               <p>USDC Deposited:</p>
               <span>${cancelled ? "---" : deposit}</span>
             </div>
+            
             <div className={style.activateBtn}>
               <ActivateButton id={id} />
               <span>
-                <Tooltip
-                  content={
-                    "Activate this agreement by depositing eth collateral to borrow USDC!"
-                  }
-                  position="right"
-                >
-                  <Icon fill="#68738D" size={30} svg="helpCircle" />
-                </Tooltip>
+                {LenderTooltip />
               </span>
               
             </div>
-            
+            {proposed && <ActivateButton id={id} />}
+
           </div>
           <hr />
           <div className={style.usdc}>
