@@ -8,6 +8,8 @@ import { Icon, Table } from "web3uikit";
 import { APP_ID, SERVER_URL, STATUS } from "../../constants";
 import useFetchAllAgreements from "../../hooks/App/db/useFetchAllAgreements";
 import Link from "next/link";
+import { useMoralis } from "react-moralis";
+import { ethers } from "ethers";
 
 interface Props {
   //   agreements: Moralis.Object<Contract.AgreementDetails>[];
@@ -46,7 +48,9 @@ const Market = (props: Props) => {
         columnsConfig="1fr 1fr 1fr 1fr 1fr 1fr 1fr"
         header={[
           <span onClick={() => sort("status")}>Status </span>,
-          <span onClick={() => sort("amount")}>Amount ($USDC)</span>,
+          <span onClick={() => sort("amount")}>
+            USD Deposit <br /> ($)
+          </span>,
           <span onClick={() => sort("rate")}>APY (%)</span>,
           <span onClick={() => sort("duration")}>Duration (years)</span>,
           <span onClick={() => sort("createdAt")}>Date</span>,

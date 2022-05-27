@@ -33,7 +33,7 @@ const Account = (props: Props) => {
       <Table
         columnsConfig="1fr 1fr 1fr 1fr 1fr 1fr"
         header={[
-          <span>Position</span>,
+          <span>Role</span>,
           <span>ID</span>,
           <span>Status</span>,
           <span>USD Deposit ($)</span>,
@@ -46,7 +46,7 @@ const Account = (props: Props) => {
           const collateralEmpty = collateral == "0";
 
           return [
-            <span>{account == lender ? "Annuitant" : "Insurer"}</span>,
+            <span>{account == lender ? "Annuitant" : "Provider"}</span>,
             <span>{uid}</span>,
             <span>{STATUS[Number(status)]}</span>,
             <span>
