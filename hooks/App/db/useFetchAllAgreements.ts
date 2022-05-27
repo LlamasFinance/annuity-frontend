@@ -1,21 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAlert } from "../../App/useAlert";
 import { Moralis } from "moralis";
 import { useMoralisQuery } from "react-moralis";
 import { Contract, useDatabase } from "../../";
 
+interface Props {
+  sortKey:
+    | "createdAt"
+    | "objectId"
+    | "updatedAt"
+    | "ACL"
+    | "uid"
+    | "deposit"
+    | "collateral"
+    | "repaidAmt"
+    | "futureValue"
+    | "start"
+    | "duration"
+    | "rate";
+  sortOrder: "desc" | "asc";
+}
 export default function useFetchAllAgreements() {
+  const [stateSortKey, setSortKey] = useState<Props["sortKey"]>("createdAt");
+  const [stateSortOrder, setSortOrder] = useState<Props["sortOrder"]>("desc");
   const { isUpdatingDb } = useDatabase();
+
   const {
     data: results,
     error,
     isLoading,
   } = useMoralisQuery<Contract.AgreementDetails>(
     "Agreement",
-    (query) => query.descending("createdAt"),
-    [isUpdatingDb],
+    (query) =>
+      stateSortOrder == "desc"
+        ? query.descending(stateSortKey)
+        : query.ascending(stateSortKey),
+    [isUpdatingDb, stateSortKey, stateSortOrder],
     { live: true }
   );
 
-  return { results, error, isLoading };
+  const refetch = ({ sortKey, sortOrder }: Props) => {
+    console.log(sortKey, sortOrder);
+    setSortKey(sortKey);
+    setSortOrder(sortOrder);
+  };
+
+  return { results, error, isLoading, refetch };
 }
