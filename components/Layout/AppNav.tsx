@@ -5,19 +5,21 @@ import { useMoralis } from "react-moralis";
 import { AiOutlineUser } from "react-icons/ai";
 
 export const AppNav = () => {
-
   const { user } = useMoralis();
+  const hasUsername = user?.has("hasUsername");
   const username = user?.get("username");
 
   return (
     <div className="AppNav navbar bg-base-100">
       <div className="flex-1 justify-between">
         <Link href="/">
-          <div className="flex justify-start items-center cursor-pointer">
-            <img src='/images/black-logo.svg' alt="Logo" 
-             className="h-[64px] "
+          <div className="flex cursor-pointer items-center justify-start">
+            <img
+              src="/images/black-logo.svg"
+              alt="Logo"
+              className="h-[64px] "
             />
-            <p className="font-extrabold text-lg font-sans">Llamas Finances</p>
+            <p className="font-sans text-lg font-extrabold">Llamas Finances</p>
           </div>
         </Link>
         <ul className="AppNav__links">
@@ -26,13 +28,13 @@ export const AppNav = () => {
           </li>
           <li className="AppNav__link">
             <Link href="/app/account">
-              <div className="flex items-center ml-6 cursor-pointer">
-                <div className='flex justify-center items-center'>
+              <div className="ml-6 flex cursor-pointer items-center">
+                <div className="flex items-center justify-center">
                   <AiOutlineUser />
                 </div>
-                <p className="ml-1">{ username ? username.charAt(0).toUpperCase() + username.slice(1) : 'My account'}</p>
+                <p className="ml-1">{hasUsername ? username : "My account"}</p>
               </div>
-              </Link>
+            </Link>
           </li>
         </ul>
       </div>

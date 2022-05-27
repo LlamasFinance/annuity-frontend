@@ -11,6 +11,7 @@ import { STATUS } from "../../constants";
 import { useTokenValue } from "../../hooks";
 import Link from "next/link";
 import UserInfo from "../../components/User/UserInfo";
+import SetUserInfoButton from "../../components/User/SetUserInfo/SetUserInfoButton";
 
 interface Props {}
 
@@ -21,15 +22,13 @@ const Account = (props: Props) => {
 
   return (
     <div className="Account">
-      <UserInfo address={account || ''} />
-
       <div className="Account__header">
         <h1 className="Account__title">My Agreements</h1>
         <div className="flex gap-x-4">
           <MintButton />
           <ProposeButton />
+          {user?.get("hasUsername") && <SetUserInfoButton />}
         </div>
-        
       </div>
       <Table
         columnsConfig="1fr 1fr 1fr 1fr 1fr 1fr"

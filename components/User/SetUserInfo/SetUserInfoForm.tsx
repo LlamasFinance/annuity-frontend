@@ -5,32 +5,50 @@ import { useAlert } from "../../../hooks";
 
 export const SetUserInfoForm = () => {
   const [key, setKey] = useState("profile");
-  
+
   const { newAlert } = useAlert();
-  const { setUserData, userError, isAuthenticated, authenticate, isUserUpdating, user } = useMoralis();
-  
+  const {
+    setUserData,
+    userError,
+    isAuthenticated,
+    isInitialized,
+    isUserUpdating,
+    user,
+    account,
+  } = useMoralis();
+  const hasUsername = user?.has("hasUsername");
+  const username = user?.get("username");
+
   useEffect(() => {
-    userError && newAlert({
-      type: 'error',
-      message: userError.message,
-    })
-  },[userError])
+    userError &&
+      newAlert({
+        type: "error",
+        message: userError.message,
+      });
+  }, [userError]);
 
   const handleEditSubmit = React.useCallback(
-    (data) => {
-      const username = data.data.find(({ key }: { key: string }) => key === "NAME").inputResult;
-      const email = data.data.find(({ key }: { key: string }) => key === "EMAIL").inputResult;
-      const bio = data.data.find(({ key }: { key: string }) => key === "BIO").inputResult;
-
-      if(!isAuthenticated) authenticate();
-  
-      isAuthenticated && setUserData({
-        username: username  ? username : user?.get("username"),
-        email: email ? email : user?.get("email"),
-        bio: bio ? bio : user?.get("bio"),
-      });
+    async (data) => {
+      if (!account || !isAuthenticated) {
+        newAlert({ type: "error", message: "Please connect your wallet" });
+      } else if (isInitialized) {
+        const user = await setUserData({
+          username: data.data.find(({ key }: { key: string }) => key === "NAME")
+            .inputResult,
+          hasUsername: true,
+        });
+        if (user?.get("hasUsername")) {
+          const username = user?.get("username");
+          newAlert({
+            type: "success",
+            message: `  Set username to ${username}`,
+          });
+        }
+      }
+      // clear form entry
+      setKey(key.substring(0, 3) + new Date().toString());
     },
-    []
+    [account, isAuthenticated, isInitialized]
   );
 
   return (
@@ -48,31 +66,14 @@ export const SetUserInfoForm = () => {
         data={[
           {
             inputWidth: "80%",
-            name: "Username",
+            name: hasUsername ? username : "Username",
             type: "text",
             value: "",
             key: "NAME",
           },
-          {
-            inputWidth: "80%",
-            name: "Email",
-            type: "text",
-            value: "",
-            key: "EMAIL",
-          },
-          {
-            inputWidth: "80%",
-            name: "Bio",
-            type: "text",
-            value: "",
-            key: "BIO",
-          },
         ]}
         key={key}
-        onSubmit={(data) => {
-          handleEditSubmit(data);
-          setKey(key + new Date().toString());
-        }}
+        onSubmit={handleEditSubmit}
         title="Edit Profile"
         id="profile-form"
       />

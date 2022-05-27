@@ -1,17 +1,14 @@
-import React, { useState } from 'react'
-import SetUserInfoModal from './SetUserInfoModal';
+import React, { useState } from "react";
+import SetUserInfoModal from "./SetUserInfoModal";
 
 const SetUserInfoButton = () => {
-    const [isModalVisible, setModalVisibility] = useState(false);
+  const [isModalVisible, setModalVisibility] = useState(false);
   // const { propose } = useContract();
 
   return (
     <>
-      <button
-        className="btn btn-primary absolute right-4 top-4"
-        onClick={() => setModalVisibility(true)}
-      >
-        Edit Profile
+      <button className="btn-dark btn" onClick={() => setModalVisibility(true)}>
+        Edit Username
       </button>
       <SetUserInfoModal
         isVisible={isModalVisible}
@@ -19,6 +16,6 @@ const SetUserInfoButton = () => {
       />
     </>
   );
-}
+};
 
-export default SetUserInfoButton
+export default SetUserInfoButton;
