@@ -50,30 +50,19 @@ const Details = () => {
   const proposed = status == "0";
   const cancelled = status == "3" && start == "0";
   const repaid = status == "2";
+  const hasLender = lender && lender.substring(0, 3) != "0x0";
+  const hasBorrower = borrower && borrower.substring(0, 3) != "0x0";
 
-  function emptyAdress(address: string) {
-    return address.substring(0, 3) == "0x0";
-  }
-
-  //   const { inUsd: collateralInUsd } = useTokenValue({
-  //     amount: collateral,
-  //     inputType: "wei",
-  //   });
-
-  //   const { inUsd: minReqCollInUsd } = useTokenValue({
-  //     amount: minReqCollateral,
-  //     inputType: "wei",
-  //   });
-
-  //   const { inUsd: depositInUsd } = useTokenValue({
-  //     amount: deposit,
-  //     inputType: "usdc",
-  //   });
-
-  //   const { inUsd: futureValueInUsd } = useTokenValue({
-  //     amount: futureValue,
-  //     inputType: "usdc",
-  //   });
+  const LenderTooltip = (
+    <Tooltip
+      content={
+        "Person who proposes annuity agreement and receives the guaranteed future value"
+      }
+      position="right"
+    >
+      <Icon fill="#68738D" size={30} svg="helpCircle" />
+    </Tooltip>
+  );
 
   return (
     <div className={style.container}>
@@ -90,39 +79,33 @@ const Details = () => {
         </div>
         <div className={style.infoCard}>
           <div className={style.icon}>
-            {emptyAdress(lender) ? (
-              <AiOutlineUser />
-            ) : (
+            {hasLender ? (
               <Blockie scale={7.2} seed={lender} />
+            ) : (
+              <AiOutlineUser />
             )}
           </div>
           <div className={style.infoText}>
             <div className={style.lender}>
               <h2>Lender (Annuitant)</h2>
-
-              <Tooltip
-                content={
-                  "Person who proposes annuity agreement and receives the guaranteed future value"
-                }
-                position="right"
-              >
-                <Icon fill="#68738D" size={30} svg="helpCircle" />
-              </Tooltip>
+              {LenderTooltip}
             </div>
-
             <p>{getEllipsisTxt(lender)}</p>
           </div>
         </div>
         <div className={style.infoCard}>
           <div className={style.icon}>
-            {emptyAdress(borrower) ? (
-              <AiOutlineUser />
-            ) : (
+            {hasBorrower ? (
               <Blockie scale={7.2} seed={borrower} />
+            ) : (
+              <AiOutlineUser />
             )}
           </div>
           <div className={style.infoText}>
-            <h2>Borrower (Provider)</h2>
+            <div className={style.borrower}>
+              <h2>Borrower (Provider)</h2>
+            </div>
+
             <p>{getEllipsisTxt(borrower)}</p>
           </div>
         </div>
