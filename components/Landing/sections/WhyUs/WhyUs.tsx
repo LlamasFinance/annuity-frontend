@@ -4,7 +4,7 @@ import { BsArrowRight } from 'react-icons/bs';
 
 const WhyUs = () => {
   return (
-    <div className={style.container}>
+    <div className={style.container} id='whyUs'>
       <img src="images/effects2.svg" className={style.effect} alt="Effect" />
       <div className={style.left}>
         <h2>Why Choose Us</h2>

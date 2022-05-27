@@ -23,19 +23,21 @@ const Navbar = () => {
 
       <ul className={style.navbarLinks}>
         <li>
-          Quick Start
+          <a href="#fixedAnnuities">Quick Start</a>
         </li>
         <li>
-          Tools
+          <Link href="/app/market">
+            Agreements
+          </Link>
         </li>
         <li>
-          Insurers
+          <a href="#howItWork">How it works</a>
         </li>
         <li>
-          About Us
+          <a href="#whyUs">About Us</a>
         </li>
         <li>
-          Education
+          <a href="#faqs">Education</a>
         </li>
       </ul>
 
@@ -60,9 +62,11 @@ const Navbar = () => {
 
               <HiX onClick={() => setToggle(false)}/>
 
+              <Link href="/app">
               <button onClick={() => connectWallet()}>
                 Get Started <BsDoorOpenFill />
               </button>
+              </Link>
 
               <ul className={style.navbarLinks}>
                 <li>
