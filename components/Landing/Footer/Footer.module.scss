@@ -38,13 +38,39 @@
             color: white;
         }
     }
+
+    .copyright {
+        color: white;
+        display: flex;
+        margin-top: 2rem;
+        padding: 1rem;
+
+        p {
+            font-family: $font-base;
+            font-size: 1rem;
+            color: white;
+        }
+
+        svg {
+            width: 18px;
+            height: 18px;
+
+            margin-right: 0.5rem;
+            margin-top: 0.3rem;
+        }
+    }
 }
 
 .right {
-    padding: 1rem;
+    padding: 3rem;
+
+    display: grid;
+    grid-template-columns: auto;
+    grid-auto-flow: column;
 
     div {
-        font-family: $font-title;
+        font-family: $font-base;
+        font-size: 1.5rem;
         color: $white-color;
     }
 
