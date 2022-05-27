@@ -70,8 +70,8 @@
 
 
                 svg {
-                    width: 60%;
-                    height: 60%;
+                    width: 50%;
+                    height: 50%;
                     color: $secondary-blue;
                 }
             }
@@ -122,6 +122,11 @@
             position: absolute;
             right: 6%;
             top: 2%;
+
+            svg {
+                width: 65%;
+                height: 65%;
+            }
         }
 
         @media screen and (max-width: 1300px) {

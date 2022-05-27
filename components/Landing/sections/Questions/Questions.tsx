@@ -40,7 +40,7 @@ const data = [
     answer: `People buy fixed annuities because they promise a guaranteed return, regardless of the
       market. They provide a peace of mind because they aren’t ties to market downturns or
       recessions.
-
+      `+`\r\n`+`
       They’re also an amazing retirement savings vehicle because they get tax-differed growth,
       meaning that interest can accumulate without incurring annual taxes, as is the case for a CD.
       This not only makes them attractive for people nearing retirement age, but also for
