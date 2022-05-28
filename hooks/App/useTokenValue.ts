@@ -44,13 +44,15 @@ export const useTokenValue = () => {
    * Updates native price
    */
   const updateNativePrice = async () => {
-    // const results = await fetchUsdEth({
-    //   onSuccess: (results) => {},
-    //   onError: (e) => newAlert({ type: "error", message: e.message }),
-    // });
-    // let nativePrice = results?.nativePrice?.value || "0"; // wei per 1$
-    // nativePrice = Moralis.Units.FromWei(nativePrice); // eth per 1$
-    setNativePrice("333333333333333");
+    const results = await fetchUsdEth({
+      onSuccess: (results) => {},
+      onError: (e) => newAlert({ type: "error", message: e.message }),
+    });
+    let nativePrice = results?.nativePrice?.value || "0"; // wei per 1$
+    nativePrice = Moralis.Units.FromWei(nativePrice); // eth per 1$
+    // testnet native value
+    nativePrice = "333333333333333";
+    setNativePrice(nativePrice);
   };
 
   const getValue = ({ amount: amountString, inputType }: Props) => {

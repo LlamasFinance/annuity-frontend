@@ -1,12 +1,12 @@
 import {
   abi as usdc_abi,
   address as usdc_address,
-} from "./deployments/localhost/USDC.json";
+} from "./deployments/mumbai/USDC.json";
 
 import {
   abi as exchange_abi,
   address as exchange_address,
-} from "./deployments/localhost/LiquidatableExchange.json";
+} from "./deployments/mumbai/LiquidatableExchange.json";
 
 export const USDC_ADDRESS = usdc_address;
 export const USDC_ABI = usdc_abi;
