@@ -29,7 +29,10 @@ const WhyAnnuities = () => {
         <CardWhy 
           img='icon3' 
           title='Help with long-term care costs' 
-          text='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore' 
+          text='Fixed annuities work by providing periodic 
+          payments of steady income in the amount specified in the contract.
+          Annuities can generate a lifelong income stream, which means you can 
+          retire with confidence and security' 
         />
         <CardWhy 
           img='icon4' 
