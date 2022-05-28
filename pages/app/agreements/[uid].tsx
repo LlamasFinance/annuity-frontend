@@ -47,6 +47,32 @@ const Details = () => {
     error,
     isLoading,
   } = useFetchSpecificAgreements(uid);
+  const { getValue } = useTokenValue();
+  const { inUsd: depositUsd } = getValue({
+    amount: deposit || "0",
+    inputType: "usdc",
+  });
+  const { inUsd: futureValueUsd } = getValue({
+    amount: futureValue || "0",
+    inputType: "usdc",
+  });
+  const { inUsd: repaidUsd } = getValue({
+    amount: repaidAmt || "0",
+    inputType: "usdc",
+  });
+  const { inUsd: minReqCollateralUsd } = getValue({
+    amount: minReqCollateral || "0",
+    inputType: "wei",
+  });
+  const { inUsd: collateralUsd } = getValue({
+    amount: collateral || "0",
+    inputType: "wei",
+  });
+  const { inEth: collateralEth } = getValue({
+    amount: collateral || "0",
+    inputType: "wei",
+  });
+
   const proposed = status == "0";
   const cancelled = status == "3" && start == "0";
   const repaid = status == "2";
@@ -140,7 +166,7 @@ const Details = () => {
             </div>
             <div className={style.annuitantInfo}>
               <p>Rate</p>
-              <h2>{rate}%</h2>
+              <h2>{Number(rate) / 10}%</h2>
             </div>
           </div>
 
@@ -169,14 +195,16 @@ const Details = () => {
             </div>
             <div className={style.usdcValues}>
               <p>USDC Deposited:</p>
-              <span>${cancelled ? "---" : deposit}</span>
+              <span>${cancelled ? "---" : depositUsd}</span>
             </div>
 
             <div className={style.activateBtn}>
-              <ActivateButton id={id} />
-              <span>{LenderTooltip}</span>
+              {proposed && (
+                <>
+                  <ActivateButton id={id} /> <span>{LenderTooltip}</span>
+                </>
+              )}
             </div>
-            {proposed && <ActivateButton id={id} />}
           </div>
           <hr />
           <div className={style.usdc}>
@@ -185,7 +213,7 @@ const Details = () => {
             </div>
             <div className={style.usdcValues}>
               <p>USDC Future Value:</p>
-              <span>${cancelled ? "---" : futureValue}</span>
+              <span>${cancelled ? "---" : futureValueUsd}</span>
             </div>
           </div>
           <hr />
@@ -202,7 +230,7 @@ const Details = () => {
             </div>
             <div className={style.usdcValues}>
               <p>ETH Collateral:</p>
-              <span>{proposed || cancelled ? "---" : collateral} ETH</span>
+              <span>{proposed || cancelled ? "---" : collateralEth} ETH</span>
             </div>
           </div>
           <hr />
@@ -212,7 +240,7 @@ const Details = () => {
             </div>
             <div className={style.usdcValues}>
               <p>ETH Value:</p>
-              <span>${proposed || cancelled ? "---" : collateral} </span>
+              <span>${proposed || cancelled ? "---" : collateralUsd} </span>
             </div>
           </div>
           <hr />
@@ -223,7 +251,7 @@ const Details = () => {
             <div className={style.usdcValues}>
               <p>Liquidation minimum:</p>
               <span>
-                ${proposed || cancelled || repaid ? "---" : minReqCollateral}
+                ${proposed || cancelled || repaid ? "---" : minReqCollateralUsd}
               </span>
             </div>
           </div>
@@ -234,7 +262,7 @@ const Details = () => {
             </div>
             <div className={style.usdcValues}>
               <p>USDC Repaid:</p>
-              <span>${proposed || cancelled ? "---" : repaidAmt}</span>
+              <span>${proposed || cancelled ? "---" : repaidUsd}</span>
             </div>
           </div>
           <hr />

@@ -18,7 +18,7 @@ interface Props {}
 const Account = (props: Props) => {
   const { results: agreements } = useFetchUserAgreements();
   const { account, user } = useMoralis();
-  const { getValue } = useTokenValue({});
+  const { getValue } = useTokenValue();
 
   return (
     <div className="Account">
@@ -27,7 +27,7 @@ const Account = (props: Props) => {
         <div className="flex gap-x-4">
           <MintButton />
           <ProposeButton />
-          {user?.get("hasUsername") && <SetUserInfoButton />}
+          <SetUserInfoButton />
         </div>
       </div>
       <Table
@@ -44,15 +44,20 @@ const Account = (props: Props) => {
           const { lender, uid, status, deposit, collateral } = attributes;
           const proposed = status == "0";
           const collateralEmpty = collateral == "0";
-
+          const { inUsd: depositUsd } = getValue({
+            amount: deposit,
+            inputType: "usdc",
+          });
+          const { inEth: collateralUsd } = getValue({
+            amount: collateral,
+            inputType: "wei",
+          });
           return [
             <span>{account == lender ? "Annuitant" : "Provider"}</span>,
             <span>{uid}</span>,
             <span>{STATUS[Number(status)]}</span>,
-            <span>
-              {getValue({ amount: deposit, inputType: "usdc" }).inUsd}
-            </span>,
-            <span>{collateralEmpty ? "---" : collateral}</span>,
+            <span>{depositUsd}</span>,
+            <span>{collateralEmpty ? "---" : collateralUsd}</span>,
             <span>
               <Link href={`/app/agreements/${uid}`}>
                 <button className="btn-default btn">Details</button>
