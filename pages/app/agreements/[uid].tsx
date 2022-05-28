@@ -171,16 +171,12 @@ const Details = () => {
               <p>USDC Deposited:</p>
               <span>${cancelled ? "---" : deposit}</span>
             </div>
-            
+
             <div className={style.activateBtn}>
               <ActivateButton id={id} />
-              <span>
-                {LenderTooltip />
-              </span>
-              
+              <span>{LenderTooltip}</span>
             </div>
             {proposed && <ActivateButton id={id} />}
-
           </div>
           <hr />
           <div className={style.usdc}>
