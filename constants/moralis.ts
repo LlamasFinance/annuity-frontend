@@ -1,3 +1,3 @@
-export const APP_ID = "WOH4vBZTpgOhSHHXuWKUwsZPH7agIcs8mVCbhNEK";
-export const SERVER_URL = "https://sp5lv6nm2iqx.usemoralis.com:2053/server";
-export const CHAIN_ID = 31337;
+export const APP_ID = "fIP6kgKrTRGPku8krg8NLwyhWNhNo1Q3fg2rWNcZ";
+export const SERVER_URL = "https://yqinltv3amnx.usemoralis.com:2053/server";
+export const CHAIN_ID = 80001;
