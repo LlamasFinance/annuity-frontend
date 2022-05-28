@@ -31,7 +31,10 @@ export default function useFetchUserAgreements() {
     useMoralisQuery<Contract.AgreementDetails>(
       "Agreement",
       (query) =>
-        query.equalTo("borrower", account || "").descending("createdAt"),
+        query
+          .equalTo("borrower", account || "")
+          .descending("createdAt")
+          .notEqualTo("lender", account || ""),
       [account],
       { live: true }
     );

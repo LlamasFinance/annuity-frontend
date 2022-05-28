@@ -10,6 +10,7 @@ import useFetchAllAgreements from "../../hooks/App/db/useFetchAllAgreements";
 import Link from "next/link";
 import { useMoralis } from "react-moralis";
 import { ethers } from "ethers";
+import { useTokenValue } from "../../hooks";
 
 interface Props {
   //   agreements: Moralis.Object<Contract.AgreementDetails>[];
@@ -19,6 +20,7 @@ const Market = (props: Props) => {
   //   const [sortKey, setKey] = useState<any>("createdAt");
   const [sortOrder, setOrder] = useState<any>("desc");
   const { refetch, results: agreements } = useFetchAllAgreements();
+  const { getValue } = useTokenValue();
 
   const sort = React.useCallback(
     (key: string) => {
@@ -59,9 +61,14 @@ const Market = (props: Props) => {
         ]}
         data={agreements.map(({ createdAt, attributes }) => {
           const { status, deposit, rate, duration, uid } = attributes;
+          const { inUsd: depositUsd } = getValue({
+            amount: deposit,
+            inputType: "usdc",
+          });
+
           return [
             <span>{STATUS[Number(status)]}</span>,
-            <span>{Number(deposit) / 10 ** 6}</span>,
+            <span>{depositUsd}</span>,
             <span>{Number(rate) / 10}</span>,
             <span>{duration}</span>,
             <span>{createdAt?.toLocaleDateString()}</span>,

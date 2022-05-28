@@ -38,7 +38,7 @@ export const ActivateForm = ({ id }: Props) => {
 
   const minReqCollateralEth = Moralis.Units.FromWei(
     BigNumber.from(minReqCollateral || "0")
-      .mul("101")
+      .mul("1001")
       .div("1000")
       .toString()
   );
