@@ -62,25 +62,27 @@ const Navbar = () => {
 
               <Link href="/app/market">
               <button onClick={() => connectWallet()}>
-                Get Started <BsDoorOpenFill />
+                <p>Get Started</p>  <BsDoorOpenFill />
               </button>
               </Link>
 
               <ul className={style.navbarLinks}>
-                <li>
-                  Quick Start
+                <li onClick={() => setToggle(false)}>
+                  <a href="#fixedAnnuities">Quick Start</a>
                 </li>
                 <li>
-                  Tools
+                  <Link href="/app/market">
+                    Agreements
+                  </Link>
                 </li>
-                <li>
-                  Insurers
+                <li onClick={() => setToggle(false)}>
+                  <a href="#howItWork">How it works</a>
                 </li>
-                <li>
-                  About Us
+                <li onClick={() => setToggle(false)}>
+                  <a href="#whyUs">About Us</a>
                 </li>
-                <li>
-                  Education
+                <li onClick={() => setToggle(false)}>
+                  <a href="#faqs">Education</a>
                 </li>
               </ul>
             </div>

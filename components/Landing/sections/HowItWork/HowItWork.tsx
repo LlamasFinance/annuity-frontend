@@ -1,7 +1,9 @@
 import React from 'react';
 import style from './HowItWork.module.scss';
 
-import { FaEthereum } from 'react-icons/fa';
+import { FaEthereum, FaWallet } from 'react-icons/fa';
+import { BsFillFileEarmarkCodeFill } from 'react-icons/bs';
+import { GiReceiveMoney } from 'react-icons/gi';
 
 //--------------------------------
 //Needs a Better Responsive Design
@@ -13,9 +15,9 @@ const HowItWork = () => {
       <div className={style.header}>
           <h2> How it works </h2>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-            sed do eiusmod tempor incididunt ut labore et dolore magna 
-            aliqua. Ut enim ad minim veniam, quis 
+          An “annuitant” proposes to the market an annuity agreement that specific their initial USDC
+          deposit, the period of the agreement, and the fixed annual interest rate they want to earn over
+          that period.
           </p>  
       </div>
       <div className={style.lineContainer}>
@@ -57,35 +59,36 @@ const HowItWork = () => {
         <div className={style.cards}>
           <div className={style.card1}>
             <div>
-              <FaEthereum />
+              <FaWallet />
             </div>
             <span>1</span>
-            <h2>Set up your wallet</h2>
+            <h2>Set up your digital wallet</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-              sed do eiusmod tempor incididunt ut.
+              Get a wallet and mint USDC. Propose an annuity agreement
+              if you're a buyer. Lock USDC into the smart contract
             </p>
           </div>
           <div className={style.card2}>
             <div>
-              <FaEthereum />
+              <BsFillFileEarmarkCodeFill />
             </div>
             <span>2</span>
-            <h2>Set up your wallet</h2>
+            <h2>Choose an Agreement</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-              sed do eiusmod tempor incididunt ut.
+              View proposed annuities and their borrowing rates if you're
+              a seller. Activate an annuity by locking ETH Collateral into
+              the smart contract in order to borrow USDC
             </p>
           </div>
           <div className={style.card3}>
             <div>
-              <FaEthereum />
+              <GiReceiveMoney />
             </div>
             <span>3</span>
-            <h2>Set up your wallet</h2>
+            <h2>Recive Your Money</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-              sed do eiusmod tempor incididunt ut.
+            If the value of a provider’s ETH collateral nears the agreement’s future, then they will be
+            automatically liquidated
             </p>
           </div>
         </div>

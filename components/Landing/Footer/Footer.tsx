@@ -1,5 +1,6 @@
 import React from 'react';
 import style from './Footer.module.scss';
+import { FaRegCopyright } from 'react-icons/fa';
 
 const Footer = () => {
   return (
@@ -10,21 +11,24 @@ const Footer = () => {
           <p>Llamas Finances</p>
         </div>
         <div className={style.social}>
-
+          
         </div>
         <div className={style.copyright}>
-
+          <FaRegCopyright />
+          <p>Copy Right 2022. <br />
+          All rights reserved
+          </p>
         </div>
       </div>
       <div className={style.right}>
         <div>
-          <h2>About</h2>
-          <ul>
-            <li>Info</li>
-            <li>Info</li>
-            <li>Info</li>
-            <li>Info</li>
-          </ul>
+          <h2>Team</h2>
+        </div>
+        <div>
+          <h2>Service</h2>
+        </div>
+        <div>
+          <h2>Contact Us</h2>
         </div>
       </div>
     </div>
