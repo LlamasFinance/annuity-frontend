@@ -4,7 +4,7 @@ import "../styles/components/Account.css";
 
 import type { AppProps } from "next/app";
 import { MoralisProvider } from "react-moralis";
-import { moralisConfig } from "./config";
+import { moralisConfig } from "../components/config";
 import { Layout } from "../components";
 import { NotificationProvider } from "web3uikit";
 
