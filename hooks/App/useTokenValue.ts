@@ -19,11 +19,7 @@ interface Props {
   amount?: string;
   inputType?: "wei" | "eth" | "usd" | "usdc";
 }
-export const useTokenValue = ({ amount, inputType }: Props) => {
-  const [inUsdc, setUsdc] = useState("");
-  const [inUsd, setUsd] = useState("");
-  const [inWei, setWei] = useState("");
-  const [inEth, setEth] = useState("");
+export const useTokenValue = () => {
   const [nativePrice, setNativePrice] = useState(""); // eth per 1$
   const { newAlert } = useAlert();
   const {
@@ -43,9 +39,6 @@ export const useTokenValue = ({ amount, inputType }: Props) => {
       updateNativePrice();
     }
   }, [isInitialized]);
-  useEffect(() => {
-    updateValue({ amount: amount, inputType: inputType });
-  }, [amount, inputType]);
 
   /**
    * Updates native price
@@ -56,21 +49,8 @@ export const useTokenValue = ({ amount, inputType }: Props) => {
     //   onError: (e) => newAlert({ type: "error", message: e.message }),
     // });
     // let nativePrice = results?.nativePrice?.value || "0"; // wei per 1$
-    //nativePrice = Moralis.Units.FromWei(nativePrice); // eth per 1$
-    setNativePrice("0");
-  };
-
-  const updateValue = async (props: Props) => {
-    await updateNativePrice();
-    const { inUsd, inUsdc, inEth, inWei } = getValue({
-      amount: "2000",
-      inputType: "usd",
-    });
-    console.log(inUsd, inUsdc, inEth, inWei);
-    setUsd(inUsd);
-    setUsdc(inUsdc);
-    setEth(inEth);
-    setWei(inWei);
+    // nativePrice = Moralis.Units.FromWei(nativePrice); // eth per 1$
+    setNativePrice("333333333333333");
   };
 
   const getValue = ({ amount: amountString, inputType }: Props) => {
@@ -80,75 +60,69 @@ export const useTokenValue = ({ amount, inputType }: Props) => {
       inEth: amountString || "",
       inWei: amountString || "",
     };
-    return { inUsd, inUsdc, inEth, inWei };
 
-    // if (inputType == "usd") {
-    //   try {
-    //     // clear floats, convert to usdc
-    //     amountString = ((Number(amountString) * 10) ^ 6).toString();
-    //     inputType = "usdc";
-    //   } catch {
-    //     console.log("error converting usd to usdc");
-    //   }
-    // }
+    if (inputType == "usd") {
+      try {
+        // clear floats, convert to usdc
+        amountString = ((Number(amountString) * 10) ^ 6).toString();
+        inputType = "usdc";
+      } catch {
+        console.log("error converting usd to usdc");
+      }
+    }
 
-    // if (!nativePrice) {
-    //   // native price must be set first
-    //   return { inUsd, inUsdc, inEth, inWei };
-    // }
+    if (!nativePrice) {
+      // native price must be set first
+      return { inUsd, inUsdc, inEth, inWei };
+    }
 
-    // if (!amountString || !inputType) {
-    //   throw "amount and input must have values";
-    // }
+    if (!amountString || !inputType) {
+      throw "amount and input must have values";
+    }
 
-    // if (amountString.indexOf(".") != -1) {
-    //   throw "amount cannot be a float";
-    // }
+    if (amountString.indexOf(".") != -1) {
+      throw "amount cannot be a float";
+    }
 
-    // let amount = BigNumber.from("0");
-    // try {
-    //   amount = BigNumber.from(amountString);
-    // } catch {
-    //   console.log("error converting amount to big number");
-    //   return { inUsd, inUsdc, inEth, inWei };
-    // }
+    let amount = BigNumber.from("0");
+    try {
+      amount = BigNumber.from(amountString);
+    } catch {
+      console.log("error converting amount to big number");
+      return { inUsd, inUsdc, inEth, inWei };
+    }
 
-    // try {
-    //   if (inputType == "eth") {
-    //     inEth = amount.toString();
-    //     inWei = Moralis.Units.Token(amount.toString(), 18);
-    //     inUsd = parseUnits(amount.toString(), 18).div(nativePrice).toString();
-    //     inUsdc = Moralis.Units.Token(inUsd, 6);
-    //   } else if (inputType == "wei") {
-    //     inWei = amount.toString();
-    //     inEth = formatUnits(amount, 18);
-    //     inUsd = amount.div(nativePrice).toString();
-    //     inUsdc = Moralis.Units.Token(inUsd, 6);
-    //   } else {
-    //     // inputType == usdc
-    //     console.log(inputType, amount);
-    //     inUsdc = amount.toString();
-    //     inUsd = Moralis.Units.FromWei(inUsdc, 6);
-    //     inWei = amount.mul(nativePrice).div("10").toString();
-    //     inEth = formatUnits(inWei, 18);
-    //   }
-    // } catch {
-    //   console.log("something went wrong converting token values");
-    // }
-    // return {
-    //   inUsdc: inUsdc,
-    //   inUsd: inUsd,
-    //   inWei: inWei,
-    //   inEth: inEth,
-    // };
+    try {
+      if (inputType == "eth") {
+        inEth = amount.toString();
+        inWei = Moralis.Units.Token(amount.toString(), 18);
+        inUsd = parseUnits(amount.toString(), 18).div(nativePrice).toString();
+        inUsdc = Moralis.Units.Token(inUsd, 6);
+      } else if (inputType == "wei") {
+        inWei = amount.toString();
+        inEth = formatUnits(amount, 18);
+        inUsd = amount.div(nativePrice).toString();
+        inUsdc = Moralis.Units.Token(inUsd, 6);
+      } else {
+        // inputType == usdc
+        console.log(inputType, amount);
+        inUsdc = amount.toString();
+        inUsd = Moralis.Units.FromWei(inUsdc, 6);
+        inWei = amount.mul(nativePrice).div("10").toString();
+        inEth = formatUnits(inWei, 18);
+      }
+    } catch {
+      console.log("something went wrong converting token values");
+    }
+    return {
+      inUsdc: inUsdc,
+      inUsd: Number(inUsd).toLocaleString("en-US"),
+      inWei: inWei,
+      inEth: Number(inEth).toLocaleString(),
+    };
   };
 
   return {
-    inUsd,
-    inEth,
-    inWei,
-    inUsdc,
-    updateValue,
     getValue,
     updateNativePrice,
   };

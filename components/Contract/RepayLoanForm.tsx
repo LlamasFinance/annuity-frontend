@@ -52,7 +52,9 @@ export const RepayLoanForm = ({ id }: Props) => {
       .toString(),
     6
   );
-  let message = `Provider must repay $${repayNeeded} USDC by ${end} when the agreement ends.`;
+  let message = `Provider must repay $${Number(repayNeeded).toLocaleString(
+    "en-US"
+  )} USDC by ${end} when the agreement ends.`;
 
   return (
     <div>
