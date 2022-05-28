@@ -24,7 +24,7 @@ const WhyUs = () => {
               <img src="images/earnIcon.svg" alt="Icon" />
             </div>
             <h2>Better with Smart Contracts</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</p>
+            <p>Smart contract annuities can be bought or sold from peers across the globe.</p>  
             <button>Learn more <BsArrowRight /></button>
           </div>
           <div className={style.card2}>
@@ -32,9 +32,10 @@ const WhyUs = () => {
               <div></div>
               <img src="images/cashbackIcon.svg" alt="Icon" />
             </div>
-            <h2>#1 Web3 Annuity</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</p>
-            <button>Learn more <BsArrowRight /></button>
+            <h2>Fixed Annuities</h2>
+            <p>Investing in a fixed annuity, as opposed to the stock market, 
+              protects your money from the overall economic threats</p>
+            {/* <button>Learn more <BsArrowRight /></button> */}
           </div>
         </div>
       </div>
