@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React , {useState,useEffect} from "react";
 import { Table } from "web3uikit";
 import { Moralis } from "moralis";
 import { useMoralis } from "react-moralis";
@@ -10,16 +10,39 @@ import { Contract } from "../../hooks/Contract/useContract";
 import { STATUS } from "../../constants";
 import { useTokenValue } from "../../hooks";
 import Link from "next/link";
-import UserInfo from "../../components/User/UserInfo";
-import SetUserInfoButton from "../../components/User/SetUserInfo/SetUserInfoButton";
+import { FaSort } from "react-icons/fa";
+import style from "./account.module.css";
 
 interface Props {}
 
 const Account = (props: Props) => {
   const { results: agreements } = useFetchUserAgreements();
-  const { account, user } = useMoralis();
+  const { account } = useMoralis();
   const { getValue } = useTokenValue();
+  const [order,setOrder]=useState("ASC");
+  const [agreementsArray,setAgreementsArray]=useState< Moralis.Object<Contract.AgreementDetails>[]>([]);
 
+  const sorting=(basis:string):void=>{
+    if(order==="ASC"){
+     const result=agreements.sort((a:any,b:any)=>
+     a.attributes[basis].toLowerCase() >  b.attributes[basis].toLowerCase() ? 1:-1
+     );
+     setOrder("DSC");
+     setAgreementsArray(result);
+ }
+    if(order==="DSC"){
+     const result=agreements.sort((a:any,b:any)=>
+     a.attributes[basis].toLowerCase() <  b.attributes[basis].toLowerCase() ? 1:-1
+     );
+     setOrder("ASC");
+     setAgreementsArray(result);
+ }
+  }
+  console.log(agreementsArray);
+
+  useEffect(()=>{
+    setAgreementsArray(agreements);
+  },[agreements]);
   return (
     <div className="Account">
       <div className="Account__header">
@@ -33,14 +56,14 @@ const Account = (props: Props) => {
       <Table
         columnsConfig="1fr 1fr 1fr 1fr 1fr 1fr"
         header={[
-          <span>Role</span>,
-          <span>ID</span>,
-          <span>Status</span>,
-          <span>USD Deposit ($)</span>,
-          <span>ETH Collateral</span>,
+          <span>Position</span>,
+          <span onClick={()=>sorting("uid")}>ID<FaSort className={style.icon} /></span>,
+          <span onClick={()=>sorting("status")}>Status<FaSort className={style.icon} /></span>,
+          <span onClick={()=>sorting("deposit")}> Deposit ($) <FaSort className={style.icon} /></span>,
+          <span onClick={()=>sorting("collateral")}> Collateral <FaSort className={style.icon} /></span>,
           <span>Details</span>,
         ]}
-        data={agreements.map(({ createdAt, attributes }) => {
+        data={agreementsArray.map(({ createdAt, attributes }) => {
           const { lender, uid, status, deposit, collateral } = attributes;
           const proposed = status == "0";
           const collateralEmpty = collateral == "0";
@@ -56,8 +79,11 @@ const Account = (props: Props) => {
             <span>{account == lender ? "Annuitant" : "Provider"}</span>,
             <span>{uid}</span>,
             <span>{STATUS[Number(status)]}</span>,
-            <span>{depositUsd}</span>,
-            <span>{collateralEmpty ? "---" : collateralUsd}</span>,
+            <span>
+              {/* {getValue({ amount: deposit, inputType: "usdc" }).inUsd} */}
+              {Number(deposit)/10**6}
+            </span>,
+            <span>{inEth}</span>,
             <span>
               <Link href={`/app/agreements/${uid}`}>
                 <button className="btn-default btn">Details</button>
