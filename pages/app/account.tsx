@@ -6,6 +6,7 @@ import ProposeButton from "../../components/Contract/ProposeButton";
 import MintButton from "../../components/Contract/MintButton";
 
 import useFetchUserAgreements from "../../hooks/App/db/useFetchUserAgreements";
+import SetUserInfoButton from "../../components/User/SetUserInfo/SetUserInfoButton";
 import { Contract } from "../../hooks/Contract/useContract";
 import { STATUS } from "../../constants";
 import { useTokenValue } from "../../hooks";
@@ -83,7 +84,7 @@ const Account = (props: Props) => {
               {/* {getValue({ amount: deposit, inputType: "usdc" }).inUsd} */}
               {Number(deposit)/10**6}
             </span>,
-            <span>{inEth}</span>,
+            <span>{collateralUsd}</span>,
             <span>
               <Link href={`/app/agreements/${uid}`}>
                 <button className="btn-default btn">Details</button>
